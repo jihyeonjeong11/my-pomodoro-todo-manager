@@ -1,13 +1,10 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 import MainPage from "@/components";
-import { Main } from "next/document";
-
-const inter = Inter({ subsets: ["latin"] });
+import { ThemeProvider } from "styled-components";
+import themes from "@/styles/themes";
 
 export default function Home() {
+  console.log(themes);
   return (
     <>
       <Head>
@@ -17,7 +14,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <MainPage />
+        <ThemeProvider theme={themes.defaultTheme}>
+          <MainPage />
+        </ThemeProvider>
       </main>
     </>
   );

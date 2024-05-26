@@ -1,10 +1,26 @@
 {
   "extends": [
+    "next",
     "next/core-web-vitals",
+    "plugin:@next/next/recommended",
     "airbnb",
     "airbnb/hooks",
     "airbnb-typescript",
-    "prettier"
+    "prettier",
+    "eslint:recommended"
+  ],
+  "plugins": [
+    "@next/next",
+    "@typescript-eslint",
+    "import",
+    "jest",
+    "no-relative-import-paths",
+    "promise",
+    "react",
+    "react-hooks-addons",
+    "sonarjs",
+    "typescript-sort-keys",
+    "unused-imports"
   ],
   "parserOptions": {
     "project": "./tsconfig.json",

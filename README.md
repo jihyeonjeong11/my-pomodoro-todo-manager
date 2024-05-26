@@ -16,10 +16,33 @@ You can view your images created with `docker images`.
 
 To add support for Docker to an existing project, just copy the [`Dockerfile`](https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile) into the root of the project and add the following to the `next.config.js` file:
 
-```js
+```
+
 // next.config.js
 module.exports = {
   // ... rest of the configuration.
   output: "standalone",
 };
 ```
+
+### Reset css
+
+https://www.joshwcomeau.com/css/custom-css-reset/
+
+### Planned library usage:
+
+1. React-rnd : todo-window
+2. framer-motion : animation?
+3. Styled-components : css-in-js maybe
+4. React-virtuoso : maybe
+
+### Testing
+
+from nextjs docs: Good to know: Since async Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run unit tests for synchronous Server and Client Components, we recommend using an E2E tests for async components.
+
+I can start with testing-library with jest, and moving to Cypress.
+
+### Features
+
+1. Clock
+2. ToDo list
