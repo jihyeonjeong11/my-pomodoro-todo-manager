@@ -1,10 +1,14 @@
 import React from "react";
+import { StyledTimerButton } from "../../styled/StyledTimer";
 
-const TabItem = () => {
+const TabItem = ({ title, setSelectedTab, selectedTab }: { title: string }) => {
   return (
-    <button>
-      <h2>tabItem</h2>
-    </button>
+    <StyledTimerButton
+      checked={title === selectedTab}
+      onClick={() => setSelectedTab(title)}
+    >
+      <h2>{title}</h2>
+    </StyledTimerButton>
   );
 };
 
