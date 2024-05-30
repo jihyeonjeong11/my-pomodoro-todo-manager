@@ -1,10 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
+import { type TabType } from "@/types/Timer";
+
 import Tabs from "./Tabs";
 import TabItem from "./Tabs/TabItem";
+import { TABS } from "./constants";
 
-const TABS = ["pomodoro", "short break", "long break"];
-
-const Timer = ({ selectedTab, setSelectedTab }) => (
+const Timer: FC<TabType> = ({ selectedTab, setSelectedTab }) => (
   <Tabs>
     {TABS.map((item) => (
       <TabItem
