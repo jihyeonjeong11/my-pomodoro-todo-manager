@@ -1,4 +1,3 @@
-import React, { FC } from "react";
 import { type TabType } from "@/types/Timer";
 
 import Tabs from "./Tabs";
