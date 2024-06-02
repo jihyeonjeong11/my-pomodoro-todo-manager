@@ -71,12 +71,12 @@ export const StyledTimer = styled.section`
 
     @media (min-width: 1200px) {
       width: 35vw;
-      height: calc(35vw);
+      height: 35vw;
     }
 
     @media (min-width: 1400px) {
       width: 27vw;
-      height: calc(27vw);
+      height: 27vw;
     }
 
     .inner {
@@ -98,8 +98,9 @@ export const StyledTimer = styled.section`
           }
         }
       }
-      .numbers-inner {
-      }
+    }
+    .numbers-inner {
+      position: absolute;
     }
   }
 `;
