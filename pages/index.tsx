@@ -1,10 +1,9 @@
 import Head from "next/head";
-import MainPage from "@/components";
 import { ThemeProvider } from "styled-components";
-import themes from "@/styles/themes";
+import MainPage from "components";
+import themes from "styles/themes";
 
 export default function Home() {
-  console.log(themes);
   return (
     <>
       <Head>

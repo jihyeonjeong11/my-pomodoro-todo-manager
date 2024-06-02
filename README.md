@@ -25,6 +25,8 @@ module.exports = {
 };
 ```
 
+https://codesandbox.io/p/sandbox/pomodoro-app-czqyn?file=%2Fsrc%2FSass%2FGlobal.scss
+
 ### Reset css
 
 https://www.joshwcomeau.com/css/custom-css-reset/

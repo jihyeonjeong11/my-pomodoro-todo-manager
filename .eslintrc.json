@@ -24,9 +24,14 @@
     "typescript-sort-keys",
     "unused-imports"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 11,
     "project": "./tsconfig.json",
-    "ecmaVersion": 8
+    "sourceType": "module"
   },
   "rules": {
     "react/function-component-definition": [
@@ -40,8 +45,7 @@
     "no-use-before-define": "off"
   },
   "globals": {
-    "React": true,
-    "FC": true,
-    "jsx": true
+    "React": "readonly",
+    "FC": "readonly"
   }
 }

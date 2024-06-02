@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Timer from "@/components/Timer";
 import { StyledTimer } from "./Timer/styled/StyledTimer";
 
@@ -8,10 +8,8 @@ const MainPage = () => {
   return (
     <StyledTimer>
       <h1>Pomodoro timer</h1>
-      {selectedTab}
-      <div>
-        <Timer selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      </div>
+
+      <Timer selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
     </StyledTimer>
   );
 };
