@@ -1,19 +1,22 @@
-import { TabType } from "@/types/Timer";
+import { usePomodoro } from "@/components/contexts/PomodoroContext";
+import { SelectedTabType } from "@/types/Timer";
 import { StyledTimerButton } from "../../styled/StyledTimer";
 
-type TabItemType = TabType & {
-  title: string;
-};
+const TabItem: FC<{ selectedTitle: SelectedTabType }> = ({ selectedTitle }) => {
+  const { title } = usePomodoro(["title"]);
 
-const TabItem = ({ title, setSelectedTab, selectedTab }: { title: string }) => (
-  <StyledTimerButton
-    role="button"
-    aria-pressed={title === selectedTab}
-    checked={title === selectedTab}
-    onClick={() => setSelectedTab(title)}
-  >
-    <span>{title}</span>
-  </StyledTimerButton>
-);
+  return (
+    <StyledTimerButton
+      role="button"
+      aria-pressed={title.get === selectedTitle}
+      checked={title.get === selectedTitle}
+      onClick={() => {
+        title.set(selectedTitle);
+      }}
+    >
+      <span>{selectedTitle}</span>
+    </StyledTimerButton>
+  );
+};
 
 export default TabItem;

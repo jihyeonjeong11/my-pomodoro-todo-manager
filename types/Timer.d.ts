@@ -1,10 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-import { TABS } from "components/Timer/Tabs";
+import { TABS } from "@/components/Timer/constants";
 
-type SelectedTab = keyof typeof TABS;
-type SetSelectedTab = Dispatch<SetStateAction<keyof TABS>>;
-
-type TabType = {
-  selectedTab: SelectedTab;
-  setSelectedTab: SetSelectedTab;
-};
+export type SelectedTabType = (typeof TABS)[number]["title"];
+export type SelectedCountdownType = (typeof TABS)[number]["countdown"];
