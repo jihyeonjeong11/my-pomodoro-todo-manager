@@ -66,24 +66,35 @@ export default function createFastContext<T>(initialState: T) {
     return [state, fastContext.set];
   }
 
-  function useFastContextFields<SelectorOutput>(fieldNames: string[]): {
-    [key: string]: { get: SelectorOutput; set: (value: any) => void };
+  function useFastContextFields(fieldNames: (keyof T)[]): {
+    [K in keyof T]: {
+      get: T[K];
+      set: (value: T[K]) => void;
+    };
   } {
-    const gettersAndSetters: {
-      [key: string]: { get: SelectorOutput; set: (value: any) => void };
-    } = {};
+    const gettersAndSetters: Partial<{
+      [K in keyof T]: {
+        get: T[K];
+        set: (value: T[K]) => void;
+      };
+    }> = {};
+
     for (const fieldName of fieldNames) {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const [getter, setter] = useFastContext(
-        (fc) => (fc as Record<string, SelectorOutput>)[fieldName]
-      );
+      const [getter, setter] = useFastContext((fc) => fc[fieldName]);
+
       gettersAndSetters[fieldName] = {
         get: getter,
         set: (value: any) => setter({ [fieldName]: value } as Partial<T>),
-      };
+      } as any;
     }
 
-    return gettersAndSetters;
+    return gettersAndSetters as {
+      [K in keyof T]: {
+        get: T[K];
+        set: (value: T[K]) => void;
+      };
+    };
   }
 
   return {
