@@ -86,7 +86,7 @@ export default function createFastContext<T>(initialState: T) {
       gettersAndSetters[fieldName] = {
         get: getter,
         set: (value: any) => setter({ [fieldName]: value } as Partial<T>),
-      } as any;
+      };
     }
 
     return gettersAndSetters as {
@@ -102,3 +102,9 @@ export default function createFastContext<T>(initialState: T) {
     useFastContextFields,
   };
 }
+
+// The issue you are encountering is due to the fact that the useFastContext hook is being called inside a loop in your useFastContextFields function. React hooks need to be called in a consistent order every time a component renders. When you call hooks inside a loop, the order of these calls can change, which breaks the rules of hooks.
+
+// To fix this, you need to ensure that hooks are called in a predictable order. One approach is to use useMemo to create the object with getter and setter functions, ensuring that the hook calls are stable.
+
+// Here's the revised useFastContextFields function to ensure hooks are called in the correct order:

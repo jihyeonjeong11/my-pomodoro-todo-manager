@@ -78,10 +78,10 @@ export const StyledTimer = styled.section`
       width: 27vw;
       height: 27vw;
     }
-
+    // maybe need one more inner layer! .clock-body-inner-container
     .inner {
-      width: 90%;
-      height: 90%;
+      width: 92.88%;
+      height: 92.88%;
       background-color: ${({ theme }) => `${theme.colors.timer.navBackground}`};
       border-radius: 50%;
       position: relative;
@@ -92,7 +92,7 @@ export const StyledTimer = styled.section`
         svg {
           fill: transparent;
           circle {
-            stroke-width: 3.75%;
+            stroke-width: 2%;
             stroke: ${({ theme }) =>
               `${theme.colors.timer.selectionHighlight}`};
           }
