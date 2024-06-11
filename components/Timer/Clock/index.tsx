@@ -9,7 +9,7 @@ const Clock = () => {
   return (
     <section>
       <div className="inner">
-        <div className="svg-inner">
+        <div className="circle-container">
           <svg height="100%" width="100%">
             <circle
               cx="50%"
@@ -20,9 +20,9 @@ const Clock = () => {
             />
           </svg>
         </div>
-      </div>
-      <div className="numbers-inner">
-        <span style={{ color: "white" }}>{c!.countdown}</span>
+        <div className="numbers-inner">
+          <span style={{ color: "white" }}>{c!.countdown}</span>
+        </div>
       </div>
     </section>
   );

@@ -39,7 +39,7 @@ https://www.joshwcomeau.com/css/custom-css-reset/
 1. React-rnd : todo-window
 2. framer-motion : animation?
 3. Styled-components : css-in-js maybe
-4. React-virtuoso : maybe Alternatives: react-window react-virtualized or make it on my own
+4. React-virtuoso : maybe Alternatives: react-window react-virtualized or make it on my own
 
 ### Testing
 

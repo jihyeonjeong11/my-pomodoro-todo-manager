@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const StyledTimer = styled.section`
+  padding: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,10 +9,10 @@ export const StyledTimer = styled.section`
 
   h1 {
     color: ${({ theme }) => `${theme.colors.timer.text}`};
-    padding: 2.75rem 0;
   }
 
   nav {
+    margin-top: 2.75rem;
     height: 4rem;
     background: ${({ theme }) => `${theme.colors.timer.navBackground}`};
     box-sizing: content-box;
@@ -62,11 +63,11 @@ export const StyledTimer = styled.section`
     position: relative;
 
     @media (min-width: 768px) {
-      width: 53vw;
+      width: 50vw;
     }
 
     @media (min-width: 992px) {
-      width: 45vw;
+      width: 50vw;
     }
 
     @media (min-width: 1200px) {
@@ -78,27 +79,36 @@ export const StyledTimer = styled.section`
       width: 27vw;
       height: 27vw;
     }
-    // maybe need one more inner layer! .clock-body-inner-container
     .inner {
-      width: 92.88%;
-      height: 92.88%;
-      background-color: ${({ theme }) => `${theme.colors.timer.navBackground}`};
+      width: 89%;
+      height: 89%;
       border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      .svg-inner {
+
+      .circle-container {
+        width: 92.88%;
+        height: 92.88%;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: absolute;
-        width: 100%;
-        height: 100%;
+        transform: rotate(-90deg);
+
         svg {
           fill: transparent;
           circle {
-            stroke-width: 2%;
+            stroke-width: 3.75%;
             stroke: ${({ theme }) =>
               `${theme.colors.timer.selectionHighlight}`};
           }
         }
       }
     }
+
     .numbers-inner {
       position: absolute;
     }
