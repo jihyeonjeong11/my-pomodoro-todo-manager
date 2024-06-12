@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { m as motion } from "framer-motion";
 
 export const StyledTimer = styled.section`
 	padding: 5rem;
@@ -41,7 +42,7 @@ export const StyledTimer = styled.section`
 			width: 75%;
 		}
 
-		button {
+		div {
 			width: 29%;
 			border-radius: 4rem;
 			color: ${({ theme }) => `${theme.colors.timer.text}`};
@@ -116,9 +117,11 @@ export const StyledTimer = styled.section`
 	}
 `;
 
-export const StyledTimerButton = styled.button<{ checked: boolean }>`
+export const StyledTimerButton = styled(motion.div)<{ checked: boolean }>`
 	background: ${({ theme, checked }) => (checked ? `${theme.colors.timer.selectionHighlight}` : `${theme.colors.timer.navBackground}`)};
 `;
+
+export const StyledNav = styled(motion.nav)``;
 
 export const StyledSeperator = styled.div`
 	height: 6rem;

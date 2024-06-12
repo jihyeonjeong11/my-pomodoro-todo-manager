@@ -1,3 +1,5 @@
-const Tabs: FC = ({ children }) => <nav>{children}</nav>;
+import { StyledNav } from "../styled/StyledTimer";
+
+const Tabs: FC = ({ children }) => <StyledNav>{children}</StyledNav>;
 
 export default Tabs;
