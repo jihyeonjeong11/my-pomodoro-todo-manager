@@ -6,6 +6,13 @@ import React, {
   useSyncExternalStore,
 } from "react";
 
+type UseContextType<T> = {
+  [K in keyof T]: {
+    get: T[K];
+    set: (value: T[K]) => void;
+  };
+};
+
 export default function createFastContext<T>(initialState: T) {
   function useFastContextData(): {
     get: () => T;
@@ -66,18 +73,8 @@ export default function createFastContext<T>(initialState: T) {
     return [state, fastContext.set];
   }
 
-  function useFastContextFields(fieldNames: (keyof T)[]): {
-    [K in keyof T]: {
-      get: T[K];
-      set: (value: T[K]) => void;
-    };
-  } {
-    const gettersAndSetters: Partial<{
-      [K in keyof T]: {
-        get: T[K];
-        set: (value: T[K]) => void;
-      };
-    }> = {};
+  function useFastContextFields(fieldNames: (keyof T)[]): UseContextType<T> {
+    const gettersAndSetters: UseContextType<T> = {} as UseContextType<T>;
 
     for (const fieldName of fieldNames) {
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -85,16 +82,11 @@ export default function createFastContext<T>(initialState: T) {
 
       gettersAndSetters[fieldName] = {
         get: getter,
-        set: (value: any) => setter({ [fieldName]: value } as Partial<T>),
+        set: (value) => setter({ [fieldName]: value } as unknown as Partial<T>),
       };
     }
 
-    return gettersAndSetters as {
-      [K in keyof T]: {
-        get: T[K];
-        set: (value: T[K]) => void;
-      };
-    };
+    return gettersAndSetters;
   }
 
   return {
