@@ -22,7 +22,8 @@
     "react-hooks-addons",
     "sonarjs",
     "typescript-sort-keys",
-    "unused-imports"
+    "unused-imports",
+    "unicorn"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

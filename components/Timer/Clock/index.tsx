@@ -1,11 +1,11 @@
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { TABS } from "../constants";
+import { findTab } from "../functions";
 
 const Clock = () => {
   const {
     title: { get },
   } = usePomodoro(["title"]);
-  const c = TABS.find((i) => i.title === get);
+  const countdown = findTab(get);
   return (
     <section>
       <div className="inner">
@@ -21,7 +21,7 @@ const Clock = () => {
           </svg>
         </div>
         <div className="numbers-inner">
-          <span style={{ color: "white" }}>{c!.countdown}</span>
+          <span style={{ color: "white" }}>{countdown}</span>
         </div>
       </div>
     </section>
