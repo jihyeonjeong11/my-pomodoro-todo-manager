@@ -9,7 +9,8 @@
     "prettier",
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:unicorn/recommended"
   ],
   "plugins": [
     "@next/next",
@@ -44,7 +45,11 @@
     "linebreak-style": "off",
     "import/prefer-default-export": "off",
     "no-use-before-define": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "unicorn/filename-case": "off",
+    "unicorn/no-array-for-each": "off",
+    "unicorn/no-null": "off",
+    "unicorn/prevent-abbreviations": "off"
   },
   "globals": {
     "React": "readonly",
