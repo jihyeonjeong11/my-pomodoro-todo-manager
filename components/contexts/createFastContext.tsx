@@ -35,8 +35,6 @@ export default function createFastContext<T>(initialState: T) {
       return () => subscribers.current.delete(callback);
     }, []);
 
-    console.log(initialState, store, get(), "fromstore");
-
     return {
       get,
       set,
