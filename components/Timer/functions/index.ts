@@ -1,5 +1,5 @@
-import { SelectedCountdownType, type SelectedTabType } from "@/types/Timer";
-import { TABS } from "../constants";
+import { TimerType, type SelectedTabType } from "@/types/Timer";
+import { TABS, TIMER_STATUS } from "../constants";
 
 export const findTab = (title: SelectedTabType) => {
   const tab = TABS.find((t) => t.title === title);
@@ -10,7 +10,10 @@ export const findTab = (title: SelectedTabType) => {
   throw new Error("tab not founded");
 };
 
-export const convertMsToTime = (ms: SelectedCountdownType) => {
+export const toggleTimer = (status: TimerType) =>
+  TIMER_STATUS.stopped === status ? TIMER_STATUS.started : TIMER_STATUS.stopped;
+
+export const convertMsToTime = (ms: number) => {
   const minutes = Math.floor(ms / 60_000);
   const seconds = Math.floor((ms % 60_000) / 1000);
   const formattedMinutes = String(minutes).padStart(2, "0");

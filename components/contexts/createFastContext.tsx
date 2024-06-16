@@ -35,6 +35,8 @@ export default function createFastContext<T>(initialState: T) {
       return () => subscribers.current.delete(callback);
     }, []);
 
+    console.log(initialState, store, get(), "fromstore");
+
     return {
       get,
       set,
@@ -57,7 +59,7 @@ export default function createFastContext<T>(initialState: T) {
   }
 
   function useFastContext<SelectorOutput>(
-    selector: (store: T) => SelectorOutput
+    selector: (store: T) => SelectorOutput,
   ): [SelectorOutput, (value: Partial<T>) => void] {
     const fastContext = useContext(Context);
     if (!fastContext) {
@@ -67,7 +69,7 @@ export default function createFastContext<T>(initialState: T) {
     const state = useSyncExternalStore(
       fastContext.subscribe,
       () => selector(fastContext.get()),
-      () => selector(initialState)
+      () => selector(initialState),
     );
 
     return [state, fastContext.set];

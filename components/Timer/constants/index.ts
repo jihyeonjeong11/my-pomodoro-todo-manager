@@ -12,3 +12,8 @@ export const TABS = [
     countdown: 600_000, // 10 mins
   },
 ] as const;
+
+export const TIMER_STATUS = {
+  stopped: "stopped",
+  started: "started",
+} as const;
