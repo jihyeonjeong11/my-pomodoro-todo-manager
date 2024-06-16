@@ -54,5 +54,8 @@
   "globals": {
     "React": "readonly",
     "FC": "readonly"
+  },
+  "env": {
+    "jest": true
   }
 }

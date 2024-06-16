@@ -6,8 +6,12 @@ import Clock from "./Clock";
 const Timer: FC = () => (
   <>
     <Tabs>
-      {TABS.map((item) => (
-        <TabItem key={item.title} selectedTitle={item.title} />
+      {TABS.map((item, index) => (
+        <TabItem
+          data-testid={`tab-item-${index}`}
+          key={item.title}
+          selectedTitle={item.title}
+        />
       ))}
     </Tabs>
     <Clock />

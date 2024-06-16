@@ -12,6 +12,7 @@ const Clock = () => {
   return (
     <section>
       <button
+        data-testid="timer-button"
         className="inner"
         type="button"
         aria-label="star-timer"
@@ -29,7 +30,9 @@ const Clock = () => {
           </svg>
         </div>
         <div className="numbers-inner">
-          <span style={{ color: "white" }}>{getTime()}</span>
+          <span data-testid="time" style={{ color: "white" }}>
+            {getTime()}
+          </span>
         </div>
       </button>
     </section>
