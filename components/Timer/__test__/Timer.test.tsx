@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import themes from "@/styles/themes";
 import { ThemeProvider } from "styled-components";
@@ -48,11 +48,17 @@ describe("Loads properly", () => {
     );
     const timerButton = screen.getByTestId("tab");
     const time = screen.getByTestId("time");
-
+    // I can make it working by mocking timer, but will that be meaningful, since using fake timer is not actual timer! Maybe I can use E2E for that?
     expect(time.textContent).toBe("30:00");
     fireEvent.click(timerButton);
-    setTimeout(() => {
+    await waitFor(() => {
       expect(time.textContent).toEqual("29:58");
-    }, 2000);
+    });
+
+    fireEvent.click(timerButton);
+    console.log(time.textContent);
+    await waitFor(() => {
+      expect(time.textContent).toEqual("29:58");
+    });
   });
 });
