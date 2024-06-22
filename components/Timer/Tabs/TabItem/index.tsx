@@ -4,12 +4,13 @@ import { StyledTimerButton } from "../../styled/StyledTimer";
 
 const TabItem: FC<{ selectedTitle: SelectedTabType }> = ({ selectedTitle }) => {
   const { title } = usePomodoro(["title"]);
+  const isSelected = title.get === selectedTitle;
 
   return (
     <StyledTimerButton
       role="button"
-      aria-pressed={title.get === selectedTitle}
-      checked={title.get === selectedTitle}
+      aria-pressed={isSelected}
+      checked={isSelected}
       onClick={() => {
         title.set(selectedTitle);
       }}
