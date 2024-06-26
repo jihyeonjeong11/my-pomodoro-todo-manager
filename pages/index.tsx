@@ -1,6 +1,6 @@
-import { ThemeProvider } from 'styled-components';
-import MainPage from 'components';
-import themes from 'styles/themes';
+import { ThemeProvider } from "styled-components";
+import MainPage from "components";
+import themes from "styles/themes";
 
 export default function Home() {
   return (

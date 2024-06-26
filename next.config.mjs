@@ -3,9 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   compiler: {
-    styledComponents: true
-  }
-
+    styledComponents: true,
+  },
 };
 
 export default nextConfig;

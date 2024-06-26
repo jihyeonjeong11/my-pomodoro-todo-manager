@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { SelectedCountdownType, TimerType } from '@/types/Timer';
-import { convertMsToTime } from '../functions';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { SelectedCountdownType, TimerType } from "@/types/Timer";
+import { convertMsToTime } from "../functions";
 
 const useClock = (ms: SelectedCountdownType, isStarted: TimerType) => {
   const [time, setTime] = useState<SelectedCountdownType | number>(ms);
@@ -15,10 +15,10 @@ const useClock = (ms: SelectedCountdownType, isStarted: TimerType) => {
   }, [ms]);
 
   useEffect(() => {
-    if (isStarted === 'started') {
+    if (isStarted === "started") {
       intervalRef.current = window.setInterval(
         () => setTime((prev) => prev - 1000),
-        1000
+        1000,
       );
     } else {
       window.clearInterval(intervalRef.current);
