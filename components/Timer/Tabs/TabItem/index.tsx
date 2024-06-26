@@ -32,7 +32,6 @@ const TabItem: FC<{
       aria-pressed={isSelected}
       checked={isSelected}
       onClick={() => {
-        console.log(itemRefs);
         title.set(selectedTitle);
       }}
     >
