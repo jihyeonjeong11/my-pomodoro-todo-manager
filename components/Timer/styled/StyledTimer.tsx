@@ -42,7 +42,7 @@ export const StyledTimer = styled.section`
       width: 75%;
     }
 
-    div {
+    button {
       width: 29%;
       border-radius: 4rem;
       color: ${({ theme }) => `${theme.colors.timer.text}`};
@@ -118,7 +118,7 @@ export const StyledTimer = styled.section`
   }
 `;
 
-export const StyledTimerButton = styled(motion.div)<{ checked: boolean }>`
+export const StyledTimerButton = styled(motion.button)<{ checked: boolean }>`
   background: ${({ theme, checked }) =>
     checked
       ? `${theme.colors.timer.selectionHighlight}`
