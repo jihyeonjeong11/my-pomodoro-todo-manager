@@ -7,7 +7,7 @@ import Clock from "./Clock";
 const Timer: FC = () => {
   const timerRef = useRef<MutableRefObject<HTMLObjectElement>>(null);
   const itemRefs: MutableRefObject<Set<HTMLButtonElement>> = useRef(new Set());
-  console.log(itemRefs);
+
   return (
     <>
       <Tabs ref={timerRef}>
