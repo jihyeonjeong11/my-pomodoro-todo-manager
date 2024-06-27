@@ -107,6 +107,7 @@ export const StyledTimer = styled.section`
             stroke-width: 3.75%;
             stroke: ${({ theme }) =>
               `${theme.colors.timer.selectionHighlight}`};
+            transition: 0.25s;
           }
         }
       }

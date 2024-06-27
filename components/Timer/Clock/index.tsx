@@ -9,7 +9,7 @@ const Clock = () => {
     isStarted: { get: getIsStarted, set },
   } = usePomodoro(["title", "isStarted"]);
   const countdown = findTab(get);
-  const { getTime } = useClock(countdown, getIsStarted);
+  const { getTime, circleOffset } = useClock(countdown, getIsStarted);
   return (
     <>
       <Head>
@@ -33,7 +33,8 @@ const Clock = () => {
                 cy="50%"
                 r="48%"
                 strokeLinecap="round"
-                strokeDashoffset="0%"
+                strokeDasharray="300%"
+                strokeDashoffset={`${circleOffset}%`}
               />
             </svg>
           </div>
