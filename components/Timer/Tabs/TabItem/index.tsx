@@ -2,13 +2,14 @@ import { MutableRefObject, useCallback } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { SelectedTabType } from "@/types/Timer";
 import { StyledTimerButton } from "../../styled/StyledTimer";
+import { findTab } from "../../functions";
 
 const TabItem: FC<{
   selectedTitle: SelectedTabType;
   itemRefs: MutableRefObject<Set<HTMLButtonElement>>;
 }> = ({ selectedTitle, itemRefs }) => {
-  const { title } = usePomodoro(["title"]);
-  const isSelected = title.get === selectedTitle;
+  const { tab } = usePomodoro(["tab"]);
+  const isSelected = tab.get.title === selectedTitle;
 
   const refCallback = useCallback(
     (element: HTMLButtonElement | null) => {
@@ -32,7 +33,7 @@ const TabItem: FC<{
       aria-pressed={isSelected}
       checked={isSelected}
       onClick={() => {
-        title.set(selectedTitle);
+        tab.set(findTab(selectedTitle));
       }}
     >
       <span>{selectedTitle}</span>

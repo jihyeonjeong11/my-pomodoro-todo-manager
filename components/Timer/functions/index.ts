@@ -4,7 +4,7 @@ import { TABS, TIMER_STATUS } from "../constants";
 export const findTab = (title: SelectedTabType) => {
   const tab = TABS.find((t) => t.title === title);
   if (tab) {
-    return tab.countdown;
+    return tab;
   }
 
   throw new Error("tab not founded");

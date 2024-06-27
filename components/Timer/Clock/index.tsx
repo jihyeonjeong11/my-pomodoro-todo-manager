@@ -5,10 +5,10 @@ import useClock from "../hooks/useClock";
 
 const Clock = () => {
   const {
-    title: { get },
     isStarted: { get: getIsStarted, set },
-  } = usePomodoro(["title", "isStarted"]);
-  const countdown = findTab(get);
+    tab: { get: getTab },
+  } = usePomodoro(["title", "isStarted", "tab"]);
+  const { countdown } = findTab(getTab.title);
   const { getTime, circleOffset } = useClock(countdown, getIsStarted);
   return (
     <>
@@ -33,7 +33,6 @@ const Clock = () => {
                 cy="50%"
                 r="48%"
                 strokeLinecap="round"
-                strokeDasharray="300%"
                 strokeDashoffset={`${circleOffset}%`}
               />
             </svg>
