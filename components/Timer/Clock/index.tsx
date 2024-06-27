@@ -1,15 +1,19 @@
 import Head from "next/head";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { findTab, toggleTimer } from "../functions";
+import { toggleTimer } from "../functions";
 import useClock from "../hooks/useClock";
 
 const Clock = () => {
   const {
-    isStarted: { get: getIsStarted, set },
-    tab: { get: getTab },
-  } = usePomodoro(["title", "isStarted", "tab"]);
-  const { countdown } = findTab(getTab.title);
-  const { getTime, circleOffset } = useClock(countdown, getIsStarted);
+    isStarted: { get: getIsStarted, set: setIsStarted },
+    tab: { get: getTab, set: setTab },
+  } = usePomodoro(["isStarted", "tab"]);
+  const { getTime, circleOffset } = useClock(
+    getTab,
+    setTab,
+    getIsStarted,
+    setIsStarted
+  );
   return (
     <>
       <Head>
@@ -24,7 +28,7 @@ const Clock = () => {
           className="inner"
           type="button"
           aria-label="star-timer"
-          onClick={() => set(toggleTimer(getIsStarted))}
+          onClick={() => setIsStarted(toggleTimer(getIsStarted))}
         >
           <div className="circle-container">
             <svg height="100%" width="100%">

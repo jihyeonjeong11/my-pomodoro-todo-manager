@@ -23,7 +23,7 @@ const TabItem: FC<{
         });
       }
     },
-    [itemRefs],
+    [itemRefs]
   );
 
   return (
