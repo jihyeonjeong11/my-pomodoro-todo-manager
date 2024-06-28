@@ -22,9 +22,9 @@ export const convertMsToTime = (ms: number) => {
 	return formattedTime;
 };
 
-export const getFromSet = (set: Set<any>, item: any) => {
-	for (const i of set) {
-		if (i === item) {
+export const getFromSet = <T>(set: Set<T>, callback: (item: T) => boolean): T | null => {
+	for (const item of set) {
+		if (callback(item)) {
 			return item;
 		}
 	}

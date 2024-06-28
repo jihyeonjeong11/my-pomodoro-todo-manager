@@ -1,4 +1,4 @@
-import { type MutableRefObject, useRef, useCallback } from "react";
+import { type MutableRefObject, useRef, useCallback, useState, useEffect } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import Tabs from "./Tabs";
 import TabItem from "./Tabs/TabItem";
@@ -14,35 +14,51 @@ const Timer: FC = () => {
 		tab: { set, get },
 	} = usePomodoro(["tab"]);
 
+	const [animationStyle, setAnimationStyle] = useState({});
+
 	const onClick = useCallback(
 		(e: MouseEvent, selectedTitle: SelectedTabType) => {
-			const prev = get.title;
 			if (e?.currentTarget && itemRefs.current.has(e.currentTarget as HTMLButtonElement)) {
-				const found = getFromSet(itemRefs.current, e.currentTarget);
-				let prev = null;
-				for (const i of itemRefs.current) {
-					console.log(i.textContent, get.title);
-					if (i.textContext === get.title) {
-						console.log("hello");
-						prev = i;
-					}
+				const found = getFromSet(itemRefs.current, (ele) => ele === e.currentTarget);
+				const prev = getFromSet(itemRefs.current, (ele) => ele.textContent === get.title);
+				if (!found || !prev) {
+					throw new Error("must be element");
 				}
-				console.log(prev);
+				const transformRange = found.offsetLeft - prev.offsetLeft;
+
+				setAnimationStyle({
+					transform: `translateX(${transformRange}px)`,
+					transition: "transform 0.3s ease-in-out",
+				});
+
+				setTimeout(() => {
+					setAnimationStyle({});
+				}, 300);
+
 				set(findTab(selectedTitle));
 			}
 		},
-		[set]
+		[set, get.title]
 	);
+
+	useEffect(() => {
+		const prevElement = getFromSet(itemRefs.current, (ele) => ele.textContent === get.title);
+		if (prevElement) {
+			Object.assign(prevElement.style, animationStyle);
+		}
+	}, [animationStyle, get.title]);
 
 	return (
 		<>
 			<Tabs>
-				{TABS.map((item, index) => (
-					<TabItem onClick={onClick} itemRefs={itemRefs} data-testid={`tab-item-${index}`} key={item.title} selectedTitle={item.title} />
-				))}
+				{TABS.map((item, index) => {
+					const isSelected = item.title === get.title;
+					return <TabItem onClick={onClick} itemRefs={itemRefs} data-testid={`tab-item-${index}`} key={item.title} selectedTitle={item.title} isSelected={isSelected} />;
+				})}
 			</Tabs>
 			<Clock />
 		</>
 	);
 };
+
 export default Timer;

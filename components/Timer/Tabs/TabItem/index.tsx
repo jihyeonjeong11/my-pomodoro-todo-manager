@@ -1,5 +1,4 @@
 import { MutableRefObject, useCallback } from "react";
-import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { SelectedTabType } from "@/types/Timer";
 import { StyledTimerButton } from "../../styled/StyledTimer";
 
@@ -7,10 +6,8 @@ const TabItem: FC<{
 	selectedTitle: SelectedTabType;
 	itemRefs: MutableRefObject<Set<HTMLButtonElement>>;
 	onClick: any;
-}> = ({ selectedTitle, itemRefs, onClick }) => {
-	const { tab } = usePomodoro(["tab"]);
-	const isSelected = tab.get.title === selectedTitle;
-
+	isSelected: boolean;
+}> = ({ selectedTitle, itemRefs, onClick, isSelected }) => {
 	const refCallback = useCallback(
 		(element: HTMLButtonElement | null) => {
 			if (element) {
@@ -27,9 +24,11 @@ const TabItem: FC<{
 	);
 
 	return (
-		<StyledTimerButton ref={refCallback} role="button" aria-pressed={isSelected} checked={isSelected} onClick={(e) => onClick(e, selectedTitle)}>
-			<span>{selectedTitle}</span>
-		</StyledTimerButton>
+		<div className="tab-container">
+			<StyledTimerButton ref={refCallback} role="button" aria-pressed={isSelected} checked={isSelected} onClick={(e) => onClick(e, selectedTitle)}>
+				<span>{selectedTitle}</span>
+			</StyledTimerButton>
+		</div>
 	);
 };
 
