@@ -1,38 +1,53 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TabWithMutableCountdown, TimerType } from "@/types/Timer";
+import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { convertMsToTime } from "../functions";
-import { TIMER_STATUS } from "../constants";
 
-const useClock = (
-  tab: TabWithMutableCountdown,
-  setTab: (tab: TabWithMutableCountdown) => void,
-  isStarted: TimerType,
-  setIsStarted: (timerStatus: TimerType) => void
-) => {
-  const [circleOffset, setCircleOffset] = useState(300);
-  const intervalRef = useRef<number | undefined>();
+const useClock = (tick: () => void) => {
+  const savedTick = useRef<() => void | undefined>();
+
+  useEffect(() => {
+    savedTick.current = tick;
+  }, [tick]);
+
+  const {
+    isStarted: { get: getIsStarted, set: setIsStarted },
+    tab: { get: getTab, set: setTab },
+  } = usePomodoro(["isStarted", "tab"]);
+  const [circleOffset] = useState(300);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>();
   const getTime = useCallback(
-    () => `${convertMsToTime(tab.countdown as number)}`,
-    [tab.countdown]
+    () => `${convertMsToTime(getTab.countdown as number)}`,
+    [getTab.countdown],
   );
-  useEffect(() => {
-    console.log("tab changed");
-    //setIsStarted(TIMER_STATUS.stopped);
-    // intervalRef.current = undefined;
-    // window.clearInterval(intervalRef.current);
-  }, [tab]);
 
   useEffect(() => {
-    if (isStarted === "started") {
-      intervalRef.current = window.setInterval(() => {
-        setTab({ ...tab, countdown: (tab.countdown as number) - 1000 });
-        setCircleOffset((prev) => prev - 300 / 1800);
-      }, 1000);
-    } else {
-      window.clearInterval(intervalRef.current);
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = undefined;
+    setIsStarted("stopped");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getTab.title]);
+
+  useEffect(() => {
+    if (getIsStarted === "stopped") {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
     }
-    return () => window.clearInterval(intervalRef.current);
-  }, [isStarted]);
+  }, [getIsStarted]);
+
+  useEffect(() => {
+    timeoutRef.current = setTimeout(() => {
+      if (getIsStarted === "started" && savedTick.current) {
+        savedTick.current();
+        timeoutRef.current = setTimeout(savedTick.current, 1000);
+      }
+    }, 1000);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [getIsStarted, setTab]);
 
   return { getTime, circleOffset };
 };

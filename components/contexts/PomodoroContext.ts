@@ -8,4 +8,5 @@ export const {
 } = createFastContext({
   tab: TABS[0] as TabWithMutableCountdown,
   isStarted: TIMER_STATUS.stopped as TimerType,
+  time: TABS[0].countdown as number,
 });

@@ -24,7 +24,6 @@ export const StyledTimer = styled.section`
     display: flex;
     align-items: center;
     padding: 0 20px;
-    position: relative;
     z-index: 0;
 
     @media (min-width: 768px) {
@@ -57,11 +56,6 @@ export const StyledTimer = styled.section`
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .tab-highlight {
-      top: auto;
-      bottom: auto;
     }
   }
 
@@ -136,7 +130,7 @@ export const StyledTimer = styled.section`
 export const StyledTimerHighlight = styled(motion.div)`
   position: absolute;
   z-index: -1;
-  top: 0;
+  transform: translateX(-105%);
   width: 29% !important;
   height: 3rem !important;
   border-radius: 30px;

@@ -5,7 +5,7 @@ import { TABS } from "./constants";
 import Clock from "./Clock";
 import { findTab, getFromSet } from "./functions";
 import { usePomodoro } from "../contexts/PomodoroContext";
-import { StyledTimerHighlight } from "./styled/StyledTimer";
+import { StyledNav, StyledTimerHighlight } from "./styled/StyledTimer";
 
 const Timer: FC = () => {
   const itemRefs: MutableRefObject<Set<HTMLDivElement>> = useRef(new Set());
@@ -22,7 +22,7 @@ const Timer: FC = () => {
       if (e?.currentTarget && itemRefs.current.has(container)) {
         const found = getFromSet(
           itemRefs.current,
-          (ele) => ele.textContent === currentTarget.textContent
+          (ele) => ele.textContent === currentTarget.textContent,
         );
         if (!found) {
           throw new Error("must be element");
@@ -43,12 +43,12 @@ const Timer: FC = () => {
         set(findTab(selectedTitle));
       }
     },
-    [set]
+    [set],
   );
 
   return (
     <>
-      <nav>
+      <StyledNav>
         {TABS.map((item, index) => {
           const isSelected = item.title === get.title;
           return (
@@ -66,7 +66,7 @@ const Timer: FC = () => {
           className="tab-highlight"
           style={animationStyle}
         />
-      </nav>
+      </StyledNav>
 
       <Clock />
     </>
