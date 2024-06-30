@@ -1,15 +1,14 @@
 import { MutableRefObject, useCallback } from "react";
 import { SelectedTabType } from "@/types/Timer";
-import { StyledTimerHighlight } from "../../styled/StyledTimer";
 
 const TabItem: FC<{
   selectedTitle: SelectedTabType;
-  itemRefs: MutableRefObject<Set<HTMLButtonElement>>;
+  itemRefs: MutableRefObject<Set<HTMLDivElement>>;
   onClick: any;
   isSelected: boolean;
 }> = ({ selectedTitle, itemRefs, onClick, isSelected }) => {
   const refCallback = useCallback(
-    (element: HTMLButtonElement | null) => {
+    (element: HTMLDivElement | null) => {
       if (element) {
         itemRefs.current.add(element);
       } else {
@@ -24,10 +23,9 @@ const TabItem: FC<{
   );
 
   return (
-    <div className="tab-item">
+    <div ref={refCallback} className="tab-item">
       <button
-        ref={refCallback}
-        role="button"
+        type="button"
         aria-pressed={isSelected}
         onClick={(e) => onClick(e, selectedTitle)}
       >

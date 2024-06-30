@@ -1,12 +1,5 @@
-import {
-  type MutableRefObject,
-  useRef,
-  useCallback,
-  useState,
-  useEffect,
-} from "react";
+import { type MutableRefObject, useRef, useCallback, useState } from "react";
 import { type SelectedTabType } from "@/types/Timer";
-import Tabs from "./Tabs";
 import TabItem from "./Tabs/TabItem";
 import { TABS } from "./constants";
 import Clock from "./Clock";
@@ -15,9 +8,7 @@ import { usePomodoro } from "../contexts/PomodoroContext";
 import { StyledTimerHighlight } from "./styled/StyledTimer";
 
 const Timer: FC = () => {
-  const timerRef = useRef<MutableRefObject<HTMLObjectElement>>(null);
-  const itemRefs: MutableRefObject<Set<HTMLButtonElement>> = useRef(new Set());
-  const containerRef: MutableRefObject<HTMLDivElement> = useRef();
+  const itemRefs: MutableRefObject<Set<HTMLDivElement>> = useRef(new Set());
   const {
     tab: { set, get },
   } = usePomodoro(["tab"]);
@@ -26,64 +17,38 @@ const Timer: FC = () => {
 
   const onClick = useCallback(
     (e: MouseEvent, selectedTitle: SelectedTabType) => {
-      if (
-        e?.currentTarget &&
-        itemRefs.current.has(e.currentTarget as HTMLButtonElement)
-      ) {
+      const currentTarget = e?.currentTarget as HTMLButtonElement;
+      const container = currentTarget.closest(".tab-item") as HTMLDivElement;
+      if (e?.currentTarget && itemRefs.current.has(container)) {
         const found = getFromSet(
           itemRefs.current,
-          (ele) => ele === e.currentTarget
+          (ele) => ele.textContent === currentTarget.textContent
         );
-        const prev = getFromSet(
-          itemRefs.current,
-          (ele) => ele.textContent === get.title
-        );
-        if (!found || !prev) {
+        if (!found) {
           throw new Error("must be element");
         }
-        // console.log(containerRef.current);
-        // // return;
-        // const pRect = prev.getBoundingClientRect();
-        // const cRect = containerRef.current.getBoundingClientRect();
-        // const tRect = found.getBoundingClientRect();
-        // console.log(tRect, pRect);
-        // console.log(tRect.left - pRect.left);
-        // const transformRange = tRect.left - cRect.left;
-        // console.log(transformRange);
 
-        // setAnimationStyle({
-        //   transform: `translateX(${tRect.left - pRect.left}px)`,
-        //   transition: "transform 0.3s ease-in-out",
-        // });
-
-        const pRect = prev.getBoundingClientRect();
-        const tRect = found.getBoundingClientRect();
-
-        const translateX = tRect.x - pRect.x;
+        const translate =
+          found.textContent === "pomodoro"
+            ? `translateX(-105%)` // buttonWidth + flexed padding value
+            : // eslint-disable-next-line unicorn/no-nested-ternary
+              found.textContent === "short break"
+              ? `translateX(0%)`
+              : `translateX(105%)`;
         setAnimationStyle({
-          transform: `translateX(${tRect.left}px)`,
+          transform: translate,
           transition: "all 0.3s ease-in-out",
         });
 
         set(findTab(selectedTitle));
       }
     },
-    [set, get.title]
+    [set]
   );
-
-  //   useEffect(() => {
-  //     const prevElement = getFromSet(
-  //       itemRefs.current,
-  //       (ele) => ele.textContent === get.title
-  //     );
-  //     if (prevElement) {
-  //       Object.assign(prevElement.style, animationStyle);
-  //     }
-  //   }, [animationStyle, get.title]);
 
   return (
     <>
-      <nav ref={containerRef}>
+      <nav>
         {TABS.map((item, index) => {
           const isSelected = item.title === get.title;
           return (
