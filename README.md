@@ -31,6 +31,9 @@ https://codesandbox.io/p/sandbox/framer-motion-tabs-tjow1?file=%2Fsrc%2FTabs.js%
 context not causing unintended rerender?
 https://www.youtube.com/watch?v=ZKlXqrcBx88&t=1179s
 
+// RAF timer logic
+https://codesandbox.io/s/requestanimationframe-pausable-timer-knsmy
+
 ### Reset css
 
 https://www.joshwcomeau.com/css/custom-css-reset/
