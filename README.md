@@ -47,6 +47,8 @@ https://www.joshwcomeau.com/css/custom-css-reset/
 
 ### Testing
 
+07/01: Timer funcionality not can be tested with Jest(unless using faketimer or I mislead the docs.)
+
 from nextjs docs: Good to know: Since async Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run unit tests for synchronous Server and Client Components, we recommend using an E2E tests for async components.
 
 I can start with testing-library with jest, and moving to Cypress.
