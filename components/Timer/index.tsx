@@ -1,7 +1,7 @@
 import { type MutableRefObject, useRef, useCallback, useState } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import TabItem from "./Tabs/TabItem";
-import { TABS } from "./constants";
+import { TABS, TAB_CENTER_X, TAB_LEFT_X, TAB_RIGHT_X } from "./constants";
 import Clock from "./Clock";
 import { findTab, getFromSet } from "./functions";
 import { usePomodoro } from "../contexts/PomodoroContext";
@@ -30,11 +30,11 @@ const Timer: FC = () => {
 
         const translate =
           found.textContent === "pomodoro"
-            ? `translateX(-105%)` // buttonWidth + flexed padding value
+            ? `translateX(${TAB_LEFT_X}%)` // buttonWidth + flexed padding value
             : // eslint-disable-next-line unicorn/no-nested-ternary
               found.textContent === "short break"
-              ? `translateX(0%)`
-              : `translateX(105%)`;
+              ? `translateX(${TAB_CENTER_X}%)`
+              : `translateX(${TAB_RIGHT_X}%)`;
         setAnimationStyle({
           transform: translate,
           transition: "all 0.3s ease-in-out",

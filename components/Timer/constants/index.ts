@@ -17,3 +17,7 @@ export const TIMER_STATUS = {
   stopped: "stopped",
   started: "started",
 } as const;
+
+export const TAB_CENTER_X = 0;
+export const TAB_LEFT_X = -105;
+export const TAB_RIGHT_X = 105;

@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { toggleTimer } from "../functions";
 import useClock from "../hooks/useClock";
@@ -8,11 +9,17 @@ const Clock = () => {
     isStarted: { get: getIsStarted, set: setIsStarted },
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
+  const [circleOffset, setCircleOffset] = useState(300);
+
   const tick = () => {
     setTab({ ...getTab, countdown: (getTab.countdown as number) - 1000 });
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < 10; i++) {
+      setCircleOffset((prev) => prev - 0.05);
+    }
   };
 
-  const { circleOffset, getTime } = useClock(tick);
+  const { getTime } = useClock(tick);
   const time = getTime();
 
   return (
@@ -38,6 +45,7 @@ const Clock = () => {
                 cy="50%"
                 r="48%"
                 strokeLinecap="round"
+                strokeDasharray="300%"
                 strokeDashoffset={`${circleOffset}%`}
               />
             </svg>

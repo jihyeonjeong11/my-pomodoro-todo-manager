@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { convertMsToTime } from "../functions";
 
@@ -13,7 +13,6 @@ const useClock = (tick: () => void) => {
     isStarted: { get: getIsStarted, set: setIsStarted },
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
-  const [circleOffset] = useState(300);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>();
   const getTime = useCallback(
     () => `${convertMsToTime(getTab.countdown as number)}`,
@@ -49,7 +48,7 @@ const useClock = (tick: () => void) => {
     };
   }, [getIsStarted, setTab]);
 
-  return { getTime, circleOffset };
+  return { getTime };
 };
 
 export default useClock;
