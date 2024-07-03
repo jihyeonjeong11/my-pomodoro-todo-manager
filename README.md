@@ -31,6 +31,9 @@ https://codesandbox.io/p/sandbox/framer-motion-tabs-tjow1?file=%2Fsrc%2FTabs.js%
 context not causing unintended rerender?
 https://www.youtube.com/watch?v=ZKlXqrcBx88&t=1179s
 
+// RAF timer logic
+https://codesandbox.io/s/requestanimationframe-pausable-timer-knsmy
+
 ### Reset css
 
 https://www.joshwcomeau.com/css/custom-css-reset/
@@ -43,6 +46,8 @@ https://www.joshwcomeau.com/css/custom-css-reset/
 4. React-virtuoso : maybe Alternatives: react-window react-virtualized or make it on my own
 
 ### Testing
+
+07/01: Timer funcionality not can be tested with Jest(unless using faketimer or I mislead the docs.)
 
 from nextjs docs: Good to know: Since async Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run unit tests for synchronous Server and Client Components, we recommend using an E2E tests for async components.
 
