@@ -5,10 +5,6 @@ import { convertMsToTime } from "../functions";
 const useClock = (tick: () => void) => {
   const savedTick = useRef<() => void | undefined>();
 
-  useEffect(() => {
-    savedTick.current = tick;
-  }, [tick]);
-
   const {
     isStarted: { get: getIsStarted, set: setIsStarted },
     tab: { get: getTab, set: setTab },
@@ -18,6 +14,17 @@ const useClock = (tick: () => void) => {
     () => `${convertMsToTime(getTab.countdown as number)}`,
     [getTab.countdown],
   );
+
+  useEffect(() => {
+    if (getTab.countdown === 0) {
+      setIsStarted("stopped");
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
+    }
+
+    savedTick.current = tick;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tick]);
 
   useEffect(() => {
     clearTimeout(timeoutRef.current);

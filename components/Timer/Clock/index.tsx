@@ -13,10 +13,7 @@ const Clock = () => {
 
   const tick = () => {
     setTab({ ...getTab, countdown: (getTab.countdown as number) - 1000 });
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < 10; i++) {
-      setCircleOffset((prev) => prev - 0.05);
-    }
+    setCircleOffset((prev) => prev - 1);
   };
 
   const { getTime } = useClock(tick);
@@ -47,7 +44,7 @@ const Clock = () => {
                 r="48%"
                 strokeLinecap="round"
                 strokeDasharray={
-                  getIsStarted === "stopped" && isOriginalTime ? "0%" : "300%"
+                  getIsStarted === "stopped" && isOriginalTime ? "300%" : "300%"
                 }
                 strokeDashoffset={
                   getIsStarted === "stopped" && isOriginalTime
