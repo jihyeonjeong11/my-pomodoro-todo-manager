@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { type MutableRefObject, useRef, useCallback, useState } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import TabItem from "./Tabs/TabItem";
@@ -7,13 +8,15 @@ import { findTab, getFromSet } from "./functions";
 import { usePomodoro } from "../contexts/PomodoroContext";
 import { StyledNav, StyledTimerHighlight } from "./styled/StyledTimer";
 
+const MotionTimerHighlight = motion(StyledTimerHighlight);
+
 const Timer: FC = () => {
   const itemRefs: MutableRefObject<Set<HTMLDivElement>> = useRef(new Set());
   const {
     tab: { set, get },
   } = usePomodoro(["tab"]);
 
-  const [animationStyle, setAnimationStyle] = useState({});
+  const [highlightX, setHighlightX] = useState(TAB_LEFT_X);
 
   const onClick = useCallback(
     (e: MouseEvent, selectedTitle: SelectedTabType) => {
@@ -28,18 +31,15 @@ const Timer: FC = () => {
           throw new Error("must be element");
         }
 
-        const translate =
+        const newX =
           found.textContent === "pomodoro"
-            ? `translateX(${TAB_LEFT_X}%)` // buttonWidth + flexed padding value
+            ? TAB_LEFT_X
             : // eslint-disable-next-line unicorn/no-nested-ternary
               found.textContent === "short break"
-              ? `translateX(${TAB_CENTER_X}%)`
-              : `translateX(${TAB_RIGHT_X}%)`;
-        setAnimationStyle({
-          transform: translate,
-          transition: "all 0.3s ease-in-out",
-        });
+              ? TAB_CENTER_X
+              : TAB_RIGHT_X;
 
+        setHighlightX(newX);
         set(findTab(selectedTitle));
       }
     },
@@ -62,9 +62,10 @@ const Timer: FC = () => {
             />
           );
         })}
-        <StyledTimerHighlight
+        <MotionTimerHighlight
           className="tab-highlight"
-          style={animationStyle}
+          animate={{ x: `${highlightX}%` }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
         />
       </StyledNav>
 

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { toggleTimer } from "../functions";
+import { findTab, toggleTimer } from "../functions";
 import useClock from "../hooks/useClock";
 
 const Clock = () => {
@@ -21,6 +21,7 @@ const Clock = () => {
 
   const { getTime } = useClock(tick);
   const time = getTime();
+  const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown;
 
   return (
     <>
@@ -45,8 +46,14 @@ const Clock = () => {
                 cy="50%"
                 r="48%"
                 strokeLinecap="round"
-                strokeDasharray="300%"
-                strokeDashoffset={`${circleOffset}%`}
+                strokeDasharray={
+                  getIsStarted === "stopped" && isOriginalTime ? "0%" : "300%"
+                }
+                strokeDashoffset={
+                  getIsStarted === "stopped" && isOriginalTime
+                    ? `0%`
+                    : `${circleOffset}%`
+                }
               />
             </svg>
           </div>
