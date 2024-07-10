@@ -13,7 +13,10 @@ const Clock = () => {
 
   const tick = () => {
     setTab({ ...getTab, countdown: (getTab.countdown as number) - 1000 });
-    setCircleOffset((prev) => prev - 1);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < 10; i++) {
+      setCircleOffset((prev) => prev - getTab.decrementor);
+    }
   };
 
   const { getTime } = useClock(tick);
