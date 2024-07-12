@@ -26,6 +26,10 @@ export const StyledTimer = styled.section`
     padding: 0 20px;
     z-index: 0;
 
+    @media (max-width: 768px) {
+      width: 90vw;
+    }
+
     @media (min-width: 768px) {
       width: 90%;
     }
