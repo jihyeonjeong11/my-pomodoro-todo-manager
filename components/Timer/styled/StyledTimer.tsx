@@ -46,10 +46,6 @@ export const StyledTimer = styled.section`
       width: 75%;
     }
 
-    .tab-container {
-      position: relative;
-    }
-
     .tab-item {
       width: 29%;
       height: 3rem;
@@ -60,6 +56,21 @@ export const StyledTimer = styled.section`
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+    }
+    span {
+      position: relative;
+      width: 100%;
+      z-index: 10;
+    }
+    .tab-highlight {
+      position: absolute;
+      inset: 0px;
+      display: flex;
+      justify-center: center;
+      align-items: center;
+      border-radius: 30px;
+      background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
     }
   }
 
@@ -133,10 +144,9 @@ export const StyledTimer = styled.section`
 
 export const StyledTimerHighlight = styled(motion.div)`
   position: absolute;
-  z-index: -1;
   transform: translateX(-105%);
-  width: 29% !important;
-  height: 3rem !important;
+  inset: 0px;
+  display: flex;
   border-radius: 30px;
   background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
 `;

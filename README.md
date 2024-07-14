@@ -34,6 +34,12 @@ https://www.youtube.com/watch?v=ZKlXqrcBx88&t=1179s
 // RAF timer logic
 https://codesandbox.io/s/requestanimationframe-pausable-timer-knsmy
 
+// framer motion animation Wrap-up (for blogging)
+https://www.youtube.com/watch?v=kep_Iaxuzy0&t=339s
+https://www.youtube.com/watch?v=ILxNdOtKbNQ
+
+// and task list.(v1, just a list, v2 will be pushed later)
+
 ### Reset css
 
 https://www.joshwcomeau.com/css/custom-css-reset/

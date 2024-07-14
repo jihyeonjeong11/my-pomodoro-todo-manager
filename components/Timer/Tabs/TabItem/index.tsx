@@ -1,5 +1,6 @@
 import { MutableRefObject, useCallback } from "react";
 import { SelectedTabType } from "@/types/Timer";
+import { motion } from "framer-motion";
 
 const TabItem: FC<{
   selectedTitle: SelectedTabType;
@@ -19,11 +20,15 @@ const TabItem: FC<{
         });
       }
     },
-    [itemRefs]
+    [itemRefs],
   );
 
   return (
-    <div ref={refCallback} className="tab-item">
+    <div
+      ref={refCallback}
+      className="tab-item"
+      style={{ position: "relative" }}
+    >
       <button
         type="button"
         aria-pressed={isSelected}
@@ -31,6 +36,9 @@ const TabItem: FC<{
       >
         <span>{selectedTitle}</span>
       </button>
+      {isSelected && (
+        <motion.div className="tab-highlight" layoutId="active-pill" />
+      )}
     </div>
   );
 };
