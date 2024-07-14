@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { m as motion } from "framer-motion";
 
 export const StyledTimer = styled.section`
   padding: 5rem;
@@ -26,6 +25,10 @@ export const StyledTimer = styled.section`
     padding: 0 20px;
     z-index: 0;
 
+    @media (max-width: 768px) {
+      width: 90vw;
+    }
+
     @media (min-width: 768px) {
       width: 90%;
     }
@@ -42,10 +45,6 @@ export const StyledTimer = styled.section`
       width: 75%;
     }
 
-    .tab-container {
-      position: relative;
-    }
-
     .tab-item {
       width: 29%;
       height: 3rem;
@@ -56,6 +55,21 @@ export const StyledTimer = styled.section`
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+    }
+    span {
+      position: relative;
+      width: 100%;
+      z-index: 10;
+    }
+    .tab-highlight {
+      position: absolute;
+      inset: 0px;
+      display: flex;
+      justify-center: center;
+      align-items: center;
+      border-radius: 30px;
+      background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
     }
   }
 
@@ -125,20 +139,6 @@ export const StyledTimer = styled.section`
       position: absolute;
     }
   }
-`;
-
-export const StyledTimerHighlight = styled(motion.div)`
-  position: absolute;
-  z-index: -1;
-  transform: translateX(-105%);
-  width: 29% !important;
-  height: 3rem !important;
-  border-radius: 30px;
-  background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
-`;
-
-export const StyledNav = styled(motion.nav)`
-  position: relative;
 `;
 
 export const StyledSeperator = styled.div`
