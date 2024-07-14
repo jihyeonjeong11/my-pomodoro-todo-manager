@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { findTab, toggleTimer } from "../functions";
 import useClock from "../hooks/useClock";
@@ -18,6 +18,10 @@ const Clock = () => {
       setCircleOffset((prev) => prev - getTab.decrementor);
     }
   };
+
+  useEffect(() => {
+    setCircleOffset(300);
+  }, [getTab.title]);
 
   const { getTime } = useClock(tick);
   const time = getTime();
