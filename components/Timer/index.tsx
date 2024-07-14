@@ -1,42 +1,19 @@
-import { type MutableRefObject, useRef, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import TabItem from "./Tabs/TabItem";
 import { TABS } from "./constants";
 import Clock from "./Clock";
 import { findTab } from "./functions";
 import { usePomodoro } from "../contexts/PomodoroContext";
-import { StyledNav } from "./styled/StyledTimer";
+import Tabs from "./Tabs";
 
 const Timer: FC = () => {
-  const itemRefs: MutableRefObject<Set<HTMLDivElement>> = useRef(new Set());
   const {
     tab: { set, get },
   } = usePomodoro(["tab"]);
 
   const onClick = useCallback(
-    (e: MouseEvent, selectedTitle: SelectedTabType) => {
-      // const currentTarget = e?.currentTarget as HTMLButtonElement;
-      // const container = currentTarget.closest(".tab-item") as HTMLDivElement;
-      // if (e?.currentTarget && itemRefs.current.has(container)) {
-      //   const found = getFromSet(
-      //     itemRefs.current,
-      //     (ele) => ele.textContent === currentTarget.textContent
-      //   );
-      //   // if (!found) {
-      //   //   throw new Error("must be element");
-      //   // }
-
-      //   const newX =
-      //     found.textContent === "pomodoro"
-      //       ? TAB_LEFT_X
-      //       : // eslint-disable-next-line unicorn/no-nested-ternary
-      //         found.textContent === "short break"
-      //         ? TAB_CENTER_X
-      //         : TAB_RIGHT_X;
-
-      //   // setHighlightX(newX);
-      //   set(findTab(selectedTitle));
-      // }
+    (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
     [set],
@@ -51,13 +28,12 @@ const Timer: FC = () => {
 
   return (
     <>
-      <StyledNav>
+      <Tabs>
         {TABS.map((item, index) => {
           const isSelected = item.title === get.title;
           return (
             <TabItem
               onClick={onClick}
-              itemRefs={itemRefs}
               data-testid={`tab-item-${index}`}
               key={item.title}
               selectedTitle={item.title}
@@ -65,7 +41,7 @@ const Timer: FC = () => {
             />
           );
         })}
-      </StyledNav>
+      </Tabs>
 
       <Clock />
     </>

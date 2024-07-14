@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { m as motion } from "framer-motion";
 
 export const StyledTimer = styled.section`
   padding: 5rem;
@@ -140,19 +139,6 @@ export const StyledTimer = styled.section`
       position: absolute;
     }
   }
-`;
-
-export const StyledTimerHighlight = styled(motion.div)`
-  position: absolute;
-  transform: translateX(-105%);
-  inset: 0px;
-  display: flex;
-  border-radius: 30px;
-  background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
-`;
-
-export const StyledNav = styled(motion.nav)`
-  position: relative;
 `;
 
 export const StyledSeperator = styled.div`
