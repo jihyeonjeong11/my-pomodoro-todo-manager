@@ -21,12 +21,14 @@ const useClock = (tick: () => void) => {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = undefined;
 
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          // eslint-disable-next-line no-new
-          new Notification(`Your ${getTab.title} done!`);
-        }
-      });
+      if ("Notification" in window) {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            // eslint-disable-next-line no-new
+            new Notification(`Your ${getTab.title} done!`);
+          }
+        });
+      }
     }
     savedTick.current = tick;
     // eslint-disable-next-line react-hooks/exhaustive-deps
