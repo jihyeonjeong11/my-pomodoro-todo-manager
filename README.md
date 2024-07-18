@@ -44,6 +44,7 @@ https://www.youtube.com/watch?v=ILxNdOtKbNQ
 // and task list.(v1, just a list, v2 will be pushed later)
 
 07/18: free language ai model for ai generated task list: Google gemini or else.
+https://ai.google.dev/gemini-api/docs
 
 ### Reset css
 
