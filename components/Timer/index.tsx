@@ -22,6 +22,7 @@ const Timer: FC = () => {
   useEffect(() => {
     if (!("Notification" in window)) {
       console.error("This browser not supports web notification!");
+      return;
     }
     Notification.requestPermission();
   }, []);
