@@ -22,3 +22,4 @@ export const TIMER_STATUS = {
 } as const;
 
 export const DEFAULT_TICK_VALUE = 1000;
+export const DEFAULT_CIRCLE_OFFSET = 300;
