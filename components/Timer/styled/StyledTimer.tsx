@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledTimer = styled.section`
-  padding: 5rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
