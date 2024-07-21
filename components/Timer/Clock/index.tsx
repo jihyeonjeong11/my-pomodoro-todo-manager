@@ -1,30 +1,35 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { findTab, toggleTimer } from "../functions";
-import useClock from "../hooks/useClock";
+import { convertMsToTime, findTab } from "../functions";
+import { useInterval } from "../hooks/useInterval";
+import useTimerControl from "../hooks/useTimerControl";
+import { DEFAULT_TICK_VALUE } from "../constants";
 
 const Clock = () => {
   const {
-    isStarted: { get: getIsStarted, set: setIsStarted },
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
   const [circleOffset, setCircleOffset] = useState(300);
 
   const tick = () => {
-    setTab({ ...getTab, countdown: (getTab.countdown as number) - 1000 });
+    setTab({
+      ...getTab,
+      countdown: (getTab.countdown as number) - DEFAULT_TICK_VALUE,
+    });
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 10; i++) {
       setCircleOffset((prev) => prev - getTab.decrementor);
     }
   };
+  const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
+  useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
 
   useEffect(() => {
     setCircleOffset(300);
   }, [getTab.title]);
 
-  const { getTime } = useClock(tick);
-  const time = getTime();
+  const time = convertMsToTime(getTab.countdown);
   const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown;
 
   return (
@@ -41,7 +46,7 @@ const Clock = () => {
           className="inner"
           type="button"
           aria-label="star-timer"
-          onClick={() => setIsStarted(toggleTimer(getIsStarted))}
+          onClick={toggle}
         >
           <div className="circle-container">
             <svg height="100%" width="100%">
@@ -51,10 +56,10 @@ const Clock = () => {
                 r="48%"
                 strokeLinecap="round"
                 strokeDasharray={
-                  getIsStarted === "stopped" && isOriginalTime ? "300%" : "300%"
+                  isStarted === "stopped" && isOriginalTime ? "300%" : "300%"
                 }
                 strokeDashoffset={
-                  getIsStarted === "stopped" && isOriginalTime
+                  isStarted === "stopped" && isOriginalTime
                     ? `0%`
                     : `${circleOffset}%`
                 }

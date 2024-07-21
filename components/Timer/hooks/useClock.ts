@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useRef } from "react";
-import { usePomodoro } from "@/components/contexts/PomodoroContext";
+import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
 import { convertMsToTime } from "../functions";
 
-const useClock = (tick: () => void) => {
+const useClock = (
+  tick: () => void, // useCallback
+  getTab: TabWithMutableCountdown, // tab info for title and time value
+  getIsStarted: TimerType,
+  setIsStarted: (value: "stopped" | "started") => void, // timer conteroller
+) => {
   const savedTick = useRef<() => void | undefined>();
 
-  const {
-    isStarted: { get: getIsStarted, set: setIsStarted },
-    tab: { get: getTab, set: setTab },
-  } = usePomodoro(["isStarted", "tab"]);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>();
   const getTime = useCallback(
     () => `${convertMsToTime(getTab.countdown as number)}`,
@@ -61,7 +62,7 @@ const useClock = (tick: () => void) => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [getIsStarted, setTab]);
+  }, [getIsStarted]);
 
   return { getTime };
 };

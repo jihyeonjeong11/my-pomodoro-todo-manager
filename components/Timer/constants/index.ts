@@ -21,8 +21,4 @@ export const TIMER_STATUS = {
   started: "started",
 } as const;
 
-export const TAB_CENTER_X = 0;
-export const TAB_LEFT_X = -105;
-export const TAB_RIGHT_X = 105;
-
-export const TIMER_ENDS = 0;
+export const DEFAULT_TICK_VALUE = 1000;
