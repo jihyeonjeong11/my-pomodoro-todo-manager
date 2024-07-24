@@ -46,6 +46,8 @@ https://www.youtube.com/watch?v=ILxNdOtKbNQ
 07/18: free language ai model for ai generated task list: Google gemini or else.
 https://ai.google.dev/gemini-api/docs
 
+https://dev.to/musselmanth/re-rendering-react-components-at-breakpoint-window-resizes-a-better-way-4343
+
 ### Reset css
 
 https://www.joshwcomeau.com/css/custom-css-reset/
