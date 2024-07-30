@@ -40,6 +40,12 @@
       2,
       { "namedComponents": ["arrow-function", "function-declaration"] }
     ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "inline-type-imports"
+      }
+    ],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "linebreak-style": "off",
