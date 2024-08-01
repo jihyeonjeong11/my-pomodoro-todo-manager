@@ -1,12 +1,13 @@
-import Timer from "@/components/Timer";
-import { StyledTimer } from "./Timer/styled/StyledTimer";
-import { PomodoroProvider } from "./contexts/PomodoroContext";
-import { ErrorBoundary } from "./ErrorBoundary";
-import { StyledList } from "./Timer/styled/StyledList";
-import StyledApp from "./Timer/styled/StyledApp";
-import TaskList from "./TaskList";
-
 // spa main
+
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import TaskList from "@/components/TaskList";
+import Timer from "@/components/Timer";
+import StyledApp from "@/components/Timer/styled/StyledApp";
+import { StyledList } from "@/components/Timer/styled/StyledList";
+import { StyledTimer } from "@/components/Timer/styled/StyledTimer";
+import { PomodoroProvider } from "@/components/contexts/PomodoroContext";
+
 // list provider
 const MainPage = () => (
   <ErrorBoundary>
