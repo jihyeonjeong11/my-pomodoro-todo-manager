@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { convertMsToTime } from "../functions";
+import { convertMsToTime } from "@/components/Timer/functions";
 
 const useClock = (tick: () => void) => {
   const savedTick = useRef<() => void | undefined>();

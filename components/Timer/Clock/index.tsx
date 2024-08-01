@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { findTab, toggleTimer } from "../functions";
-import useClock from "../hooks/useClock";
+import { findTab, toggleTimer } from "@/components/Timer/functions";
+import useClock from "@/components/Timer/hooks/useClock";
 
 const Clock = () => {
   const {
