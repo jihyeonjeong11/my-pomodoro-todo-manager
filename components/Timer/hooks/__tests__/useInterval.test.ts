@@ -3,16 +3,40 @@ import { useInterval } from "../useInterval";
 
 jest.useFakeTimers();
 
+function mockSetInterval() {
+  jest.spyOn(global, "setInterval");
+}
+
 describe("useInterval", () => {
+  const timeout = 1000;
   it("should call the callback function at the specified interval", () => {
     const callback = jest.fn();
-    renderHook(() => useInterval(callback, 1000));
+    renderHook(() => useInterval(callback, timeout));
 
-    // Fast-forward time
-    jest.advanceTimersByTime(5000);
+    jest.advanceTimersByTime(timeout);
 
-    // The callback should have been called 5 times
-    expect(callback).toHaveBeenCalledTimes(5);
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it("should fire the callback function (2)", () => {
+    const earlyTimeout = 500;
+    const callback = jest.fn();
+    renderHook(() => {
+      useInterval(callback, timeout);
+    });
+    jest.advanceTimersByTime(earlyTimeout);
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("should call set interval on start", () => {
+    const timeout2 = 1200;
+    mockSetInterval();
+    const callback = jest.fn();
+    renderHook(() => {
+      useInterval(callback, timeout2);
+    });
+    expect(setInterval).toHaveBeenCalledTimes(1);
+    expect(setInterval).toHaveBeenCalledWith(expect.any(Function), timeout2);
   });
 
   it("should not call the callback when delay is null", () => {
