@@ -46,8 +46,7 @@ const useTimerControl = (
       launchCompleteNotification(title);
       setIsStarted(TIMER_STATUS.stopped);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countdown]);
+  }, [countdown, title, launchCompleteNotification]);
 
   const toggle = useCallback(() => {
     setIsStarted((prev) =>

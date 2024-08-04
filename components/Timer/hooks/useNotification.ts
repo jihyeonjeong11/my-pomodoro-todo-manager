@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { isNotificationExists } from "@/components/Timer/functions";
+import {
+  isNotificationExists,
+  launchNotification,
+} from "@/components/Timer/functions";
 
 /**
  * Custom hook for handling notification.
@@ -23,7 +26,13 @@ const useNotification = () => {
     }
   }, []);
 
-  return { isPermitted };
+  const launchCompleteNotification = (str: string) => {
+    if (isPermitted) {
+      launchNotification(`Your ${str} done!`);
+    }
+  };
+
+  return { isPermitted, launchCompleteNotification };
 };
 
 export default useNotification;
