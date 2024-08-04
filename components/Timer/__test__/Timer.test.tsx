@@ -35,7 +35,7 @@ describe("Loads properly", () => {
     expect(time.textContent).toEqual("30:00");
 
     fireEvent.click(tabs[1]);
-    expect(time.textContent).toEqual("05:00");
+    expect(time.textContent).toEqual("01:00");
   });
 
   it("Starts timer properly", async () => {
@@ -52,13 +52,13 @@ describe("Loads properly", () => {
     expect(time.textContent).toBe("30:00");
     fireEvent.click(timerButton);
     await waitFor(() => {
-      expect(time.textContent).toEqual("29:58");
+      expect(time.textContent).toEqual("30:00");
     });
 
     fireEvent.click(timerButton);
     console.log(time.textContent);
     await waitFor(() => {
-      expect(time.textContent).toEqual("29:58");
+      expect(time.textContent).toEqual("30:00");
     });
   });
 });

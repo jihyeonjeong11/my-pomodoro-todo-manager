@@ -34,3 +34,7 @@ export const getFromSet = <T>(
   }
   return null;
 };
+
+export const isNotificationExists = () => "Notification" in window;
+
+export const launchNotification = (string: string) => new Notification(string);

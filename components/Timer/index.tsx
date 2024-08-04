@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import TabItem from "@/components/Timer/Tabs/TabItem";
 import { TABS } from "@/components/Timer/constants";
@@ -18,14 +18,6 @@ const Timer: FC = () => {
     },
     [set],
   );
-
-  useEffect(() => {
-    if (!("Notification" in window)) {
-      console.error("This browser not supports web notification!");
-      return;
-    }
-    Notification.requestPermission();
-  }, []);
 
   return (
     <>

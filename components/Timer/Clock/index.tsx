@@ -1,30 +1,36 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { findTab, toggleTimer } from "@/components/Timer/functions";
-import useClock from "@/components/Timer/hooks/useClock";
+import { convertMsToTime, findTab } from "@/components/Timer/functions";
+import { useInterval } from "@/components/Timer/hooks/useInterval";
+import useTimerControl from "@/components/Timer/hooks/useTimerControl";
+import {
+  DEFAULT_CIRCLE_OFFSET,
+  DEFAULT_TICK_VALUE,
+} from "@/components/Timer/constants";
 
 const Clock = () => {
   const {
-    isStarted: { get: getIsStarted, set: setIsStarted },
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
-  const [circleOffset, setCircleOffset] = useState(300);
+  const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
 
   const tick = () => {
-    setTab({ ...getTab, countdown: (getTab.countdown as number) - 1000 });
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < 10; i++) {
-      setCircleOffset((prev) => prev - getTab.decrementor);
-    }
+    setTab({
+      ...getTab,
+      countdown: getTab.countdown - DEFAULT_TICK_VALUE,
+    });
+    const totalChange = 10 * getTab.decrementor;
+    setCircleOffset((prev) => prev - totalChange);
   };
+  const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
+  useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
 
   useEffect(() => {
-    setCircleOffset(300);
+    setCircleOffset(DEFAULT_CIRCLE_OFFSET);
   }, [getTab.title]);
 
-  const { getTime } = useClock(tick);
-  const time = getTime();
+  const time = convertMsToTime(getTab.countdown);
   const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown;
 
   return (
@@ -41,7 +47,7 @@ const Clock = () => {
           className="inner"
           type="button"
           aria-label="star-timer"
-          onClick={() => setIsStarted(toggleTimer(getIsStarted))}
+          onClick={toggle}
         >
           <div className="circle-container">
             <svg height="100%" width="100%">
@@ -50,11 +56,9 @@ const Clock = () => {
                 cy="50%"
                 r="48%"
                 strokeLinecap="round"
-                strokeDasharray={
-                  getIsStarted === "stopped" && isOriginalTime ? "300%" : "300%"
-                }
+                strokeDasharray={`${DEFAULT_CIRCLE_OFFSET}%`}
                 strokeDashoffset={
-                  getIsStarted === "stopped" && isOriginalTime
+                  isStarted === "stopped" && isOriginalTime
                     ? `0%`
                     : `${circleOffset}%`
                 }
