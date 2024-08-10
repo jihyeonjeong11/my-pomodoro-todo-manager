@@ -78,10 +78,16 @@ button {
   Viewport container
 */
 main {
-  background: var(--color-dark-blue);
+  /* background: var(--color-dark-blue); */
   width: 100vw;
   height: 100vh;
   position: fixed;
-  display: flex;
+  justify-content: center;
+}
+
+fill-page {
+  width: 100vw;
+  height: 100vh;
+  /* position: fixed; */
   justify-content: center;
 }
