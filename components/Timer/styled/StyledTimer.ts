@@ -86,8 +86,8 @@ export const StyledTimer = styled.section`
     height: 80vw;
 
     @media (min-width: 768px) {
-      width: 53.38vw;
-      height: 53.38vw;
+      width: 45vw;
+      height: 45vw;
     }
 
     @media (min-width: 992px) {
