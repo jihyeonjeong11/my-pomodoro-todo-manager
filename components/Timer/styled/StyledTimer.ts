@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const StyledTimer = styled.section`
-  padding-top: 2rem;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,6 @@ export const StyledTimer = styled.section`
   }
 
   nav {
-    margin-top: 2.75rem;
     height: 4rem;
     background: ${({ theme }) => `${theme.colors.timer.navBackground}`};
     box-sizing: content-box;
@@ -74,7 +73,7 @@ export const StyledTimer = styled.section`
   }
 
   section {
-    margin-top: 2.75rem;
+    margin-top: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,8 +81,8 @@ export const StyledTimer = styled.section`
     background: linear-gradient(-45deg, #2e325a, #0e112a);
     filter: drop-shadow(-3.125rem -3.125rem 6.25rem #272c5a);
     position: relative;
-    width: 80vw;
-    height: 80vw;
+    width: 70vw;
+    height: 70vw;
 
     @media (min-width: 768px) {
       width: 45vw;

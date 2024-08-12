@@ -1,7 +1,7 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 export const StyledList = styled.section`
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   text-align: center;
   color: white;
   justify-content: center;
@@ -13,7 +13,6 @@ export const StyledList = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
 
     input {
       text-align: center;
