@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
 import { TIMER_STATUS } from "@/components/Timer/constants";
 import useNotification from "@/components/Timer/hooks/useNotification";
@@ -37,11 +37,11 @@ const useTimerControl = (
   const [isStarted, setIsStarted] = useState<TimerType>(TIMER_STATUS.stopped);
   const { launchCompleteNotification } = useNotification();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setIsStarted(TIMER_STATUS.stopped);
   }, [title]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (countdown === 0) {
       launchCompleteNotification(title);
       setIsStarted(TIMER_STATUS.stopped);
