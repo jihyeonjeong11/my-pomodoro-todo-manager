@@ -1,9 +1,5 @@
-import React from 'react';
+// Individual dynamic windows for multiple purposes.
 
-// window for tasklist(main) and else
-
-const index = () => {
-  return <div>index</div>;
-};
+const index = () => <div>widnow</div>;
 
 export default index;

@@ -1,18 +1,18 @@
-import { useCallback } from 'react';
-import { type SelectedTabType } from '@/types/Timer';
-import TabItem from '@/components/Timer/Tabs/TabItem';
-import { TABS } from '@/components/Timer/constants';
-import { findTab } from '@/components/Timer/functions';
-import { usePomodoro } from '@/components/contexts/PomodoroContext';
-import dynamic from 'next/dynamic';
+import { useCallback } from "react";
+import { type SelectedTabType } from "@/types/Timer";
+import TabItem from "@/components/Timer/Tabs/TabItem";
+import { TABS } from "@/components/Timer/constants";
+import { findTab } from "@/components/Timer/functions";
+import { usePomodoro } from "@/components/contexts/PomodoroContext";
+import dynamic from "next/dynamic";
 
-const Tabs = dynamic(() => import('@/components/Timer/Tabs'));
-const Clock = dynamic(() => import('@/components/Timer/Clock'));
+const Tabs = dynamic(() => import("@/components/Timer/Tabs"));
+const Clock = dynamic(() => import("@/components/Timer/Clock"));
 
 const Timer: FC = () => {
   const {
     tab: { set, get },
-  } = usePomodoro(['tab']);
+  } = usePomodoro(["tab"]);
 
   const onClick = useCallback(
     (selectedTitle: SelectedTabType) => {

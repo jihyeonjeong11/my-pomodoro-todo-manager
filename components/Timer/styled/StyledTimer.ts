@@ -1,10 +1,14 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledTimer = styled.section`
-  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-basis: 80%;
+
+  .spacing {
+    margin: 1.5rem 0;
+  }
 
   h1 {
     color: ${({ theme }) => `${theme.colors.timer.text}`};
@@ -17,9 +21,7 @@ export const StyledTimer = styled.section`
     display: flex;
     justify-content: space-around;
     border-radius: 2rem;
-    padding: 0.5rem;
     text-align: center;
-    display: flex;
     align-items: center;
     padding: 0 20px;
     z-index: 0;
@@ -65,7 +67,6 @@ export const StyledTimer = styled.section`
       position: absolute;
       inset: 0px;
       display: flex;
-      justify-center: center;
       align-items: center;
       border-radius: 30px;
       background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
@@ -73,7 +74,6 @@ export const StyledTimer = styled.section`
   }
 
   section {
-    margin-top: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;

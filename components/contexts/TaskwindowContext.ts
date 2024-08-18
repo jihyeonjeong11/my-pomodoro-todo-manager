@@ -1,8 +1,9 @@
-import createFastContext from 'components/contexts/createFastContext';
+import createFastContext from "components/contexts/createFastContext";
 
 export const {
   FastContextProvider: TaskWindowsProvider,
   useFastContextFields: useTaskWindows,
 } = createFastContext({
-  taskWindows: {},
+  taskWindows: {} as Record<"main" | string, any>,
+  tasks: [] as any,
 });
