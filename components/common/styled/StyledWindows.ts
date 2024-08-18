@@ -4,9 +4,11 @@ const StyledMainWindow = styled.aside`
   background-color: white;
   position: absolute;
   inset: 0;
-  margin: auto;
+  top: auto;
   width: 100vw;
   height: 100vw;
+  border-top-right-radius: 4rem;
+  border-top-left-radius: 4rem;
 
   @media (min-width: 992px) {
     width: ${({ theme }) => `${theme.sizes.pcWindow.width}px`};
