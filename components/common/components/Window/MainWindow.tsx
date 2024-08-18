@@ -2,6 +2,7 @@ import StyledMainWindow from "@/components/common/styled/StyledWindows";
 import TaskList from "@/components/TaskList";
 import { motion } from "framer-motion";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
+import { toggleMainTaskWindow } from "@/components/TaskList/functions";
 
 const fromBottom = {
   hidden: {
@@ -28,18 +29,15 @@ const MainWindow = () => {
     taskWindows: { get: getTaskWindows, set: setTaskWindows },
   } = useTaskWindows(["taskWindows"]);
 
-  const toggleMainTaskWindow = () => {
-    if (Object.prototype.hasOwnProperty.call(getTaskWindows, "main")) {
-      const updatedWindows = { ...getTaskWindows };
-      delete updatedWindows.main;
-      setTaskWindows(updatedWindows);
-    } else {
-      setTaskWindows({ ...getTaskWindows, main: {} });
-    }
-  };
   return (
     <StyledMainWindow
-      onClick={toggleMainTaskWindow}
+      // onClick={() =>
+      //   toggleMainTaskWindow(
+      //     Object.prototype.hasOwnProperty.call(getTaskWindows, "main"),
+      //     getTaskWindows,
+      //     setTaskWindows
+      //   )
+      // }
       as={motion.aside}
       variants={fromBottom}
       initial="hidden"
