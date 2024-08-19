@@ -17,7 +17,13 @@ const TaskForm = () => {
       <label htmlFor={getTasks[0]?.title}>
         {getTasks.length > 0 ? getTasks[0].title : "Type your tasks!"}
       </label>
-      <input onChange={(e) => setText(e.target.value)} type="text" />
+      <input
+        onChange={(e) => {
+          e.stopPropagation();
+          setText(e.target.value);
+        }}
+        type="text"
+      />
     </form>
   );
 };
