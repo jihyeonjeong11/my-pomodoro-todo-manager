@@ -1,10 +1,11 @@
 import { styled } from "styled-components";
 
-const StyledMainWindow = styled.button`
+export const StyledMainWindow = styled.button`
   background-color: white;
   position: absolute;
   inset: 0;
   top: auto;
+  z-index: 2;
 
   border-top-right-radius: 4rem;
   border-top-left-radius: 4rem;
@@ -22,4 +23,10 @@ const StyledMainWindow = styled.button`
   } */
 `;
 
-export default StyledMainWindow;
+// out of my creativity.
+export const StyledBackdrop = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background: transparent;
+`;

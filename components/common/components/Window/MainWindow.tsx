@@ -1,4 +1,7 @@
-import StyledMainWindow from "@/components/common/styled/StyledWindows";
+import {
+  StyledBackdrop,
+  StyledMainWindow,
+} from "@/components/common/styled/StyledWindows";
 import TaskList from "@/components/TaskList";
 import { motion } from "framer-motion";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
@@ -29,18 +32,22 @@ const MainWindow = () => {
     taskWindows: { get: getTaskWindows, set: setTaskWindows },
   } = useTaskWindows(["taskWindows"]);
   return (
-    <StyledMainWindow
-      onMouseLeave={() =>
-        toggleMainTaskWindow(true, getTaskWindows, setTaskWindows)
-      }
-      as={motion.aside}
-      variants={fromBottom}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-    >
-      <TaskList />
-    </StyledMainWindow>
+    <>
+      <StyledBackdrop
+        onClick={() =>
+          toggleMainTaskWindow(true, getTaskWindows, setTaskWindows)
+        }
+      />
+      <StyledMainWindow
+        as={motion.aside}
+        variants={fromBottom}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <TaskList />
+      </StyledMainWindow>
+    </>
   );
 };
 
