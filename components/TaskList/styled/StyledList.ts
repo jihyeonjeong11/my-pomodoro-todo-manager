@@ -26,8 +26,27 @@ export const StyledList = styled.section`
 `;
 
 export const StyledInnerList = styled(StyledList)`
-	label {
-		font-size: 2rem;
-		color: ${({ theme }) => `${theme.colors.timer.text}`};
+	form {
+		flex-grow: 1;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		background: #e0e0e0;
+		border: 1px solid;
+		border-radius: 1rem;
+		padding: 2rem;
+
+		label {
+			font-size: 1rem;
+			color: ${({ theme }) => `${theme.colors.timer.navBackground}`};
+		}
+
+		input {
+			border: none;
+			background: none;
+			box-sizing: border-box;
+			text-align: left;
+			font-size: 2rem;
+		}
 	}
 `;
