@@ -1,3 +1,4 @@
+import { type TaskType } from "@/types/TaskList";
 import createFastContext from "components/contexts/createFastContext";
 
 export const {
@@ -5,5 +6,5 @@ export const {
   useFastContextFields: useTaskWindows,
 } = createFastContext({
   taskWindows: {} as Record<"main" | string, any>,
-  tasks: [] as any,
+  tasks: [] as TaskType[],
 });

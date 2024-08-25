@@ -11,13 +11,19 @@ const TaskForm = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        setTasks([...getTasks, { title: text }]);
+        setTasks([
+          { title: text, approxPomodoro: 1, id: getTasks.length },
+          ...getTasks,
+        ]);
       }}
     >
       <label htmlFor={getTasks[0]?.title}>
-        {getTasks.length > 0 ? getTasks[0].title : "Type your tasks!"}
+        {getTasks.length > 0
+          ? `current: ${getTasks[0].title} `
+          : "Type your tasks!"}
       </label>
       <input
+        placeholder="List your thought!"
         onChange={(e) => {
           e.stopPropagation();
           setText(e.target.value);
