@@ -32,6 +32,8 @@ export const StyledInnerList = styled.div`
   .motion-button {
     border: 1px dashed;
     padding: 2rem;
+    min-width: 2rem;
+    justify-content: center;
     display: flex;
     flex-direction: column;
     button {

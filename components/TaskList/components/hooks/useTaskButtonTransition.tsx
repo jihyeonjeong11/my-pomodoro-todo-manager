@@ -11,6 +11,9 @@ const useTaskButtonTransition = (showAddProps: boolean): MotionProps => {
   }, [showAddProps, isInitiated]);
 
   const variants = {
+    initial: {
+      height: "2rem",
+    },
     shrink: {
       height: "2rem",
     },
@@ -35,7 +38,7 @@ const useTaskButtonTransition = (showAddProps: boolean): MotionProps => {
   };
 
   return {
-    initial: false,
+    initial: "shrink",
     animate: isInitiated
       ? // eslint-disable-next-line unicorn/no-nested-ternary
         showAddProps
