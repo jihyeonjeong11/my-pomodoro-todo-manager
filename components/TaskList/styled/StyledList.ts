@@ -6,7 +6,6 @@ export const StyledList = styled.section`
   color: white;
   justify-content: center;
   align-items: center;
-  display: flex;
 
   form {
     flex-direction: column;
@@ -25,10 +24,22 @@ export const StyledList = styled.section`
   }
 `;
 
-export const StyledInnerList = styled(StyledList)`
+export const StyledInnerList = styled.div`
   display: flex;
   flex-direction: column;
   width: inherit;
+
+  .motion-button {
+    border: 1px dashed;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    button {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   input {
     background-color: transparent;
     border: none;

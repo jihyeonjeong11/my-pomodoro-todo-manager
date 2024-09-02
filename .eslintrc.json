@@ -59,7 +59,8 @@
     "no-relative-import-paths/no-relative-import-paths": [
       "error",
       { "prefix": "@" }
-    ]
+    ],
+    "react/jsx-props-no-spreading": "off"
   },
   "globals": {
     "React": "readonly",

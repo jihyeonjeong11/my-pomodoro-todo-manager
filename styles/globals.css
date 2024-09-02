@@ -89,3 +89,7 @@ main {
   display: flex;
   justify-content: center;
 }
+
+.spacing {
+  margin: 1.5rem 0;
+}

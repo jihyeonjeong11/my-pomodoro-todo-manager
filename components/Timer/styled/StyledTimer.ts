@@ -4,11 +4,6 @@ export const StyledTimer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-basis: 80%;
-
-  .spacing {
-    margin: 1.5rem 0;
-  }
 
   h1 {
     color: ${({ theme }) => `${theme.colors.timer.text}`};

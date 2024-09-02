@@ -1,17 +1,21 @@
-import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { useTasklist } from "@/components/contexts/TasklistContext";
+import useTaskButtonTransition from "@/components/TaskList/components/hooks/useTaskButtonTransition";
 
-const TaskForm = () => {
+const TaskForm = ({ showAddForm, flipTaskButton }) => {
+  const flipProps = useTaskButtonTransition(showAddForm);
   const {
-    tasks: { get: getTasks, set: setTasks },
-  } = useTaskWindows(["tasks"]);
+    tasks: { get: getTasks, set: setTask },
+  } = useTasklist(["tasks"]);
   const [text, setText] = useState<string>("");
 
   return (
     <form
+      className="spacing"
       onSubmit={(e) => {
         e.preventDefault();
-        setTasks([
+        setTask([
           { title: text, approxPomodoro: 1, id: getTasks.length },
           ...getTasks,
         ]);
@@ -20,7 +24,7 @@ const TaskForm = () => {
       <label htmlFor={getTasks[0]?.title}>
         {getTasks.length > 0
           ? `current: ${getTasks[0].title} `
-          : "Type your tasks!"}
+          : "Fire your focus!"}
       </label>
       <input
         placeholder="List your thought!"
