@@ -18,22 +18,26 @@ const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
   useEffect(() => {
     const run = async (onward: boolean) => {
       if (isInView) {
-        scope.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        formScope.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          margin: "100px 0px 0px 0px",
+        });
       }
       if (onward) {
         await animate(
           scope.current,
           { height: "12rem", justifyContent: "flex-start" },
-          { duration: 0.3 }
+          { duration: 0.1 }
         );
         await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
       } else {
-        await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
         await animate(
           scope.current,
           { height: "2rem", justifyContent: "center" },
           { duration: 0.3 }
         );
+        await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
       }
     };
     if (showAddForm) {

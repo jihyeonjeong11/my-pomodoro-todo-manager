@@ -21,11 +21,6 @@ const TaskForm = ({ showAddForm, flipTaskButton }) => {
         ]);
       }}
     >
-      <label htmlFor={getTasks[0]?.title}>
-        {getTasks.length > 0
-          ? `current: ${getTasks[0].title} `
-          : "Fire your focus!"}
-      </label>
       <input
         placeholder="List your thought!"
         onChange={(e) => {

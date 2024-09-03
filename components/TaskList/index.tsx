@@ -18,11 +18,12 @@ const TaskList: React.FC = () => {
   return (
     <StyledInnerList>
       <div className="spacing">
-        {getTasks.length > 0 ? getTasks[0].title : "Time to get productive!"}
+        {getTasks.length > 0 && "Time to get productive!"}
       </div>
       {getTasks.map((t) => (
-        <div key={t.id}>task</div>
+        <div key={t.id}>{t.title}</div>
       ))}
+      <div className="spacing" />
       <TaskListButton
         showAddForm={showAddForm}
         flipTaskButton={flipTaskButton}
