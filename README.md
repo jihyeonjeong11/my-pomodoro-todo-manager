@@ -79,4 +79,9 @@ I can start with testing-library with jest, and moving to Cypress.
 2. https://webkul.com/blog/how-to-use-indexeddb-dexie-in-nextjs/
    use indexedDB mock using DEXIE.
 3. draggable list using framer motion.
+
 4. draggable list https://dev.to/augani/how-to-create-a-smooth-draggable-list-with-react-in-10-mins-2fbn
+
+motion.div drag="y"
+
+dragConstraints = to deduce it with parent container

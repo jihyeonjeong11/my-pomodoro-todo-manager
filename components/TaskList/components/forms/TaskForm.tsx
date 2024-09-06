@@ -13,8 +13,16 @@ const TaskForm = () => {
       onSubmit={(e) => {
         e.preventDefault();
         setTask([
-          { title: text, approxPomodoro: 1, id: getTasks.length },
-          ...getTasks,
+          {
+            title: text,
+            approxPomodoro: 1,
+            id: getTasks.length,
+            isActive: true,
+          },
+          ...getTasks.map((t) => ({
+            ...t,
+            isActive: false,
+          })),
         ]);
         setText("");
       }}
