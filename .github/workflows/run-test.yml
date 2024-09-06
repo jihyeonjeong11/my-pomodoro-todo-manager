@@ -1,0 +1,19 @@
+name: CI workflow
+on: push
+
+jobs:
+  run-linter-and-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: npm install
+        run: npm i
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
