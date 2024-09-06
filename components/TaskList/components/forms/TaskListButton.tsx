@@ -66,9 +66,7 @@ const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
         <h3>Add New task</h3>
       </button>
       <div style={{ opacity: 0 }} ref={formScope}>
-        {showAddForm && (
-          <TaskForm showAddForm={showAddForm} flipTaskButton={flipTaskButton} />
-        )}
+        {showAddForm && <TaskForm />}
       </div>
     </div>
   );

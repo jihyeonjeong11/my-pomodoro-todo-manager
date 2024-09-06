@@ -1,9 +1,10 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
-import TaskItem from "./components/item/TaskItem";
-import TaskItems from "./components/item";
+import TaskItem from "@/components/TaskList/components/item/TaskItem";
+import TaskItems from "@/components/TaskList/components/item";
+import { useToggle } from "@/components/common/hooks/useToggle";
 
 // make useResizeObserver hook for 768px disable dragging or else!
 const TaskList: React.FC = () => {
@@ -13,13 +14,22 @@ const TaskList: React.FC = () => {
   } = useTasklist(["tasks", "tasklistRef"]);
 
   const tasklistRef = useRef(null);
-  const [showAddForm, setShowAddForm] = useState(false);
-
-  const flipTaskButton = useCallback(() => setShowAddForm((prev) => !prev), []);
+  const [showAddForm, flipTaskButton] = useToggle(false);
 
   const removeTask = useCallback(
+    (id: number) => {
+      setTask(getTasks.filter((t) => t.id !== id));
+    },
+    [getTasks, setTask]
+  );
+
+  const activeTask = useCallback(
     (id: number) =>
-      setTimeout(() => setTask(getTasks.filter((t) => t.id !== id)), 0.5),
+      setTask(
+        getTasks.map((t) =>
+          t.id === id ? { ...t, isActive: true } : { ...t, isActive: false }
+        )
+      ),
     [getTasks, setTask]
   );
 
@@ -30,7 +40,12 @@ const TaskList: React.FC = () => {
       </div>
       <TaskItems>
         {getTasks.map((t) => (
-          <TaskItem key={t.id} removeTask={removeTask} task={t} />
+          <TaskItem
+            key={t.id}
+            removeTask={removeTask}
+            activeTask={activeTask}
+            task={t}
+          />
         ))}
       </TaskItems>
       <div className="spacing" />

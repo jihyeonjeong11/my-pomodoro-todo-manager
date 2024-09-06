@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import useTaskButtonTransition from "@/components/TaskList/components/hooks/useTaskButtonTransition";
 
-const TaskForm = ({ showAddForm, flipTaskButton }) => {
-  const flipProps = useTaskButtonTransition(showAddForm);
+const TaskForm = () => {
   const {
     tasks: { get: getTasks, set: setTask },
   } = useTasklist(["tasks"]);
