@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, useState } from "react";
-import { TabWithMutableCountdown, TimerType } from "@/types/Timer";
+import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
 import { TIMER_STATUS } from "../constants";
 import useNotification from "./useNotification";
 import { launchNotification } from "../functions";

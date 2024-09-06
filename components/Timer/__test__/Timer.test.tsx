@@ -56,7 +56,6 @@ describe("Loads properly", () => {
     });
 
     fireEvent.click(timerButton);
-    console.log(time.textContent);
     await waitFor(() => {
       expect(time.textContent).toEqual("30:00");
     });

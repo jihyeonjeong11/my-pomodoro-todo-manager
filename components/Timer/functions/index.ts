@@ -1,4 +1,4 @@
-import { TimerType, type SelectedTabType } from "@/types/Timer";
+import { type TimerType, type SelectedTabType } from "@/types/Timer";
 import { TABS, TIMER_STATUS } from "../constants";
 
 export const findTab = (title: SelectedTabType) => {
