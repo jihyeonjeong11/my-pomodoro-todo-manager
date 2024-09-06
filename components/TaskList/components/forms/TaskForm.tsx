@@ -19,10 +19,12 @@ const TaskForm = ({ showAddForm, flipTaskButton }) => {
           { title: text, approxPomodoro: 1, id: getTasks.length },
           ...getTasks,
         ]);
+        setText("");
       }}
     >
       <input
         placeholder="List your thought!"
+        value={text}
         onChange={(e) => {
           e.stopPropagation();
           setText(e.target.value);

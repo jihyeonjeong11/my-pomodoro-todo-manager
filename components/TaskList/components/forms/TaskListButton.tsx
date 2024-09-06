@@ -21,20 +21,21 @@ const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
         formScope.current?.scrollIntoView({
           behavior: "smooth",
           block: "center",
-          margin: "100px 0px 0px 0px",
+          margin: "200px 0px 0px 0px",
         });
       }
       if (onward) {
+        // Can polish to calculate actual height form calc(initialButtonHeight + formHeight)
         await animate(
           scope.current,
-          { height: "12rem", justifyContent: "flex-start" },
+          { height: "12rem", justifyContent: "flex-start", marginBottom: 30 },
           { duration: 0.1 }
         );
         await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
       } else {
         await animate(
           scope.current,
-          { height: "2rem", justifyContent: "center" },
+          { height: "2rem", justifyContent: "center", marginBottom: 0 },
           { duration: 0.3 }
         );
         await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });

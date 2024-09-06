@@ -5,6 +5,7 @@ export type TaskListType = {
 
 export type TaskType = {
   title: string;
-  approxPomodoro: number;
   id: number; // Server mock later
+  leftSecs: number; // Will determine its end or not.
+  approxPomodoro: number; // Advanced feature.
 };

@@ -6,7 +6,6 @@ const WindowLoader = () => {
   const {
     taskWindows: { get: getTaskWindows = {} },
   } = useTaskWindows(["taskWindows"]);
-  console.log(getTaskWindows);
   return (
     <AnimatePresence initial={false} presenceAffectsLayout={false}>
       {Object.entries(getTaskWindows).map(([id]) => (

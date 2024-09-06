@@ -58,17 +58,15 @@ export const StyledInnerList = styled.div`
     width: inherit;
 
     li {
-      justify-content: center;
-      div {
-        padding: 1rem 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: ${({ theme }) => `${theme.colors.timer.mainBackground}`};
-        border-bottom: ${({ theme }) => `solid 1px ${theme.colors.timer.text}`};
-        span {
-          font-size: 1.5em;
-        }
+      padding: 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: ${({ theme }) => `${theme.colors.timer.mainBackground}`};
+      border-bottom: ${({ theme }) => `solid 1px ${theme.colors.timer.text}`};
+      span {
+        font-size: 1.5em;
+        line-height: 23px;
       }
     }
   }
