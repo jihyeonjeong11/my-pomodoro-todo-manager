@@ -7,6 +7,9 @@ const colors = {
     selectionHighlight: "#f87070",
     mainBackground: "#1e213f",
   },
+  tasklist: {
+    completedTitle: "#d7e0ff",
+  },
 };
 
 export default colors;

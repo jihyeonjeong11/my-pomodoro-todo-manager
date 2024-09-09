@@ -1,43 +1,44 @@
-import { useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  memo,
+  useCallback,
+  useState,
+} from "react";
 import { useTasklist } from "@/components/contexts/TasklistContext";
+import { useTaskControl } from "@/components/TaskList/components/hooks/useTaskControl";
 
 const TaskForm = () => {
   const {
     tasks: { get: getTasks, set: setTask },
   } = useTasklist(["tasks"]);
   const [text, setText] = useState<string>("");
+  const { postTask } = useTaskControl(getTasks);
+
+  const onSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      postTask(text, setTask);
+      setText("");
+    },
+    [postTask, setTask, text],
+  );
+
+  const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    setText(e.target.value);
+  }, []);
 
   return (
-    <form
-      className="spacing"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setTask([
-          {
-            title: text,
-            approxPomodoro: 1,
-            id: getTasks.length,
-            isActive: true,
-          },
-          ...getTasks.map((t) => ({
-            ...t,
-            isActive: false,
-          })),
-        ]);
-        setText("");
-      }}
-    >
+    <form className="spacing" onSubmit={onSubmit}>
       <input
         placeholder="List your thought!"
         value={text}
-        onChange={(e) => {
-          e.stopPropagation();
-          setText(e.target.value);
-        }}
+        onChange={onType}
         type="text"
       />
     </form>
   );
 };
 
-export default TaskForm;
+export default memo(TaskForm);

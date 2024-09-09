@@ -1,7 +1,7 @@
 export const toggleMainTaskWindow = (
   isToggled: boolean,
   prev: any,
-  cb: any
+  cb: any,
 ) => {
   if (isToggled) {
     const updatedWindows = { ...prev };
@@ -11,3 +11,9 @@ export const toggleMainTaskWindow = (
     cb({ ...prev, main: {} });
   }
 };
+
+// post, put, delete
+export const handleTasks = () => {};
+
+// after action
+export const handleActiveTask = () => {};

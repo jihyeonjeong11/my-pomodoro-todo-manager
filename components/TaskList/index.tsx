@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
@@ -14,23 +13,6 @@ const TaskList: React.FC = () => {
 
   const [showAddForm, flipTaskButton] = useToggle(false);
 
-  const removeTask = useCallback(
-    (id: number) => {
-      setTask(getTasks.filter((t) => t.id !== id));
-    },
-    [getTasks, setTask],
-  );
-
-  const activeTask = useCallback(
-    (id: number) =>
-      setTask(
-        getTasks.map((t) =>
-          t.id === id ? { ...t, isActive: true } : { ...t, isActive: false },
-        ),
-      ),
-    [getTasks, setTask],
-  );
-
   return (
     <StyledInnerList>
       <div className="spacing">
@@ -40,11 +22,7 @@ const TaskList: React.FC = () => {
         <AnimatePresence>
           {getTasks.map((t) => (
             <Reorder.Item key={`task-${t.id}`} value={t}>
-              <TaskItem
-                removeTask={removeTask}
-                activeTask={activeTask}
-                task={t}
-              />
+              <TaskItem task={t} />
             </Reorder.Item>
           ))}
         </AnimatePresence>

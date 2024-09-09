@@ -6,7 +6,8 @@ export type TaskListType = {
 export type TaskType = {
   title: string;
   id: number; // Server mock later
-  isActive?: boolean;
+  createdAt: string; // Server mock later
+  isActive: boolean;
   approxPomodoro: number; // Advanced feature.
-  leftSecs?: number; // Will determine its end or not.
+  leftSecs: number; // Will determine its end or not.
 };

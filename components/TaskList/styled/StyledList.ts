@@ -24,6 +24,16 @@ export const StyledList = styled.section`
   }
 `;
 
+export const StyledTaskTitle = styled.span<{
+  isActive: boolean;
+  isCompleted: boolean;
+}>`
+  color: ${({ theme, isActive }) =>
+    isActive ? `${theme.colors.timer.selectionHighlight}` : "white"};
+  text-decoration: ${({ isCompleted }) =>
+    isCompleted ? "line-through" : "none"};
+`;
+
 export const StyledInnerList = styled.div`
   display: flex;
   flex-direction: column;
