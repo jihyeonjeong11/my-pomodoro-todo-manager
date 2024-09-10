@@ -32,6 +32,7 @@ export const useTaskControl = (tasks: TaskType[]) => {
     [tasks],
   );
 
+  // Consider preserving the order of completed tasks...
   const completeTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
       callback([
@@ -42,7 +43,7 @@ export const useTaskControl = (tasks: TaskType[]) => {
     [tasks],
   );
 
-  const activeTask = useCallback(
+  const activateTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
       callback(
         tasks.map((t) =>
@@ -53,7 +54,7 @@ export const useTaskControl = (tasks: TaskType[]) => {
     [tasks],
   );
 
-  const reactiveTask = useCallback(
+  const reactivateTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
       callback(
         tasks.map((t) =>
@@ -66,5 +67,20 @@ export const useTaskControl = (tasks: TaskType[]) => {
     [tasks],
   );
 
-  return { postTask, deleteTask, completeTask, activeTask, reactiveTask };
+  const activateOrReactivateTask = useCallback(
+    (
+      id: TaskType["id"],
+      isCompleted: boolean,
+      callback: (value: TaskType[]) => void,
+    ) => {
+      if (isCompleted) {
+        reactivateTask(id, callback);
+      } else {
+        activateTask(id, callback);
+      }
+    },
+    [reactivateTask, activateTask],
+  );
+
+  return { postTask, deleteTask, completeTask, activateOrReactivateTask };
 };

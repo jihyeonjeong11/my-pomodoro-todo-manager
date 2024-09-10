@@ -1,6 +1,5 @@
 import type React from "react";
 import { useAnimate, useInView } from "framer-motion";
-import useTaskButtonTransition from "@/components/TaskList/components/hooks/useTaskButtonTransition";
 import { useEffect } from "react";
 import TaskForm from "@/components/TaskList/components/forms/TaskForm";
 
@@ -10,33 +9,39 @@ type Props = {
 };
 
 const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
-  const flipProps = useTaskButtonTransition(showAddForm);
   const [scope, animate] = useAnimate();
-  const [formScope, animateForm] = useAnimate();
+  const [formScope, animateForm] = useAnimate<HTMLDivElement>();
   const isInView = useInView(scope);
-
+  // Seperate this later revisit!
   useEffect(() => {
     const run = async (onward: boolean) => {
-      if (isInView) {
-        formScope.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          margin: "200px 0px 0px 0px",
-        });
+      const ref = formScope?.current;
+      if (ref) {
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            ref.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "start",
+            });
+          });
+        }, 3);
       }
-      if (onward) {
-        // Can polish to calculate actual height form calc(initialButtonHeight + formHeight)
+      if (onward && ref) {
         await animate(
           scope.current,
-          { height: "12rem", justifyContent: "flex-start", marginBottom: 30 },
-          { duration: 0.1 }
+          {
+            height: 32 + ref.getBoundingClientRect().height + 100, // 2rem + formHeight + padding
+            justifyContent: "flex-start",
+          },
+          { duration: 0.1 },
         );
         await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
       } else {
         await animate(
           scope.current,
           { height: "2rem", justifyContent: "center", marginBottom: 0 },
-          { duration: 0.3 }
+          { duration: 0.3 },
         );
         await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
       }
@@ -46,15 +51,7 @@ const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
     } else {
       run(false);
     }
-  }, [
-    animate,
-    animateForm,
-    flipProps,
-    showAddForm,
-    scope,
-    formScope,
-    isInView,
-  ]);
+  }, [animate, animateForm, showAddForm, scope, formScope, isInView]);
 
   return (
     <div ref={scope} className="motion-button">

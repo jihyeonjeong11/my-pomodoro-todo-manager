@@ -13,15 +13,13 @@ const TaskItem = ({ task }: { task: TaskType }) => {
   } = useTasklist(["tasks", "tasklistRef"]);
   const motionProps = useTaskItemTransition();
 
-  const { deleteTask, completeTask, activeTask, reactiveTask } =
+  const { deleteTask, completeTask, activateOrReactivateTask } =
     useTaskControl(getTasks);
   const isCompleted = task.leftSecs === 0;
+
   const onClickActive = useCallback(() => {
-    if (isCompleted) {
-      return reactiveTask(task.id, setTask);
-    }
-    return activeTask(task.id, setTask);
-  }, [activeTask, reactiveTask, setTask, task.id, isCompleted]);
+    activateOrReactivateTask(task.id, isCompleted, setTask);
+  }, [setTask, task.id, isCompleted, activateOrReactivateTask]);
 
   const onClickDelete = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
