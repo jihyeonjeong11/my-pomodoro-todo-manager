@@ -6,6 +6,7 @@ import themes from "@/styles/themes";
 import { ThemeProvider } from "styled-components";
 import { TasklistProvider } from "@/components/contexts/TasklistContext";
 import TaskList from "@/components/TaskList";
+import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
 
 // Mock IntersectionObserver
 class IntersectionObserver {
@@ -35,59 +36,24 @@ describe("Loads properly", () => {
         <TasklistProvider>
           <TaskList />
         </TasklistProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
     await waitFor(() => {
-      const taskButton = screen.getByTestId("tasklist-button");
+      const taskButton = screen.getByRole("button");
       expect(taskButton).toBeTruthy();
     });
   });
-  it("CRUD properly", async () => {
+  it("Call flipTaskButton when clicked", async () => {
+    const mockFlipTaskButton = jest.fn();
+
     render(
-      <ThemeProvider theme={themes.defaultTheme}>
-        <TasklistProvider>
-          <TaskList />
-        </TasklistProvider>
-      </ThemeProvider>
+      <TaskListButton
+        flipTaskButton={mockFlipTaskButton}
+        showAddForm={false}
+      />,
     );
-    const taskButton = screen.getByTestId("tasklist-button");
-    fireEvent.click(taskButton);
-    const taskForm = await waitFor(() => screen.getByTestId("tasklist-form"));
-
-    // await waitFor(async () => {
-    //   console.log("hi");
-    //   const taskButton = screen.getByTestId("tasklist-button");
-    //   console.log(taskButton);
-    //   fireEvent.click(taskButton);
-    //   // Wait for the form to appear
-    //   const taskForm = await waitFor(() => screen.getByTestId("tasklist-form"));
-    //   expect(taskForm).toBeTruthy();
-    //   // waitFor(
-    //   //   () => {
-    //   //     const taskForm = screen.getByTestId("tasklist-form");
-    //   //     expect(taskForm).toBeFalsy();
-    //   //     const taskInput = screen.getByTestId("tasklist-input");
-    //   //     fireEvent.change(taskInput, { target: { value: "task" } });
-    //   //     fireEvent.keyDown(taskInput, {
-    //   //       key: "Enter",
-    //   //       code: "Enter",
-    //   //       charCode: 13,
-    //   //     });
-    //   //     const taskItem = screen.getByTestId("task-0");
-    //   //     expect(taskItem).toBeTruthy();
-
-    //   //     const removeButton = screen.getByTestId("task-0-remove");
-    //   //     console.log(removeButton);
-    //   //     fireEvent.click(removeButton);
-    //   //     waitFor(
-    //   //       () => {
-    //   //         expect(taskItem).toBeTruthy();
-    //   //       },
-    //   //       { timeout: 1000 }
-    //   //     );
-    //   //   },
-    //   //   { timeout: 1000 }
-    //   // );
-    // });
+    const button = screen.getByTestId("tasklist-button");
+    fireEvent.click(button);
+    expect(mockFlipTaskButton).toHaveBeenCalledTimes(1);
   });
 });
