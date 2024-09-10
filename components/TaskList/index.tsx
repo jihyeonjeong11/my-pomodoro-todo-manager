@@ -1,9 +1,13 @@
 import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
-import TaskItem from "@/components/TaskList/components/item/TaskItem";
 import { useToggle } from "@/components/common/hooks/useToggle";
 import { AnimatePresence, Reorder } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const TaskItem = dynamic(
+  () => import("@/components/TaskList/components/item/TaskItem")
+);
 
 // make useResizeObserver hook for 768px disable dragging or else!
 const TaskList: React.FC = () => {
@@ -21,7 +25,11 @@ const TaskList: React.FC = () => {
       <Reorder.Group axis="y" values={getTasks} onReorder={setTask}>
         <AnimatePresence>
           {getTasks.map((t) => (
-            <Reorder.Item key={`task-${t.id}`} value={t}>
+            <Reorder.Item
+              data-testid={`task-${t.id}`}
+              key={`task-${t.id}`}
+              value={t}
+            >
               <TaskItem task={t} />
             </Reorder.Item>
           ))}

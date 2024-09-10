@@ -26,7 +26,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       deleteTask(task.id, setTask);
     },
-    [deleteTask, setTask, task.id],
+    [deleteTask, setTask, task.id]
   );
 
   const onClickComplete = useCallback(
@@ -34,13 +34,14 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       completeTask(task.id, setTask);
     },
-    [completeTask, setTask, task.id],
+    [completeTask, setTask, task.id]
   );
 
   return (
     <motion.div onClick={onClickActive} {...motionProps}>
       {/* complete task function */}
       <button
+        data-testid={`task-${task.id}-complete`}
         type="button"
         aria-label={`Mark task "${task.title}" as complete`}
         onClick={onClickComplete}
@@ -52,6 +53,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         {task.title}
       </StyledTaskTitle>
       <button
+        data-testid={`task-${task.id}-remove`}
         type="button"
         aria-label={`Delete task "${task.title}"`}
         onClick={onClickDelete}

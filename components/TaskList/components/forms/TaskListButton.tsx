@@ -1,7 +1,11 @@
 import type React from "react";
 import { useAnimate, useInView } from "framer-motion";
 import { useEffect } from "react";
-import TaskForm from "@/components/TaskList/components/forms/TaskForm";
+import dynamic from "next/dynamic";
+
+const TaskForm = dynamic(
+  () => import("@/components/TaskList/components/forms/TaskForm")
+);
 
 type Props = {
   flipTaskButton: React.MouseEventHandler<HTMLButtonElement>;
@@ -34,14 +38,14 @@ const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
             height: 32 + ref.getBoundingClientRect().height + 100, // 2rem + formHeight + padding
             justifyContent: "flex-start",
           },
-          { duration: 0.1 },
+          { duration: 0.1 }
         );
         await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
       } else {
         await animate(
           scope.current,
           { height: "2rem", justifyContent: "center", marginBottom: 0 },
-          { duration: 0.3 },
+          { duration: 0.3 }
         );
         await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
       }
@@ -56,6 +60,7 @@ const TaskListButton: React.FC<Props> = ({ flipTaskButton, showAddForm }) => {
   return (
     <div ref={scope} className="motion-button">
       <button
+        data-testid="tasklist-button"
         onClick={flipTaskButton}
         type="button"
         title="Click this for add new task"

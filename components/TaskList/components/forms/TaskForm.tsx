@@ -21,7 +21,7 @@ const TaskForm = () => {
       postTask(text, setTask);
       setText("");
     },
-    [postTask, setTask, text],
+    [postTask, setTask, text]
   );
 
   const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +30,9 @@ const TaskForm = () => {
   }, []);
 
   return (
-    <form className="spacing" onSubmit={onSubmit}>
+    <form data-testid="tasklist-form" className="spacing" onSubmit={onSubmit}>
       <input
+        data-testid="tasklist-input"
         placeholder="List your thought!"
         value={text}
         onChange={onType}
