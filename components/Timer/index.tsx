@@ -4,10 +4,8 @@ import TabItem from "@/components/Timer/Tabs/TabItem";
 import { TABS } from "@/components/Timer/constants";
 import { findTab } from "@/components/Timer/functions";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import dynamic from "next/dynamic";
-
-const Tabs = dynamic(() => import("@/components/Timer/Tabs"));
-const Clock = dynamic(() => import("@/components/Timer/Clock"));
+import Tabs from "@/components/Timer/Tabs";
+import Clock from "@/components/Timer/Clock";
 
 const Timer: FC = () => {
   const {
@@ -18,7 +16,7 @@ const Timer: FC = () => {
     (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
-    [set]
+    [set],
   );
 
   return (
