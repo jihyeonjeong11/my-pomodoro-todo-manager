@@ -6,7 +6,7 @@ import { AnimatePresence, Reorder } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const TaskItem = dynamic(
-  () => import("@/components/TaskList/components/item/TaskItem")
+  () => import("@/components/TaskList/components/item/TaskItem"),
 );
 
 // make useResizeObserver hook for 768px disable dragging or else!
@@ -40,6 +40,7 @@ const TaskList: React.FC = () => {
         showAddForm={showAddForm}
         flipTaskButton={flipTaskButton}
       />
+      <div className="spacing" />
     </StyledInnerList>
   );
 };

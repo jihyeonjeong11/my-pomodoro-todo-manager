@@ -18,10 +18,12 @@ const TaskForm = () => {
   const onSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      postTask(text, setTask);
-      setText("");
+      if (text.length > 0) {
+        postTask(text, setTask);
+        setText("");
+      }
     },
-    [postTask, setTask, text]
+    [postTask, setTask, text],
   );
 
   const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {

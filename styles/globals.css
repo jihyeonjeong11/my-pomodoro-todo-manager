@@ -44,6 +44,7 @@ button,
 textarea,
 select {
   font: inherit;
+  outline: none;
 }
 /*
   7. Avoid text overflows
@@ -83,9 +84,8 @@ ul {
 */
 main {
   background: var(--color-dark-blue);
-  overflow: scroll;
+  overflow: auto;
   width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
 }
