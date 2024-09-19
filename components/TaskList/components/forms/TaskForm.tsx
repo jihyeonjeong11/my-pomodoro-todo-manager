@@ -18,6 +18,7 @@ const TaskForm = () => {
   const onSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      // zod
       if (text.length > 0) {
         postTask(text, setTask);
         setText("");
@@ -32,9 +33,8 @@ const TaskForm = () => {
   }, []);
 
   return (
-    <form data-testid="tasklist-form" className="spacing" onSubmit={onSubmit}>
+    <form data-testid="task-form" className="spacing" onSubmit={onSubmit}>
       <input
-        data-testid="tasklist-input"
         placeholder="List your thought!"
         value={text}
         onChange={onType}
