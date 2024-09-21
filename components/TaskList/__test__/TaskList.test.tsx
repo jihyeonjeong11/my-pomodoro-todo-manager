@@ -34,7 +34,11 @@ Object.defineProperty(global, "IntersectionObserver", {
   value: IntersectionObserver,
 });
 
-describe("Loads properly", () => {
+describe("Tasklist", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("Renders elements", () => {
     render(
       <ThemeProvider theme={themes.defaultTheme}>
@@ -119,12 +123,12 @@ describe("Loads properly", () => {
 
         expect(mockKeydownHandler).toHaveBeenCalledTimes(1);
         expect(mockKeydownHandler.mock.calls[0][0].key).toBe("Enter");
-
+        // Currently couldn't simulate firing onSubmit after pressing enter.
         // This input must be cleared, considering the onSubmit function.
         expect(taskInput).toHaveValue("");
 
-        // Currently couldn't simulate firing onSubmit after pressing enter.
-        // Save below for later for completion.
+        // Will save below for later for completion.
+
         // await waitFor(() => {
         //   expect(mockOnSubmit).toHaveBeenCalledWith("task1", mockOnSubmit); // Mock function ensures it's called with the correct arguments
         // });
