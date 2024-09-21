@@ -73,7 +73,6 @@ export const useTaskControl = (tasks: TaskType[]) => {
       isCompleted: boolean,
       callback: (value: TaskType[]) => void,
     ) => {
-      console.log(isCompleted);
       if (isCompleted) {
         reactivateTask(id, callback);
       } else {
