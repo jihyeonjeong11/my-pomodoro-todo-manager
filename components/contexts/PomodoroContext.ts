@@ -1,6 +1,6 @@
 import createFastContext from "components/contexts/createFastContext";
 import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
-import { TABS, TIMER_STATUS } from "../Timer/constants";
+import { TABS, TIMER_STATUS } from "@/components/Timer/constants";
 
 export const {
   FastContextProvider: PomodoroProvider,

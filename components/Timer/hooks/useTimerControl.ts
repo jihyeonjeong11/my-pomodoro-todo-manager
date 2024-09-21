@@ -1,8 +1,7 @@
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
-import { TIMER_STATUS } from "../constants";
-import useNotification from "./useNotification";
-import { launchNotification } from "../functions";
+import { TIMER_STATUS } from "@/components/Timer/constants";
+import useNotification from "@/components/Timer/hooks/useNotification";
 
 /**
  * Custom hook for controlling a timer.
@@ -36,21 +35,18 @@ const useTimerControl = (
   countdown: number,
 ) => {
   const [isStarted, setIsStarted] = useState<TimerType>(TIMER_STATUS.stopped);
-  const noti = useNotification();
+  const { launchCompleteNotification } = useNotification();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setIsStarted(TIMER_STATUS.stopped);
   }, [title]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (countdown === 0) {
-      if (noti) {
-        launchNotification(`Your ${title} done!`);
-      }
+      launchCompleteNotification(title);
       setIsStarted(TIMER_STATUS.stopped);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countdown, noti]);
+  }, [countdown, title, launchCompleteNotification]);
 
   const toggle = useCallback(() => {
     setIsStarted((prev) =>

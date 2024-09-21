@@ -44,6 +44,7 @@ button,
 textarea,
 select {
   font: inherit;
+  outline: none;
 }
 /*
   7. Avoid text overflows
@@ -70,6 +71,10 @@ button {
   cursor: pointer;
 }
 
+ul {
+  padding-inline-start: 0;
+}
+
 /*
   CSS reset ends
 */
@@ -79,9 +84,12 @@ button {
 */
 main {
   background: var(--color-dark-blue);
+  overflow: auto;
   width: 100vw;
-  height: 100vh;
-  position: fixed;
   display: flex;
   justify-content: center;
+}
+
+.spacing {
+  margin: 1.5rem 0;
 }
