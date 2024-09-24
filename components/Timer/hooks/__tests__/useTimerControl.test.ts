@@ -1,8 +1,8 @@
 // @ts-nocheck
 
 import { renderHook, act } from "@testing-library/react";
-import useTimerControl from "../useTimerControl";
-import { TIMER_STATUS } from "../../constants";
+import useTimerControl from "@/components/Timer/hooks/useTimerControl";
+import { TIMER_STATUS } from "@/components/Timer/constants";
 
 describe("useTimerControl", () => {
   beforeEach(() => {

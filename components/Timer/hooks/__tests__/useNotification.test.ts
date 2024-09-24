@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { renderHook } from "@testing-library/react";
-import useNotification from "../useNotification";
+import useNotification from "@/components/Timer/hooks/useNotification";
 
 describe("useNotification()", () => {
   beforeAll(() => {

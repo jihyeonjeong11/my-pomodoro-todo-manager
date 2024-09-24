@@ -1,4 +1,4 @@
-import { TABS, TIMER_STATUS } from "@/components/Timer/constants";
+import { type TABS, type TIMER_STATUS } from "@/components/Timer/constants";
 
 export type SelectedTabType = (typeof TABS)[number]["title"];
 export type SelectedCountdownType = (typeof TABS)[number]["countdown"];

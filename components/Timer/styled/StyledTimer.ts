@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const StyledTimer = styled.section`
-  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,16 +10,13 @@ export const StyledTimer = styled.section`
   }
 
   nav {
-    margin-top: 2.75rem;
     height: 4rem;
     background: ${({ theme }) => `${theme.colors.timer.navBackground}`};
     box-sizing: content-box;
     display: flex;
     justify-content: space-around;
     border-radius: 2rem;
-    padding: 0.5rem;
     text-align: center;
-    display: flex;
     align-items: center;
     padding: 0 20px;
     z-index: 0;
@@ -66,7 +62,6 @@ export const StyledTimer = styled.section`
       position: absolute;
       inset: 0px;
       display: flex;
-      justify-center: center;
       align-items: center;
       border-radius: 30px;
       background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
@@ -74,7 +69,6 @@ export const StyledTimer = styled.section`
   }
 
   section {
-    margin-top: 2.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,12 +76,12 @@ export const StyledTimer = styled.section`
     background: linear-gradient(-45deg, #2e325a, #0e112a);
     filter: drop-shadow(-3.125rem -3.125rem 6.25rem #272c5a);
     position: relative;
-    width: 80vw;
-    height: 80vw;
+    width: 70vw;
+    height: 70vw;
 
     @media (min-width: 768px) {
-      width: 53.38vw;
-      height: 53.38vw;
+      width: 45vw;
+      height: 45vw;
     }
 
     @media (min-width: 992px) {

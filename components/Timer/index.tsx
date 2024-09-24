@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 import { type SelectedTabType } from "@/types/Timer";
-import TabItem from "./Tabs/TabItem";
-import { TABS } from "./constants";
-import Clock from "./Clock";
-import { findTab } from "./functions";
-import { usePomodoro } from "../contexts/PomodoroContext";
-import Tabs from "./Tabs";
+import TabItem from "@/components/Timer/Tabs/TabItem";
+import { TABS } from "@/components/Timer/constants";
+import { findTab } from "@/components/Timer/functions";
+import { usePomodoro } from "@/components/contexts/PomodoroContext";
+import Tabs from "@/components/Timer/Tabs";
+import Clock from "@/components/Timer/Clock";
 
 const Timer: FC = () => {
   const {
