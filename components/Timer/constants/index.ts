@@ -1,7 +1,7 @@
 export const TABS = [
   {
     title: "pomodoro",
-    countdown: 1_800_000, // 30 mins
+    countdown: 1_500_000, // 30 mins
     decrementor: 0.016_67,
   },
   {

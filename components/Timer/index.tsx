@@ -35,7 +35,6 @@ const Timer: FC = () => {
           );
         })}
       </Tabs>
-
       <Clock />
     </>
   );
