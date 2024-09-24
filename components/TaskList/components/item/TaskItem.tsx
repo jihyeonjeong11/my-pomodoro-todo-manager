@@ -26,7 +26,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       deleteTask(task.id, setTask);
     },
-    [deleteTask, setTask, task.id]
+    [deleteTask, setTask, task.id],
   );
 
   const onClickComplete = useCallback(
@@ -34,7 +34,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       completeTask(task.id, setTask);
     },
-    [completeTask, setTask, task.id]
+    [completeTask, setTask, task.id],
   );
 
   return (

@@ -13,7 +13,7 @@ describe("Loads properly", () => {
         <PomodoroProvider>
           <Timer />
         </PomodoroProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {
@@ -30,7 +30,7 @@ describe("Loads properly", () => {
         <PomodoroProvider>
           <Timer />
         </PomodoroProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
     await waitFor(() => {
       const tabs = screen.getAllByRole("button");

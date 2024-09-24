@@ -1,87 +1,56 @@
-# My side project. Pomodoro timer + Todo manager.
+## **My Pomodoro Timer and Task manager**
 
-# Dev env docker by:
+[![포모도로 앱](./public/media/images/preview.png)]
 
-[https://github.com/vercel/next.js/tree/canary/examples/with-docker]
+## [포모도로란?](https://ko.wikipedia.org/wiki/%ED%8F%AC%EB%AA%A8%EB%8F%84%EB%A1%9C_%EA%B8%B0%EB%B2%95)
 
-## Using Docker
+# Features ✨
 
-1. [Install Docker](https://docs.docker.com/get-docker/) on your machine.
-1. Build your container: `docker build -t nextjs-docker .`.
-1. Run your container: `docker run -p 3000:3000 nextjs-docker`.
+### Internal State management using useContext pirated by:
 
-You can view your images created with `docker images`.
+[![Fast Context](https://img.youtube.com/vi/ZKlXqrcBx88/mqdefault.jpg)](https://www.youtube.com/watch?v=ZKlXqrcBx88&t=669s)
 
-### In existing projects
+### [Framer motion](https://github.com/framer/motion)
 
-To add support for Docker to an existing project, just copy the [`Dockerfile`](https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile) into the root of the project and add the following to the `next.config.js` file:
+### Tab-controlled timer
+
+- 포모도로 방식에 맞춘 3개의 선택 가능한 탭
+- 애니메이션된 svg 시계
+- 포모도로 시간 추적을 위한 동적 앱 헤드
+- [웹 알림](https://developer.mozilla.org/en-US/docs/Web/API/Notification)
+
+### Tasklist
+
+- [indexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)를 통한 영구적인 작업 저장소 (계획 중)
+- 작업 추가, 삭제, 드래그 앤 드롭을 통한 순서 변경
+
+# Try It 🚀
+
+##### Requirements
+
+- [Node.js 18 이상](https://nodejs.org/en/download/)
+- [Pnpm](https://pnpm.io/)
+
+##### Development
 
 ```
-
-// next.config.js
-module.exports = {
-  // ... rest of the configuration.
-  output: "standalone",
-};
+pnpm install
+pnpm dev
 ```
 
-https://codesandbox.io/p/sandbox/pomodoro-app-czqyn?file=%2Fsrc%2FSass%2FGlobal.scss
-https://codesandbox.io/p/sandbox/framer-motion-tabs-tjow1?file=%2Fsrc%2FTabs.js%3A14%2C22
+##### Production
 
-// flip timer animation source
-https://www.frontendmentor.io/solutions/launch-countdown-timer-with-flip-animation-SyrQqQjz9
+```
+pnpm install
+pnpm build
+pnpm start
+```
 
-context not causing unintended rerender?
-https://www.youtube.com/watch?v=ZKlXqrcBx88&t=1179s
+##### Docker
 
-// RAF timer logic
-https://codesandbox.io/s/requestanimationframe-pausable-timer-knsmy
+```
+docker build -t pomodoro .
+docker run -dp 3000:3000 --rm --name pomodoro pomodoro
+```
 
-// framer motion animation Wrap-up (for blogging)
-https://www.youtube.com/watch?v=kep_Iaxuzy0&t=339s
-https://www.youtube.com/watch?v=ILxNdOtKbNQ
-
-// and task list.(v1, just a list, v2 will be pushed later)
-
-07/18: free language ai model for ai generated task list: Google gemini or else.
-https://ai.google.dev/gemini-api/docs
-
-https://dev.to/musselmanth/re-rendering-react-components-at-breakpoint-window-resizes-a-better-way-4343
-
-### Reset css
-
-https://www.joshwcomeau.com/css/custom-css-reset/
-
-### Planned library usage:
-
-1. React-rnd : todo-window
-2. framer-motion : animation?
-3. Styled-components : css-in-js maybe
-4. React-virtuoso : maybe Alternatives: react-window react-virtualized or make it on my own
-
-### Testing
-
-07/01: Timer funcionality not can be tested with Jest(unless using faketimer or I mislead the docs.)
-
-from nextjs docs: Good to know: Since async Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run unit tests for synchronous Server and Client Components, we recommend using an E2E tests for async components.
-
-I can start with testing-library with jest, and moving to Cypress.
-
-### Features
-
-1. Clock
-2. ToDo list
-
-### To-do
-
-1. Change toggle states to useToggle.
-
-2. https://webkul.com/blog/how-to-use-indexeddb-dexie-in-nextjs/
-   use indexedDB mock using DEXIE.
-3. draggable list using framer motion.
-
-4. draggable list https://dev.to/augani/how-to-create-a-smooth-draggable-list-with-react-in-10-mins-2fbn
-
-motion.div drag="y"
-
-dragConstraints = to deduce it with parent container
+##### Notes
