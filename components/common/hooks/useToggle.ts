@@ -17,9 +17,9 @@ import type { Dispatch, SetStateAction } from "react";
  * // Use isToggled in your component, toggle to switch the state, setToggle to set the state explicitly.
  * ```
  */
-export function useToggle(
-  defaultValue?: boolean,
-): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
+const useToggle = (
+  defaultValue?: boolean
+): [boolean, () => void, Dispatch<SetStateAction<boolean>>] => {
   const [value, setValue] = useState(!!defaultValue);
 
   const toggle = useCallback(() => {
@@ -27,4 +27,6 @@ export function useToggle(
   }, []);
 
   return [value, toggle, setValue];
-}
+};
+
+export default useToggle;

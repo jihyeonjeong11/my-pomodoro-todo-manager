@@ -22,11 +22,6 @@ export const StyledMainWindow = styled.aside`
     width: ${({ theme }) => `${theme.sizes.pcWindow.width}px`};
     height: ${({ theme }) => `${theme.sizes.pcWindow.height}px`};
   }
-
-  /* @media (min-width: 992px) {
-    width: ${({ theme }) => `${theme.sizes.pcWindow.width}px`};
-    height: ${({ theme }) => `${theme.sizes.pcWindow.height}px`};
-  } */
 `;
 
 // out of my creativity.

@@ -5,7 +5,7 @@ import useTaskItemTransition from "@/components/TaskList/components/hooks/useTas
 import { type TaskType } from "@/types/TaskList";
 import { StyledTaskTitle } from "@/components/TaskList/styled/StyledList";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import { useTaskControl } from "@/components/TaskList/components/hooks/useTaskControl";
+import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
 
 const TaskItem = ({ task }: { task: TaskType }) => {
   const {
@@ -26,7 +26,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       deleteTask(task.id, setTask);
     },
-    [deleteTask, setTask, task.id],
+    [deleteTask, setTask, task.id]
   );
 
   const onClickComplete = useCallback(
@@ -34,7 +34,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       completeTask(task.id, setTask);
     },
-    [completeTask, setTask, task.id],
+    [completeTask, setTask, task.id]
   );
 
   return (

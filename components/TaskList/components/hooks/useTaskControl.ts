@@ -25,7 +25,7 @@ import { TABS } from "@/components/Timer/constants";
  *   ) => void
  * }}
  */
-export const useTaskControl = (tasks: TaskType[]) => {
+const useTaskControl = (tasks: TaskType[]) => {
   const savedTasks = useRef(tasks);
 
   /**
@@ -46,7 +46,7 @@ export const useTaskControl = (tasks: TaskType[]) => {
   const postTask = useCallback(
     (text: string, callback: (value: TaskType[]) => void) =>
       callback([setInitialTask(tasks, text), ...setOthersInactive(tasks)]),
-    [tasks],
+    [tasks]
   );
 
   /**
@@ -59,9 +59,9 @@ export const useTaskControl = (tasks: TaskType[]) => {
   const deleteTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) =>
       callback(
-        makeFirstTaskActiveIfCurrentActivatedChanged(filterTask(tasks, id)),
+        makeFirstTaskActiveIfCurrentActivatedChanged(filterTask(tasks, id))
       ),
-    [tasks],
+    [tasks]
   );
 
   /**
@@ -78,7 +78,7 @@ export const useTaskControl = (tasks: TaskType[]) => {
         setCompleteTask(tasks, id),
       ]);
     },
-    [tasks],
+    [tasks]
   );
 
   /**
@@ -92,11 +92,11 @@ export const useTaskControl = (tasks: TaskType[]) => {
     (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
       callback(
         tasks.map((t) =>
-          t.id === id ? { ...t, isActive: true } : { ...t, isActive: false },
-        ),
+          t.id === id ? { ...t, isActive: true } : { ...t, isActive: false }
+        )
       );
     },
-    [tasks],
+    [tasks]
   );
 
   /**
@@ -111,11 +111,11 @@ export const useTaskControl = (tasks: TaskType[]) => {
         tasks.map((t) =>
           t.id === id
             ? { ...t, isActive: true, leftSecs: TABS[0].countdown }
-            : { ...t, isActive: false },
-        ),
+            : { ...t, isActive: false }
+        )
       );
     },
-    [tasks],
+    [tasks]
   );
 
   /**
@@ -129,7 +129,7 @@ export const useTaskControl = (tasks: TaskType[]) => {
     (
       id: TaskType["id"],
       isCompleted: boolean,
-      callback: (value: TaskType[]) => void,
+      callback: (value: TaskType[]) => void
     ) => {
       if (isCompleted) {
         reactivateTask(id, callback);
@@ -137,8 +137,10 @@ export const useTaskControl = (tasks: TaskType[]) => {
         activateTask(id, callback);
       }
     },
-    [reactivateTask, activateTask],
+    [reactivateTask, activateTask]
   );
 
   return { postTask, deleteTask, completeTask, activateOrReactivateTask };
 };
+
+export default useTaskControl;

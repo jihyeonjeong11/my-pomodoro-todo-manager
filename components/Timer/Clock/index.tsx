@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { convertMsToTime, findTab } from "@/components/Timer/functions";
-import { useInterval } from "@/components/Timer/hooks/useInterval";
+import useInterval from "@/components/Timer/hooks/useInterval";
 import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import {
   DEFAULT_CIRCLE_OFFSET,

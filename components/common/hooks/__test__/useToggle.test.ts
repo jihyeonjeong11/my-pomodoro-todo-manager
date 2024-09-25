@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { useToggle } from "@/components/common/hooks/useToggle";
+import useToggle from "@/components/common/hooks/useToggle";
 
 describe("use toggle()", () => {
   it("should use toggle be ok", () => {

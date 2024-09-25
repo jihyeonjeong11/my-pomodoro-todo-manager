@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import { useInterval } from "@/components/Timer/hooks/useInterval";
+import useInterval from "@/components/Timer/hooks/useInterval";
 
 jest.useFakeTimers();
 
@@ -76,7 +76,7 @@ describe("useInterval", () => {
       ({ delay }) => useInterval(callback, delay),
       {
         initialProps: { delay: 1000 },
-      },
+      }
     );
 
     // Fast-forward time
@@ -108,7 +108,7 @@ describe("useInterval", () => {
             count += 1;
           },
         },
-      },
+      }
     );
 
     // Fast-forward time

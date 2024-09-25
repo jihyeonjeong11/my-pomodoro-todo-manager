@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { type TaskType } from "@/types/TaskList";
-import { useTaskControl } from "@/components/TaskList/components/hooks/useTaskControl";
+import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
 import { renderHook, act } from "@testing-library/react";
 
 const mockTasks: TaskType[] = [
@@ -75,7 +75,7 @@ describe("useTaskControl", () => {
       ({ tasks }) => useTaskControl(tasks),
       {
         initialProps: { tasks: mockTasks },
-      },
+      }
     );
 
     const callback = jest.fn();
@@ -93,7 +93,7 @@ describe("useTaskControl", () => {
       result.current.activateOrReactivateTask(
         mockTasks[1].id,
         updatedTasksAfterCompletion[1].leftSecs === 0,
-        callback,
+        callback
       );
     });
 
@@ -112,7 +112,7 @@ describe("useTaskControl", () => {
       result.current.activateOrReactivateTask(
         mockTasks[2].id,
         mockTasks[2].leftSecs === 0,
-        callback,
+        callback
       );
     });
     expect(callback).toHaveBeenCalledTimes(1);

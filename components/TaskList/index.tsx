@@ -1,12 +1,12 @@
 import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
-import { useToggle } from "@/components/common/hooks/useToggle";
+import useToggle from "@/components/common/hooks/useToggle";
 import { AnimatePresence, Reorder } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const TaskItem = dynamic(
-  () => import("@/components/TaskList/components/item/TaskItem"),
+  () => import("@/components/TaskList/components/item/TaskItem")
 );
 
 // make useResizeObserver hook for 768px disable dragging or else!
