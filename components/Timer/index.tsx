@@ -1,9 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import TabItem from "@/components/Timer/Tabs/TabItem";
 import { TABS } from "@/components/Timer/constants";
 import { findTab } from "@/components/Timer/functions";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
+import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
 import Tabs from "@/components/Timer/Tabs";
 import Clock from "@/components/Timer/Clock";
 
@@ -11,6 +12,14 @@ const Timer: FC = () => {
   const {
     tab: { set, get },
   } = usePomodoro(["tab"]);
+
+  const {
+    status: { get: getStatus },
+  } = useIndexedDB(["status"]);
+
+  useEffect(() => {
+    console.log(getStatus, process.env.NEXT_PUBLIC_IS_LOCAL);
+  }, [getStatus]);
 
   const onClick = useCallback(
     (selectedTitle: SelectedTabType) => {

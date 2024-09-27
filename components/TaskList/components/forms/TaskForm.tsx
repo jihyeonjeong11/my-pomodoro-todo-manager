@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import { useTaskControl } from "@/components/TaskList/components/hooks/useTaskControl";
+import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
 
 const TaskForm = () => {
   const {

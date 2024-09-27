@@ -1,12 +1,13 @@
 import { TABS } from "@/components/Timer/constants";
 import { type TaskType } from "@/types/TaskList";
 
-// use Zod!
+// use Zod
 export const setInitialTask = (tasks: TaskType[], text: string) => ({
   title: text,
   approxPomodoro: 1,
   id: tasks.length,
-  createdAt: Date.now().toString(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
   isActive: true,
   leftSecs: TABS[0].countdown,
 });

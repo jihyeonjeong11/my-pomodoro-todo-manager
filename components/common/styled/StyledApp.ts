@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 // use ResizeObserver to make timer and list.
 // on mobile Resolution, flex-direction: column; and on PC flex-direction: row
 const StyledApp = styled.div`
+  position: fixed;
   text-align: center;
   display: flex;
   flex-direction: column;
