@@ -17,13 +17,16 @@ const MainPage = () => (
       <PomodoroProvider>
         <TasklistProvider>
           <StyledApp>
-            <StyledTimer>
-              <h1 className="spacing">Pomodoro timer</h1>
-              <Timer />
-            </StyledTimer>
-            <StyledList>
-              <TaskList />
-            </StyledList>
+            {/* need another wrapper handling loading and refresh the data.  reuse window */}
+            <div className="wrapper">
+              <StyledTimer>
+                <h1 className="spacing">Pomodoro timer</h1>
+                <Timer />
+              </StyledTimer>
+              <StyledList>
+                <TaskList />
+              </StyledList>
+            </div>
           </StyledApp>
           {/* Maybe will be deleted. */}
           {/* <WindowLoader /> */}

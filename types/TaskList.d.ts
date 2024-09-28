@@ -5,7 +5,7 @@ export type TaskListType = {
 
 export type TaskType = {
   title: string;
-  id: number; // Server mock later
+  //id: number; // Server mock later
   createdAt: Date; // Django mock.
   updatedAt: Date; // Django mock.
   isActive: boolean;
