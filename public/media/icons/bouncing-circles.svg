@@ -1,0 +1,11 @@
+﻿<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' width='400px' height='400px'>
+  <circle fill='#FF156D' stroke='#FF156D' stroke-width='30' r='30' cx='80' cy='130'>
+    <animate attributeName='cy' calcMode='spline' dur='2' values='130;270;130;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate>
+  </circle>
+  <circle fill='#FF156D' stroke='#FF156D' stroke-width='30' r='30' cx='200' cy='130'>
+    <animate attributeName='cy' calcMode='spline' dur='2' values='130;270;130;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate>
+  </circle>
+  <circle fill='#FF156D' stroke='#FF156D' stroke-width='30' r='30' cx='320' cy='130'>
+    <animate attributeName='cy' calcMode='spline' dur='2' values='130;270;130;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate>
+  </circle>
+</svg>

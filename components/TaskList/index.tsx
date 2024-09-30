@@ -14,7 +14,7 @@ const TaskItem = dynamic(
 const TaskList = () => {
   const {
     tasks: { get: getTasks, set: setTask },
-  } = useTasklist(["tasks", "tasklistRef"]);
+  } = useTasklist(["tasks"]);
 
   const {
     status: { get: getStatus, set: setStatus },
@@ -25,7 +25,6 @@ const TaskList = () => {
     if (getDB) {
       const transaction = getDB.transaction(["tasks"], "readwrite");
       const request = transaction.objectStore("tasks").getAll();
-      console.log(request);
 
       transaction.onsuccess = (e) => {
         console.log("hellop", e);

@@ -6,5 +6,4 @@ export const {
   useFastContextFields: useTaskWindows,
 } = createFastContext({
   taskWindows: {} as Record<"main" | string, any>,
-  tasks: [] as TaskType[],
 });
