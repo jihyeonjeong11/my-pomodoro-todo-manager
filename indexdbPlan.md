@@ -4,9 +4,14 @@ https://nextjs.org/docs/pages/building-your-application/configuring/environment-
 
 make Loading wrapper reusing Window -> done
 
-Write test first!
+change of plan.
 
+useIndexedDB for just snapshot and completion of task!
+
+Write test first! +
 make db handler CRUD
+-> create a wrapper React.children and handle it there.
+AppContainer from DaedalOS
 
 make refresh handler in Window
 

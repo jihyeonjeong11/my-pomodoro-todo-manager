@@ -6,6 +6,9 @@ import { type TaskType } from "@/types/TaskList";
 import { StyledTaskTitle } from "@/components/TaskList/styled/StyledList";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
+import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
+import { isUseLocalDBOrNot } from "@/components/common/functions";
+import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 
 const TaskItem = ({ task }: { task: TaskType }) => {
   const {
@@ -13,8 +16,17 @@ const TaskItem = ({ task }: { task: TaskType }) => {
   } = useTasklist(["tasks", "tasklistRef"]);
   const motionProps = useTaskItemTransition();
 
+  const {
+    taskWindows: { get: getTaskWindows, set: setTaskWindows },
+  } = useTaskWindows(["taskWindows"]);
+
+  const {
+    db: { get: getDB },
+  } = useIndexedDB(["db"]);
+
   const { deleteTask, completeTask, activateOrReactivateTask } =
     useTaskControl(getTasks);
+
   const isCompleted = task.leftSecs === 0;
 
   const onClickActive = useCallback(() => {
@@ -24,9 +36,31 @@ const TaskItem = ({ task }: { task: TaskType }) => {
   const onClickDelete = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      deleteTask(task.id, setTask);
+
+      if (isUseLocalDBOrNot()) {
+        if (getDB) {
+          const transaction = getDB.transaction(["tasks"], "readwrite");
+          const request = transaction.objectStore("tasks").delete(task.id);
+
+          request.onsuccess = () => {
+            setTaskWindows({
+              ...getTaskWindows,
+              loader: { actionType: "refresh" },
+            });
+            // zod
+          };
+          // eslint-disable-next-line unicorn/prefer-add-event-listener
+          request.onerror = () => {
+            throw new Error(request.error?.message);
+          };
+        } else {
+          throw new Error("No DB found");
+        }
+      } else {
+        deleteTask(task.id, setTask);
+      }
     },
-    [deleteTask, setTask, task.id]
+    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id],
   );
 
   const onClickComplete = useCallback(
@@ -34,7 +68,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       completeTask(task.id, setTask);
     },
-    [completeTask, setTask, task.id]
+    [completeTask, setTask, task.id],
   );
 
   return (
@@ -49,7 +83,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         {isCompleted ? <SvgInactive /> : <SvgActive />}
       </button>
       {/* i can add put action later with more data in Tasks */}
-      <StyledTaskTitle isActive={task.isActive} isCompleted={isCompleted}>
+      <StyledTaskTitle $isactive={task.isActive} $iscompleted={isCompleted}>
         {task.title}
       </StyledTaskTitle>
       <button

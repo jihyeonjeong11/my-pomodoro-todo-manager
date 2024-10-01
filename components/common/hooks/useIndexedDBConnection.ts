@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { isIndexedDBExists } from "@/components/common/hooks/functions";
 import { DB_STATUS_CONSTANTS } from "@/components/common/constants";
 import { type StatusType } from "@/types/dbLocal";
-import { TaskType } from "@/types/TaskList";
+import { isUseLocalDBOrNot } from "@/components/common/functions";
 
 const DATABASE = {
   name: "pomodoro-tasklist",
@@ -13,21 +13,17 @@ const useIndexedDBConnection = (
   getStatus: StatusType,
   setStatus: (value: StatusType) => void,
   getDB: IDBDatabase | null,
-  setDB: (value: IDBDatabase | null) => void
+  setDB: (value: IDBDatabase | null) => void,
 ) => {
   useEffect(() => {
     const openDB = async () => {
-      if (
-        isIndexedDBExists() &&
-        process.env.NEXT_PUBLIC_IS_LOCAL === "true" &&
-        !getDB
-      ) {
+      if (isIndexedDBExists() && isUseLocalDBOrNot() && !getDB) {
         setStatus(DB_STATUS_CONSTANTS.NOT_CONNECTED);
         await new Promise((resolve) => {
           const request = indexedDB.open(DATABASE.name, DATABASE.version);
 
-          request.onupgradeneeded = (event) => {
-            const db = event.target?.result;
+          request.onupgradeneeded = () => {
+            const db = request.result;
 
             if (!db.objectStoreNames.contains(DATABASE.name)) {
               const taskStore = db.createObjectStore("tasks", {
@@ -71,8 +67,6 @@ const useIndexedDBConnection = (
       setStatus(DB_STATUS_CONSTANTS.NOT_USED);
     }
   }, [getDB, getStatus, setDB, setStatus]);
-
-  return { getStatus, getDB };
 };
 
 export default useIndexedDBConnection;

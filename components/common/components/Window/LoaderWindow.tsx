@@ -5,9 +5,10 @@ import { SvgLoading } from "@/public/media/icons";
 import { useEffect } from "react";
 import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
 import { useTasklist } from "@/components/contexts/TasklistContext";
+import useIndexedDBControl from "@/components/common/hooks/useIndexedDBControl";
 
 // Static window for TaskList.
-const LoaderWindow = (actionType) => {
+const LoaderWindow = ({ actionType }: { actionType: string }) => {
   const {
     taskWindows: { get: getTaskWindows, set: setTaskWindows },
   } = useTaskWindows(["taskWindows"]);
@@ -17,25 +18,21 @@ const LoaderWindow = (actionType) => {
   } = useTasklist(["tasks", "tasklistRef"]);
 
   const {
-    status: { get: getStatus, set: setStatus },
-    db: { get: getDB, set: setDB },
+    db: { get: getDB },
   } = useIndexedDB(["status", "db"]);
 
-  useEffect(() => {
-    if (actionType.isRefresher && getStatus === "connected") {
-      const transaction = getDB.transaction(["tasks"], "readwrite");
-      const request = transaction.objectStore("tasks").getAll();
+  const { getAll } = useIndexedDBControl(
+    getDB,
+    setTask,
+    getTaskWindows,
+    setTaskWindows,
+  );
 
-      request.onsuccess = (event) => {
-        setTask(event.target.result);
-        setTaskWindows(
-          Object.fromEntries(
-            Object.entries(getTaskWindows).filter(([key]) => key !== "loader")
-          )
-        );
-      };
+  useEffect(() => {
+    if (actionType === "refresh") {
+      getAll();
     }
-  }, actionType);
+  }, [actionType, getAll]);
 
   return (
     <StyledLoaderWindow

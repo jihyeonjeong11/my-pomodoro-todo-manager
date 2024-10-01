@@ -6,10 +6,11 @@ import {
   useState,
 } from "react";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
 import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
 import { setInitialTask } from "@/components/TaskList/components/functions";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
+import { isUseLocalDBOrNot } from "@/components/common/functions";
+import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
 
 const TaskForm = () => {
   const {
@@ -21,40 +22,49 @@ const TaskForm = () => {
   } = useTaskWindows(["taskWindows"]);
 
   const {
-    status: { get: getStatus, set: setStatus },
-    db: { get: getDB, set: setDB },
-  } = useIndexedDB(["status", "db"]);
+    db: { get: getDB },
+  } = useIndexedDB(["db"]);
+
+  const { postTask } = useTaskControl(getTasks);
 
   const [text, setText] = useState<string>("");
-  const { postTask } = useTaskControl(getTasks);
 
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (getDB) {
-        console.log("eiei");
 
-        const transaction = getDB.transaction(["tasks"], "readwrite");
-        const request = transaction.objectStore("tasks");
-        const newRow = setInitialTask(getTasks, text);
-        const add = request.add(newRow);
-        add.onsuccess = () => {
-          setTaskWindows({ ...getTaskWindows, loader: { isRefresher: true } });
-          // loading -> refresh stuff
-          // zod
-          if (text.length > 0) {
-            setText("");
-          }
-        };
-        add.onerror = (error) => {
-          console.log(error);
-          throw new Error(error.target.result);
-        };
+      postTask(text, setTask);
+      setText("");
+
+      if (isUseLocalDBOrNot()) {
+        if (getDB) {
+          const transaction = getDB.transaction(["tasks"], "readwrite");
+          const request = transaction.objectStore("tasks");
+          const newRow = setInitialTask(getTasks, text);
+          const add = request.add(newRow);
+          add.onsuccess = () => {
+            setTaskWindows({
+              ...getTaskWindows,
+              loader: { actionType: "refresh" },
+            });
+            // zod
+            if (text.length > 0) {
+              setText("");
+            }
+          };
+          // eslint-disable-next-line unicorn/prefer-add-event-listener
+          add.onerror = () => {
+            throw new Error(add.error?.message);
+          };
+        } else {
+          throw new Error("No DB found");
+        }
       } else {
-        throw new Error("No DB found");
+        postTask(text, setTask);
+        setText("");
       }
     },
-    [getDB, getTaskWindows, getTasks, setTaskWindows, text]
+    [postTask, setTask, text, getDB, getTaskWindows, getTasks, setTaskWindows],
   );
 
   const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {

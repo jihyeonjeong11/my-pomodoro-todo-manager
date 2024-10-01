@@ -4,11 +4,9 @@ import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
 import useToggle from "@/components/common/hooks/useToggle";
 import { AnimatePresence, Reorder } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useIndexedDB } from "../contexts/IndexedDBContext";
-import { useEffect } from "react";
 
 const TaskItem = dynamic(
-  () => import("@/components/TaskList/components/item/TaskItem")
+  () => import("@/components/TaskList/components/item/TaskItem"),
 );
 
 const TaskList = () => {
@@ -16,31 +14,8 @@ const TaskList = () => {
     tasks: { get: getTasks, set: setTask },
   } = useTasklist(["tasks"]);
 
-  const {
-    status: { get: getStatus, set: setStatus },
-    db: { get: getDB, set: setDB },
-  } = useIndexedDB(["status", "db"]);
-
-  useEffect(() => {
-    if (getDB) {
-      const transaction = getDB.transaction(["tasks"], "readwrite");
-      const request = transaction.objectStore("tasks").getAll();
-
-      transaction.onsuccess = (e) => {
-        console.log("hellop", e);
-      };
-
-      request.onsuccess = (event) => {
-        setTask(event.target.result);
-      };
-
-      // mockTasks.forEach((m) => {
-      //   request.add(m);
-      // });
-    }
-  }, [getDB]);
-
   const [showAddForm, flipTaskButton] = useToggle(false);
+
   return (
     <StyledInnerList>
       <div className="spacing">

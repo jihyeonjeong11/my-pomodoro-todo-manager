@@ -11,6 +11,7 @@ import TaskList from "@/components/TaskList";
 import Timer from "@/components/Timer";
 import StyledApp from "@/components/common/styled/StyledApp";
 import WindowLoader from "@/components/common/components/WindowLoader";
+import AppContainer from "@/components/common/components/AppContainer";
 
 // list provider
 const MainPage = () => (
@@ -21,7 +22,7 @@ const MainPage = () => (
           <TasklistProvider>
             <StyledApp>
               {/* need another wrapper handling loading and refresh the data.  reuse window */}
-              <div className="wrapper">
+              <AppContainer>
                 <StyledTimer>
                   <h1 className="spacing">Pomodoro timer</h1>
                   <Timer />
@@ -29,10 +30,10 @@ const MainPage = () => (
                 <StyledList>
                   <TaskList />
                 </StyledList>
-              </div>
+                <WindowLoader />
+              </AppContainer>
             </StyledApp>
             {/* Maybe will be deleted. */}
-            <WindowLoader />
           </TasklistProvider>
         </PomodoroProvider>
       </TaskWindowsProvider>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { type SelectedTabType } from "@/types/Timer";
 import TabItem from "@/components/Timer/Tabs/TabItem";
 import { TABS } from "@/components/Timer/constants";
@@ -7,7 +7,7 @@ import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
 import Tabs from "@/components/Timer/Tabs";
 import Clock from "@/components/Timer/Clock";
-import useIndexedDBConnection from "@/components/common/hooks/useIndexedDB";
+import useIndexedDBConnection from "@/components/common/hooks/useIndexedDBConnection";
 
 const Timer: FC = () => {
   const {
@@ -25,21 +25,8 @@ const Timer: FC = () => {
     (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
-    [set]
+    [set],
   );
-
-  // useEffect(() => {
-  //   if (getDB) {
-  //     const transaction = getDB.transaction(["tasks"], "readwrite");
-  //     const request = transaction.objectStore("tasks").getAll();
-
-  //     request.onsuccess = (event) => {};
-
-  //     // mockTasks.forEach((m) => {
-  //     //   request.add(m);
-  //     // });
-  //   }
-  // }, [getDB]);
 
   return (
     <>

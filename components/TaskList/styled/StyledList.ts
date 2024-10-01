@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import TaskTitle from "@/components/TaskList/components/item/TaskTitle";
 
 export const StyledList = styled.section`
   margin-top: 1.5rem;
@@ -24,14 +25,13 @@ export const StyledList = styled.section`
   }
 `;
 
-export const StyledTaskTitle = styled.span<{
-  isActive: boolean;
-  isCompleted: boolean;
-}>`
-  color: ${({ theme, isActive }) =>
-    isActive ? `${theme.colors.timer.selectionHighlight}` : "white"};
-  text-decoration: ${({ isCompleted }) =>
-    isCompleted ? "line-through" : "none"};
+export const StyledTaskTitle = styled(TaskTitle)`
+  color: ${(props) =>
+    props.$isactive
+      ? `${props.theme.colors.timer.selectionHighlight}`
+      : "white"};
+  text-decoration: ${({ iscompleted }) =>
+    iscompleted ? "line-through" : "none"};
 `;
 
 export const StyledInnerList = styled.div`
