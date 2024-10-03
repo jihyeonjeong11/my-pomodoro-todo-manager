@@ -1,7 +1,4 @@
-import {
-  StyledBackdrop,
-  StyledMainWindow,
-} from "@/components/common/styled/StyledWindows";
+import { StyledMainWindow } from "@/components/common/styled/StyledWindows";
 import { motion } from "framer-motion";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 import { SvgLoading } from "@/public/media/icons";
@@ -28,7 +25,6 @@ const fromBottom = {
 
 // Static window for TaskList.
 const MainWindow = (props) => {
-  console.log(123123, props);
   const {
     taskWindows: { get: getTaskWindows, set: setTaskWindows },
   } = useTaskWindows(["taskWindows"]);

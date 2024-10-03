@@ -13,7 +13,8 @@ import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 const TaskItem = ({ task }: { task: TaskType }) => {
   const {
     tasks: { get: getTasks, set: setTask },
-  } = useTasklist(["tasks", "tasklistRef"]);
+    selectedTask: { get: getSelectedTask, set: setSelectedTask },
+  } = useTasklist(["tasks", "selectedTask"]);
   const motionProps = useTaskItemTransition();
 
   const {
@@ -30,8 +31,8 @@ const TaskItem = ({ task }: { task: TaskType }) => {
   const isCompleted = task.leftSecs === 0;
 
   const onClickActive = useCallback(() => {
-    activateOrReactivateTask(task.id, isCompleted, setTask);
-  }, [setTask, task.id, isCompleted, activateOrReactivateTask]);
+    activateOrReactivateTask(task.id, isCompleted, setSelectedTask);
+  }, [setSelectedTask, task.id, isCompleted, activateOrReactivateTask]);
 
   const onClickDelete = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -47,6 +48,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
               ...getTaskWindows,
               loader: { actionType: "refresh" },
             });
+
             // zod
           };
           // eslint-disable-next-line unicorn/prefer-add-event-listener
@@ -60,7 +62,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         deleteTask(task.id, setTask);
       }
     },
-    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id],
+    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id]
   );
 
   const onClickComplete = useCallback(
@@ -68,7 +70,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       completeTask(task.id, setTask);
     },
-    [completeTask, setTask, task.id],
+    [completeTask, setTask, task.id]
   );
 
   return (
@@ -83,7 +85,10 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         {isCompleted ? <SvgInactive /> : <SvgActive />}
       </button>
       {/* i can add put action later with more data in Tasks */}
-      <StyledTaskTitle $isactive={task.isActive} $iscompleted={isCompleted}>
+      <StyledTaskTitle
+        $isactive={getSelectedTask.id === task.id}
+        $iscompleted={isCompleted}
+      >
         {task.title}
       </StyledTaskTitle>
       <button

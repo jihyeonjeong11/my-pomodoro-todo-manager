@@ -1,1 +1,1 @@
-export const isIndexedDBExists = () => "indexedDB" in window;
+export const isIndexedDBCallable = () => "indexedDB" in window;

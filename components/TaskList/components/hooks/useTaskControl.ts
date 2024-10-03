@@ -3,9 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 import {
   filterTask,
   setInitialTask,
-  makeFirstTaskActiveIfCurrentActivatedChanged,
   setCompleteTask,
-  setOthersInactive,
 } from "@/components/TaskList/components/functions";
 import { TABS } from "@/components/Timer/constants";
 
@@ -21,7 +19,7 @@ import { TABS } from "@/components/Timer/constants";
  *   activateOrReactivateTask: (
  *     id: TaskType["id"],
  *     isCompleted: boolean,
- *     callback: (value: TaskType[]) => void
+ *     callback: (value: TaskType) => void
  *   ) => void
  * }}
  */
@@ -45,7 +43,7 @@ const useTaskControl = (tasks: TaskType[]) => {
    */
   const postTask = useCallback(
     (text: string, callback: (value: TaskType[]) => void) =>
-      callback([setInitialTask(tasks, text), ...setOthersInactive(tasks)]),
+      callback([setInitialTask(tasks, text), ...tasks]),
     [tasks]
   );
 
@@ -58,9 +56,7 @@ const useTaskControl = (tasks: TaskType[]) => {
    */
   const deleteTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) =>
-      callback(
-        makeFirstTaskActiveIfCurrentActivatedChanged(filterTask(tasks, id))
-      ),
+      callback(filterTask(tasks, id)),
     [tasks]
   );
 
@@ -73,10 +69,7 @@ const useTaskControl = (tasks: TaskType[]) => {
    */
   const completeTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
-      callback([
-        ...makeFirstTaskActiveIfCurrentActivatedChanged(filterTask(tasks, id)),
-        setCompleteTask(tasks, id),
-      ]);
+      callback([...filterTask(tasks, id), setCompleteTask(tasks, id)]);
     },
     [tasks]
   );
@@ -89,12 +82,8 @@ const useTaskControl = (tasks: TaskType[]) => {
    * @param {function} callback - Callback function to update the task list.
    */
   const activateTask = useCallback(
-    (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
-      callback(
-        tasks.map((t) =>
-          t.id === id ? { ...t, isActive: true } : { ...t, isActive: false }
-        )
-      );
+    (id: TaskType["id"], callback: (value: TaskType) => void) => {
+      callback(tasks.find((t) => t.id === id) as TaskType);
     },
     [tasks]
   );
@@ -106,14 +95,11 @@ const useTaskControl = (tasks: TaskType[]) => {
    * @param {function} callback - Callback function to update the task list.
    */
   const reactivateTask = useCallback(
-    (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
-      callback(
-        tasks.map((t) =>
-          t.id === id
-            ? { ...t, isActive: true, leftSecs: TABS[0].countdown }
-            : { ...t, isActive: false }
-        )
-      );
+    (id: TaskType["id"], callback: (value: TaskType) => void) => {
+      callback({
+        ...tasks.find((t) => t.id === id),
+        leftSecs: TABS[0].countdown,
+      } as TaskType);
     },
     [tasks]
   );
@@ -129,7 +115,7 @@ const useTaskControl = (tasks: TaskType[]) => {
     (
       id: TaskType["id"],
       isCompleted: boolean,
-      callback: (value: TaskType[]) => void
+      callback: (value: TaskType) => void
     ) => {
       if (isCompleted) {
         reactivateTask(id, callback);

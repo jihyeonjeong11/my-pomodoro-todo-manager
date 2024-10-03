@@ -14,25 +14,26 @@ const LoaderWindow = ({ actionType }: { actionType: string }) => {
   } = useTaskWindows(["taskWindows"]);
 
   const {
-    tasks: { set: setTask },
+    tasks: { get: getTasks, set: setTask },
   } = useTasklist(["tasks", "tasklistRef"]);
 
   const {
     db: { get: getDB },
   } = useIndexedDB(["status", "db"]);
 
-  const { getAll } = useIndexedDBControl(
+  const { getAll, putOrPostOrder } = useIndexedDBControl(
     getDB,
     setTask,
     getTaskWindows,
-    setTaskWindows,
+    setTaskWindows
   );
 
   useEffect(() => {
     if (actionType === "refresh") {
-      getAll();
+      putOrPostOrder(getTasks);
+      getAll(); // reorder, active
     }
-  }, [actionType, getAll]);
+  }, [actionType, getAll, getTasks, putOrPostOrder]);
 
   return (
     <StyledLoaderWindow

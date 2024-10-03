@@ -24,6 +24,8 @@ const Clock = () => {
     setCircleOffset((prev) => prev - totalChange);
   };
   const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
+  // modal did you finished?
+  // yes, leftSecs = 0 || leftSecs 25 mins
   useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
 
   useEffect(() => {

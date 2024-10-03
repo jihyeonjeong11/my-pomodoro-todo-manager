@@ -11,7 +11,6 @@ const AppContainer: FC = ({ children }) => {
     status: { get: getStatus, set: setStatus },
     db: { get: getDB, set: setDB },
   } = useIndexedDB(["status", "db"]);
-  useIndexedDBConnection(getStatus, setStatus, getDB, setDB);
 
   const {
     tasks: { get: getTasks, set: setTask },
@@ -19,6 +18,7 @@ const AppContainer: FC = ({ children }) => {
 
   const [initiated, toggleInitiated] = useToggle();
 
+  useIndexedDBConnection(getStatus, setStatus, getDB, setDB, getTasks);
   const { getAll } = useIndexedDBControl(getDB, setTask, getTasks);
 
   useEffect(() => {
@@ -26,7 +26,8 @@ const AppContainer: FC = ({ children }) => {
       getAll();
       toggleInitiated();
     }
-  }, [getStatus, getDB, setTask, getAll, initiated, toggleInitiated]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getStatus, getDB]);
 
   return <div className="wrapper">{children}</div>;
 };

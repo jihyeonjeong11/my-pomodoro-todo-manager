@@ -4,24 +4,42 @@ import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
 import useToggle from "@/components/common/hooks/useToggle";
 import { AnimatePresence, Reorder } from "framer-motion";
 import dynamic from "next/dynamic";
+import { type TaskType } from "@/types/TaskList";
+import useIndexedDBControl from "@/components/common/hooks/useIndexedDBControl";
+import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
+import { useCallback } from "react";
 
 const TaskItem = dynamic(
-  () => import("@/components/TaskList/components/item/TaskItem"),
+  () => import("@/components/TaskList/components/item/TaskItem")
 );
 
 const TaskList = () => {
   const {
     tasks: { get: getTasks, set: setTask },
-  } = useTasklist(["tasks"]);
+  } = useTasklist(["tasks", "tasklistRef"]);
+
+  const {
+    db: { get: getDB },
+  } = useIndexedDB(["status", "db"]);
+
+  const { putOrPostOrder } = useIndexedDBControl(getDB, setTask);
 
   const [showAddForm, flipTaskButton] = useToggle(false);
+
+  const onReorder = useCallback(
+    (newOrderedTasks: TaskType[]) => {
+      setTask(newOrderedTasks);
+      putOrPostOrder(newOrderedTasks);
+    },
+    [putOrPostOrder, setTask]
+  );
 
   return (
     <StyledInnerList>
       <div className="spacing">
         {getTasks.length > 0 && "Time to get productive!"}
       </div>
-      <Reorder.Group axis="y" values={getTasks} onReorder={setTask}>
+      <Reorder.Group axis="y" values={getTasks} onReorder={onReorder}>
         <AnimatePresence>
           {getTasks.map((t) => (
             <Reorder.Item

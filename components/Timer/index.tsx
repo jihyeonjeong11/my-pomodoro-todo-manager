@@ -14,18 +14,11 @@ const Timer: FC = () => {
     tab: { set, get },
   } = usePomodoro(["tab"]);
 
-  const {
-    status: { get: getStatus, set: setStatus },
-    db: { get: getDB, set: setDB },
-  } = useIndexedDB(["status", "db"]);
-
-  useIndexedDBConnection(getStatus, setStatus, getDB, setDB);
-
   const onClick = useCallback(
     (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
-    [set],
+    [set]
   );
 
   return (

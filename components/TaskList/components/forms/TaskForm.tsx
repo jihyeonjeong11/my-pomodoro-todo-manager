@@ -38,7 +38,10 @@ const TaskForm = () => {
 
       if (isUseLocalDBOrNot()) {
         if (getDB) {
-          const transaction = getDB.transaction(["tasks"], "readwrite");
+          const transaction = getDB.transaction(
+            ["tasks", "session"],
+            "readwrite"
+          );
           const request = transaction.objectStore("tasks");
           const newRow = setInitialTask(getTasks, text);
           const add = request.add(newRow);
@@ -47,6 +50,7 @@ const TaskForm = () => {
               ...getTaskWindows,
               loader: { actionType: "refresh" },
             });
+
             // zod
             if (text.length > 0) {
               setText("");
@@ -64,7 +68,7 @@ const TaskForm = () => {
         setText("");
       }
     },
-    [postTask, setTask, text, getDB, getTaskWindows, getTasks, setTaskWindows],
+    [postTask, setTask, text, getDB, getTaskWindows, getTasks, setTaskWindows]
   );
 
   const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {

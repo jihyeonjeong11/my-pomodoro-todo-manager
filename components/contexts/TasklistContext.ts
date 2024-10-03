@@ -7,4 +7,5 @@ export const {
 } = createFastContext({
   tasks: [] as TaskType[],
   tasklistRef: null as unknown as React.MutableRefObject<HTMLDivElement | null>,
+  selectedTask: {} as TaskType,
 });

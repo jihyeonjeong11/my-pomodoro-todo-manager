@@ -6,12 +6,17 @@ make Loading wrapper reusing Window -> done
 
 change of plan.
 
-useIndexedDB for just snapshot and completion of task!
-
 Write test first! +
 make db handler CRUD
 -> create a wrapper React.children and handle it there.
 AppContainer from DaedalOS
+
+session: {
+reorder: 01237...
+add, delete, reorder
+activeId: id
+add, delete, activate, complete.
+}
 
 make refresh handler in Window
 

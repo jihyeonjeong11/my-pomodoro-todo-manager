@@ -1,23 +1,23 @@
 import { useEffect } from "react";
-import { isIndexedDBExists } from "@/components/common/hooks/functions";
+import { isIndexedDBCallable } from "@/components/common/hooks/functions";
 import { DB_STATUS_CONSTANTS } from "@/components/common/constants";
 import { type StatusType } from "@/types/dbLocal";
 import { isUseLocalDBOrNot } from "@/components/common/functions";
 
 const DATABASE = {
   name: "pomodoro-tasklist",
-  version: 1,
+  version: 2,
 };
 
 const useIndexedDBConnection = (
   getStatus: StatusType,
   setStatus: (value: StatusType) => void,
   getDB: IDBDatabase | null,
-  setDB: (value: IDBDatabase | null) => void,
+  setDB: (value: IDBDatabase | null) => void
 ) => {
   useEffect(() => {
     const openDB = async () => {
-      if (isIndexedDBExists() && isUseLocalDBOrNot() && !getDB) {
+      if (isUseLocalDBOrNot() && isIndexedDBCallable() && !getDB) {
         setStatus(DB_STATUS_CONSTANTS.NOT_CONNECTED);
         await new Promise((resolve) => {
           const request = indexedDB.open(DATABASE.name, DATABASE.version);
@@ -43,6 +43,12 @@ const useIndexedDBConnection = (
                 unique: false,
               });
               taskStore.createIndex("leftSecs", "leftSecs", { unique: false });
+
+              const orderStore = db.createObjectStore("session", {
+                keyPath: "id",
+              });
+              orderStore.createIndex("order", "order");
+              orderStore.createIndex("activeId", "activeId");
             }
           };
 
@@ -61,7 +67,7 @@ const useIndexedDBConnection = (
       }
     };
 
-    if (isIndexedDBExists() && process.env.NEXT_PUBLIC_IS_LOCAL === "true") {
+    if (isIndexedDBCallable() && process.env.NEXT_PUBLIC_IS_LOCAL === "true") {
       openDB();
     } else {
       setStatus(DB_STATUS_CONSTANTS.NOT_USED);
