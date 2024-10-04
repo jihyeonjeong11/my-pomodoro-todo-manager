@@ -1,31 +1,46 @@
-import { useCallback } from "react";
-import { type SelectedTabType } from "@/types/Timer";
+import { type SetStateAction, useCallback } from "react";
+import {
+  type TabWithMutableCountdown,
+  type SelectedTabType,
+} from "@/types/Timer";
+import { type TaskType } from "@/types/TaskList";
 import TabItem from "@/components/Timer/Tabs/TabItem";
 import { TABS } from "@/components/Timer/constants";
 import { findTab } from "@/components/Timer/functions";
-import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import Clock from "@/components/Timer/Clock";
 
-const Timer: FC = () => {
-  const {
-    tab: { set, get },
-  } = usePomodoro(["tab"]);
+type Props = {
+  getTab: TabWithMutableCountdown;
+  setTab: (value: TabWithMutableCountdown) => void;
+  selectedTask: TaskType | undefined;
+  initialCountdown: number;
+  setInitialCountdown: SetStateAction<number>;
+};
 
-  const onClick = useCallback(
+const Timer: FC<Props> = ({
+  getTab,
+  setTab,
+  selectedTask,
+  initialCountdown,
+  setInitialCountdown,
+  isStarted,
+  toggle,
+}) => {
+  const onClickTabItem = useCallback(
     (selectedTitle: SelectedTabType) => {
-      set(findTab(selectedTitle));
+      setTab(findTab(selectedTitle));
     },
-    [set]
+    [setTab]
   );
 
   return (
     <>
       <nav data-testid="tab">
         {TABS.map((item, index) => {
-          const isSelected = item.title === get.title;
+          const isSelected = item.title === getTab.title;
           return (
             <TabItem
-              onClick={onClick}
+              onClickTabItem={onClickTabItem}
               data-testid={`tab-item-${index}`}
               key={item.title}
               selectedTitle={item.title}
@@ -34,7 +49,15 @@ const Timer: FC = () => {
           );
         })}
       </nav>
-      <Clock />
+      <Clock
+        getTab={getTab}
+        setTab={setTab}
+        selectedTask={selectedTask}
+        initialCountdown={initialCountdown}
+        setInitialCountdown={setInitialCountdown}
+        isStarted={isStarted}
+        toggle={toggle}
+      />
     </>
   );
 };

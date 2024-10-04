@@ -57,7 +57,7 @@ const useTimerControl = (
     } else {
       setIsStarted(TIMER_STATUS.stopped);
     }
-  }, [countdown, isStarted]);
+  }, [isStarted]);
   return { isStarted, toggle };
 };
 

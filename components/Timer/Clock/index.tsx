@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { convertMsToTime, findTab } from "@/components/Timer/functions";
 import useInterval from "@/components/Timer/hooks/useInterval";
 import useTimerControl from "@/components/Timer/hooks/useTimerControl";
@@ -10,57 +9,36 @@ import {
   TIMER_STATUS,
 } from "@/components/Timer/constants";
 import { useTasklist } from "@/components/contexts/TasklistContext";
+import { type TabWithMutableCountdown } from "@/types/Timer";
+import { type TaskType } from "@/types/TaskList";
 
-const Clock = () => {
-  const {
-    tab: { get: getTab },
-  } = usePomodoro(["isStarted", "tab"]);
+type Props = {
+  getTab: TabWithMutableCountdown;
+  setTab: (value: TabWithMutableCountdown) => void;
+  selectedTask: TaskType | undefined;
+  initialCountdown: number;
+  setInitialCountdown: SetStateAction<number>;
+};
 
+const Clock: FC<Props> = ({
+  getTab,
+  setTab,
+  selectedTask,
+  initialCountdown,
+  isStarted,
+  toggle,
+}) => {
   const {
-    tasks: { get: getTasks, set: setTask },
+    tasks: { get: getTasks, set: setTasks },
     selectedTaskId: { get: getSelectedTaskId, set: setSelectedTaskId },
   } = useTasklist(["tasks", "selectedTaskId"]);
-
-  const [initialCountdown, setInitialCountdown] = useState(1_500_000);
+  const [derivedCountdown, setDerivedCountdown] = useState(initialCountdown);
   const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
-  const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
-  const selectedTask = getTasks.find((t) => t.id === getSelectedTaskId);
-
-  useEffect(() => {
-    if (getTab.title !== "pomodoro" || selectedTask === undefined) {
-      setInitialCountdown(getTab.countdown);
-    } else {
-      setInitialCountdown(selectedTask.leftSecs);
-    }
-  }, [getTab.title, getTab.countdown]);
-
-  useEffect(() => {
-    if (selectedTask !== undefined) {
-      setInitialCountdown(selectedTask.leftSecs);
-    }
-  }, [setSelectedTaskId]);
-
-  useEffect(() => {
-    // when changed tahb this changes.
-    if (isStarted === TIMER_STATUS.stopped && getTab.title === "pomodoro") {
-      setTask(
-        getTasks.map((t) => {
-          if (t.id === getSelectedTaskId) {
-            return {
-              ...t,
-              leftSecs: initialCountdown,
-            };
-          }
-          return t;
-        })
-      );
-    }
-  }, [isStarted]);
 
   const tick = () => {
     const totalChange = 10 * getTab.decrementor;
     setCircleOffset((prev) => prev - totalChange);
-    setInitialCountdown(initialCountdown - DEFAULT_TICK_VALUE);
+    setDerivedCountdown(derivedCountdown - DEFAULT_TICK_VALUE);
   };
   // modal did you finished?
   // yes, leftSecs = 0 || leftSecs 25 mins
@@ -70,7 +48,11 @@ const Clock = () => {
     setCircleOffset(DEFAULT_CIRCLE_OFFSET);
   }, [getTab.title]);
 
-  const time = convertMsToTime(initialCountdown);
+  useEffect(() => {
+    setDerivedCountdown(initialCountdown);
+  }, [initialCountdown]);
+
+  const time = convertMsToTime(derivedCountdown);
   const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown;
 
   return (

@@ -4,14 +4,14 @@ import { memo } from "react";
 
 const TabItem: FC<{
   selectedTitle: SelectedTabType;
-  onClick: (selectedTitle: SelectedTabType) => void;
+  onClickTabItem: (selectedTitle: SelectedTabType) => void;
   isSelected: boolean;
-}> = ({ selectedTitle, onClick, isSelected }) => (
+}> = ({ selectedTitle, onClickTabItem, isSelected }) => (
   <div className="tab-item">
     <button
       type="button"
       aria-pressed={isSelected}
-      onClick={() => onClick(selectedTitle)}
+      onClick={() => onClickTabItem(selectedTitle)}
     >
       <span>{selectedTitle}</span>
     </button>
