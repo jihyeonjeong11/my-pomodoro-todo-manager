@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
 import { TIMER_STATUS } from "@/components/Timer/constants";
 import useNotification from "@/components/Timer/hooks/useNotification";
+import { type TaskType } from "@/types/TaskList";
 
 /**
  * Custom hook for controlling a timer.
@@ -32,7 +33,7 @@ import useNotification from "@/components/Timer/hooks/useNotification";
 
 const useTimerControl = (
   title: TabWithMutableCountdown["title"],
-  countdown: number,
+  countdown: number
 ) => {
   const [isStarted, setIsStarted] = useState<TimerType>(TIMER_STATUS.stopped);
   const { launchCompleteNotification } = useNotification();
@@ -43,18 +44,20 @@ const useTimerControl = (
 
   useEffect(() => {
     if (countdown === 0) {
+      // complete task
       launchCompleteNotification(title);
       setIsStarted(TIMER_STATUS.stopped);
     }
   }, [countdown, title, launchCompleteNotification]);
 
   const toggle = useCallback(() => {
-    setIsStarted((prev) =>
-      prev === TIMER_STATUS.stopped
-        ? TIMER_STATUS.started
-        : TIMER_STATUS.stopped,
-    );
-  }, []);
+    // save task leftsecs
+    if (isStarted === TIMER_STATUS.stopped) {
+      setIsStarted(TIMER_STATUS.started);
+    } else {
+      setIsStarted(TIMER_STATUS.stopped);
+    }
+  }, [countdown, isStarted]);
   return { isStarted, toggle };
 };
 

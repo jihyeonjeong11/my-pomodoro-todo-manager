@@ -13,8 +13,8 @@ import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 const TaskItem = ({ task }: { task: TaskType }) => {
   const {
     tasks: { get: getTasks, set: setTask },
-    selectedTask: { get: getSelectedTask, set: setSelectedTask },
-  } = useTasklist(["tasks", "selectedTask"]);
+    selectedTaskId: { get: getSelectedTaskId, set: setSelectedTaskId },
+  } = useTasklist(["tasks", "selectedTaskId"]);
   const motionProps = useTaskItemTransition();
 
   const {
@@ -31,8 +31,8 @@ const TaskItem = ({ task }: { task: TaskType }) => {
   const isCompleted = task.leftSecs === 0;
 
   const onClickActive = useCallback(() => {
-    activateOrReactivateTask(task.id, isCompleted, setSelectedTask);
-  }, [setSelectedTask, task.id, isCompleted, activateOrReactivateTask]);
+    activateOrReactivateTask(task.id, isCompleted, setSelectedTaskId);
+  }, [setSelectedTaskId, task.id, isCompleted, activateOrReactivateTask]);
 
   const onClickDelete = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -86,7 +86,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       </button>
       {/* i can add put action later with more data in Tasks */}
       <StyledTaskTitle
-        $isactive={getSelectedTask.id === task.id}
+        $isactive={getSelectedTaskId === task.id}
         $iscompleted={isCompleted}
       >
         {task.title}

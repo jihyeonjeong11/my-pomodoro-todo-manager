@@ -5,7 +5,6 @@ import {
   setInitialTask,
   setCompleteTask,
 } from "@/components/TaskList/components/functions";
-import { TABS } from "@/components/Timer/constants";
 
 /**
  * Custom hook to manage task operations such as posting, deleting, completing,
@@ -82,10 +81,10 @@ const useTaskControl = (tasks: TaskType[]) => {
    * @param {function} callback - Callback function to update the task list.
    */
   const activateTask = useCallback(
-    (id: TaskType["id"], callback: (value: TaskType) => void) => {
-      callback(tasks.find((t) => t.id === id) as TaskType);
+    (id: TaskType["id"], callback: (value: number) => void) => {
+      callback(id);
     },
-    [tasks]
+    []
   );
 
   /**
@@ -95,13 +94,10 @@ const useTaskControl = (tasks: TaskType[]) => {
    * @param {function} callback - Callback function to update the task list.
    */
   const reactivateTask = useCallback(
-    (id: TaskType["id"], callback: (value: TaskType) => void) => {
-      callback({
-        ...tasks.find((t) => t.id === id),
-        leftSecs: TABS[0].countdown,
-      } as TaskType);
+    (id: TaskType["id"], callback: (value: number) => void) => {
+      callback(id);
     },
-    [tasks]
+    []
   );
 
   /**
@@ -115,7 +111,7 @@ const useTaskControl = (tasks: TaskType[]) => {
     (
       id: TaskType["id"],
       isCompleted: boolean,
-      callback: (value: TaskType) => void
+      callback: (value: number) => void
     ) => {
       if (isCompleted) {
         reactivateTask(id, callback);

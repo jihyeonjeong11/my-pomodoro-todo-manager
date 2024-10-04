@@ -18,6 +18,25 @@ activeId: id
 add, delete, activate, complete.
 }
 
+can make a wrapper for timer and tasklist logic to make them interactable
+
+ex) change selected task -> stop timer(useTimerControl) -> save remaining time(useTasklistControl)
+
+responsibilities
+
+1. tab
+   change tab
+   change initial timer
+
+2. clock
+   play tick
+   complete task
+   start/stop timer
+
+3. tasklist
+   taskCRUD
+   activate/reactivate task
+
 make refresh handler in Window
 
 complete and connect logic in Window

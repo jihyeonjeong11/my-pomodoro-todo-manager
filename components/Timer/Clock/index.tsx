@@ -7,23 +7,61 @@ import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import {
   DEFAULT_CIRCLE_OFFSET,
   DEFAULT_TICK_VALUE,
+  TIMER_STATUS,
 } from "@/components/Timer/constants";
+import { useTasklist } from "@/components/contexts/TasklistContext";
 
 const Clock = () => {
   const {
-    tab: { get: getTab, set: setTab },
+    tab: { get: getTab },
   } = usePomodoro(["isStarted", "tab"]);
+
+  const {
+    tasks: { get: getTasks, set: setTask },
+    selectedTaskId: { get: getSelectedTaskId, set: setSelectedTaskId },
+  } = useTasklist(["tasks", "selectedTaskId"]);
+
+  const [initialCountdown, setInitialCountdown] = useState(1_500_000);
   const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
+  const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
+  const selectedTask = getTasks.find((t) => t.id === getSelectedTaskId);
+
+  useEffect(() => {
+    if (getTab.title !== "pomodoro" || selectedTask === undefined) {
+      setInitialCountdown(getTab.countdown);
+    } else {
+      setInitialCountdown(selectedTask.leftSecs);
+    }
+  }, [getTab.title, getTab.countdown]);
+
+  useEffect(() => {
+    if (selectedTask !== undefined) {
+      setInitialCountdown(selectedTask.leftSecs);
+    }
+  }, [setSelectedTaskId]);
+
+  useEffect(() => {
+    // when changed tahb this changes.
+    if (isStarted === TIMER_STATUS.stopped && getTab.title === "pomodoro") {
+      setTask(
+        getTasks.map((t) => {
+          if (t.id === getSelectedTaskId) {
+            return {
+              ...t,
+              leftSecs: initialCountdown,
+            };
+          }
+          return t;
+        })
+      );
+    }
+  }, [isStarted]);
 
   const tick = () => {
-    setTab({
-      ...getTab,
-      countdown: getTab.countdown - DEFAULT_TICK_VALUE,
-    });
     const totalChange = 10 * getTab.decrementor;
     setCircleOffset((prev) => prev - totalChange);
+    setInitialCountdown(initialCountdown - DEFAULT_TICK_VALUE);
   };
-  const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
   // modal did you finished?
   // yes, leftSecs = 0 || leftSecs 25 mins
   useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
@@ -32,7 +70,7 @@ const Clock = () => {
     setCircleOffset(DEFAULT_CIRCLE_OFFSET);
   }, [getTab.title]);
 
-  const time = convertMsToTime(getTab.countdown);
+  const time = convertMsToTime(initialCountdown);
   const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown;
 
   return (

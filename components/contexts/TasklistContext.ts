@@ -8,4 +8,5 @@ export const {
   tasks: [] as TaskType[],
   tasklistRef: null as unknown as React.MutableRefObject<HTMLDivElement | null>,
   selectedTask: {} as TaskType,
+  selectedTaskId: -1,
 });

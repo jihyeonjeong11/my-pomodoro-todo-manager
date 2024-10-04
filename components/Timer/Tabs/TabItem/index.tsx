@@ -1,5 +1,6 @@
 import { type SelectedTabType } from "@/types/Timer";
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 const TabItem: FC<{
   selectedTitle: SelectedTabType;
@@ -19,4 +20,4 @@ const TabItem: FC<{
     )}
   </div>
 );
-export default TabItem;
+export default memo(TabItem);
