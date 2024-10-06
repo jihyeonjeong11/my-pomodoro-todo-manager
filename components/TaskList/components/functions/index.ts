@@ -10,6 +10,7 @@ export const setInitialTask = (tasks: TaskType[], text: string) => ({
   updatedAt: new Date(),
   leftSecs: TABS[0].countdown,
   isActive: true,
+  pomodoroCount: 0,
 });
 
 export const setCompleteTask = (tasks: TaskType[], id: number) =>
@@ -37,7 +38,7 @@ export const makeFirstTaskActive = (tasks: TaskType[]) =>
   }));
 
 export const makeFirstTaskActiveIfCurrentActivatedChanged = (
-  tasks: TaskType[]
+  tasks: TaskType[],
 ) => {
   if (!getActivatedTask(tasks)) {
     return makeFirstTaskActive(tasks);

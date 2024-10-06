@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { type TabWithMutableCountdown, type TimerType } from "@/types/Timer";
-import { TIMER_STATUS } from "@/components/Timer/constants";
+import { TABS, TIMER_STATUS } from "@/components/Timer/constants";
 import useNotification from "@/components/Timer/hooks/useNotification";
+import { type TaskType } from "@/types/TaskList";
 
 /**
  * Custom hook for controlling a timer.
@@ -33,7 +34,12 @@ import useNotification from "@/components/Timer/hooks/useNotification";
 const useTimerControl = (
   title: TabWithMutableCountdown["title"],
   countdown: number,
+  setTab: (value: TabWithMutableCountdown) => void,
+  selectedTaskId: number,
+  getTasks: TaskType[],
+  setTask: (value: TaskType[]) => void,
 ) => {
+  const originalTab = TABS.find((t) => t.title === title);
   const [isStarted, setIsStarted] = useState<TimerType>(TIMER_STATUS.stopped);
   const { launchCompleteNotification } = useNotification();
 
@@ -45,16 +51,43 @@ const useTimerControl = (
     if (countdown === 0) {
       launchCompleteNotification(title);
       setIsStarted(TIMER_STATUS.stopped);
+      if (title === "pomodoro" && selectedTaskId > -1) {
+        setTask(
+          getTasks.map((t) =>
+            t.id === selectedTaskId
+              ? {
+                  ...t,
+                  pomodoroCount: t.pomodoroCount + 1,
+                }
+              : t,
+          ),
+        );
+        if (originalTab !== undefined) {
+          setTab(originalTab);
+        }
+      }
     }
-  }, [countdown, title, launchCompleteNotification]);
+  }, [
+    countdown,
+    title,
+    launchCompleteNotification,
+    selectedTaskId,
+    setTask,
+    getTasks,
+    setTab,
+    originalTab,
+  ]);
 
   const toggle = useCallback(() => {
+    if (originalTab !== undefined && countdown === 0) {
+      setTab(originalTab);
+    }
     setIsStarted((prev) =>
       prev === TIMER_STATUS.stopped
         ? TIMER_STATUS.started
         : TIMER_STATUS.stopped,
     );
-  }, []);
+  }, [countdown, originalTab, setTab]);
   return { isStarted, toggle };
 };
 

@@ -4,10 +4,8 @@ import TabItem from "@/components/Timer/Tabs/TabItem";
 import { TABS } from "@/components/Timer/constants";
 import { findTab } from "@/components/Timer/functions";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
-import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
 import Tabs from "@/components/Timer/Tabs";
 import Clock from "@/components/Timer/Clock";
-import useIndexedDBConnection from "@/components/common/hooks/useIndexedDBConnection";
 
 const Timer: FC = () => {
   const {
@@ -18,7 +16,7 @@ const Timer: FC = () => {
     (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
-    [set]
+    [set],
   );
 
   return (

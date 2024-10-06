@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
+import { useTasklist } from "@/components/contexts/TasklistContext";
 import { convertMsToTime, findTab } from "@/components/Timer/functions";
 import useInterval from "@/components/Timer/hooks/useInterval";
 import useTimerControl from "@/components/Timer/hooks/useTimerControl";
@@ -13,6 +14,12 @@ const Clock = () => {
   const {
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
+
+  const {
+    tasks: { get: getTasks, set: setTask },
+    selectedTask: { get: getSelectedTask },
+  } = useTasklist(["tasks", "selectedTask"]);
+
   const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
 
   const tick = () => {
@@ -23,9 +30,14 @@ const Clock = () => {
     const totalChange = 10 * getTab.decrementor;
     setCircleOffset((prev) => prev - totalChange);
   };
-  const { isStarted, toggle } = useTimerControl(getTab.title, getTab.countdown);
-  // modal did you finished?
-  // yes, leftSecs = 0 || leftSecs 25 mins
+  const { isStarted, toggle } = useTimerControl(
+    getTab.title,
+    getTab.countdown,
+    setTab,
+    getSelectedTask.id,
+    getTasks,
+    setTask,
+  );
   useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
 
   useEffect(() => {

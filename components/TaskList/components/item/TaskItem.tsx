@@ -62,7 +62,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         deleteTask(task.id, setTask);
       }
     },
-    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id]
+    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id],
   );
 
   const onClickComplete = useCallback(
@@ -70,7 +70,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       e.stopPropagation();
       completeTask(task.id, setTask);
     },
-    [completeTask, setTask, task.id]
+    [completeTask, setTask, task.id],
   );
 
   return (
@@ -89,7 +89,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         $isactive={getSelectedTask.id === task.id}
         $iscompleted={isCompleted}
       >
-        {task.title}
+        {task.title} {task.pomodoroCount}
       </StyledTaskTitle>
       <button
         data-testid={`task-${task.id}-remove`}
