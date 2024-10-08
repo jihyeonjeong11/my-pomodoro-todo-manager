@@ -1,4 +1,4 @@
-import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
+import TasklistController from "@/components/TaskList/components/forms/TasklistController";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
 import useToggle from "@/components/common/hooks/useToggle";
@@ -53,7 +53,7 @@ const TaskList = () => {
         </AnimatePresence>
       </Reorder.Group>
       <div className="spacing" />
-      <TaskListButton
+      <TasklistController
         showAddForm={showAddForm}
         flipTaskButton={flipTaskButton}
       />

@@ -16,7 +16,7 @@ const Timer: FC = () => {
     (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
-    [set],
+    [set]
   );
 
   return (

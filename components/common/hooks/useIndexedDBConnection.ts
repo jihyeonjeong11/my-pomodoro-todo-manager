@@ -43,6 +43,9 @@ const useIndexedDBConnection = (
                 unique: false,
               });
               taskStore.createIndex("leftSecs", "leftSecs", { unique: false });
+              taskStore.createIndex("isCompleted", "isCompleted", {
+                unique: true,
+              });
 
               const orderStore = db.createObjectStore("session", {
                 keyPath: "id",

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 import {
   filterTask,
   setInitialTask,
-  setCompleteTask,
+  toggleCompleteTask,
 } from "@/components/TaskList/components/functions";
 import { TABS } from "@/components/Timer/constants";
 
@@ -69,7 +69,7 @@ const useTaskControl = (tasks: TaskType[]) => {
    */
   const completeTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
-      callback([...filterTask(tasks, id), setCompleteTask(tasks, id)]);
+      callback([...filterTask(tasks, id), toggleCompleteTask(tasks, id)]);
     },
     [tasks]
   );

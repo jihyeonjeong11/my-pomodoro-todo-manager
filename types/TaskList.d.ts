@@ -12,4 +12,5 @@ export type TaskType = {
   approxPomodoro: number; // Advanced feature.
   leftSecs: number; // Will determine its end or not.
   pomodoroCount: number;
+  isCompleted: boolean;
 };

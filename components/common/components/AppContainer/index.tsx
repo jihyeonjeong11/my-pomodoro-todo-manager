@@ -5,6 +5,7 @@ import useIndexedDBControl from "@/components/common/hooks/useIndexedDBControl";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import useToggle from "@/components/common/hooks/useToggle";
 import { DB_STATUS_CONSTANTS } from "@/components/common/constants";
+import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 
 const AppContainer: FC = ({ children }) => {
   const {
@@ -13,13 +14,24 @@ const AppContainer: FC = ({ children }) => {
   } = useIndexedDB(["status", "db"]);
 
   const {
-    tasks: { get: getTasks, set: setTask },
-  } = useTasklist(["tasks"]);
+    tasks: { set: setTask },
+    selectedTask: { set: setSelectedTask },
+  } = useTasklist(["tasks", "selectedTask"]);
+
+  const {
+    taskWindows: { get: getTaskWindows, set: setTaskWindows },
+  } = useTaskWindows(["taskWindows"]);
 
   const [initiated, toggleInitiated] = useToggle();
 
-  useIndexedDBConnection(getStatus, setStatus, getDB, setDB, getTasks);
-  const { getAll } = useIndexedDBControl(getDB, setTask, getTasks);
+  useIndexedDBConnection(getStatus, setStatus, getDB, setDB);
+  const { getAll } = useIndexedDBControl(
+    getDB,
+    setTask,
+    setSelectedTask,
+    getTaskWindows,
+    setTaskWindows
+  );
 
   useEffect(() => {
     if (getStatus === DB_STATUS_CONSTANTS.CONNECTED && getDB && !initiated) {

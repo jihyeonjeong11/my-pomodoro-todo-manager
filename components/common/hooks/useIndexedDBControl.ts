@@ -16,6 +16,7 @@ const sortByOrder = (latestTasks: TaskType[], orderString: string) => {
 const useIndexedDBControl = (
   getDB: IDBDatabase | null,
   setTask: (value: TaskType[]) => void,
+  setSelectedTask?: any,
   getTaskWindows?: Record<string, any>,
   setTaskWindows?: (value: Record<string, any>) => void
 ) => {
@@ -61,7 +62,20 @@ const useIndexedDBControl = (
       const sessionRequest = transaction.objectStore("session").get(0);
 
       sessionRequest.onsuccess = () => {
-        setTask(sortByOrder(request.result, sessionRequest.result.order));
+        if (
+          sessionRequest.result?.order &&
+          sessionRequest.result.order.length > 1
+        ) {
+          setTask(sortByOrder(request.result, sessionRequest.result.order));
+        }
+        if (
+          sessionRequest.result?.activeId &&
+          sessionRequest.result.activeId > -1
+        ) {
+          setSelectedTask(
+            request.result.find((t) => t.id === sessionRequest.result.activeId)
+          );
+        }
 
         // If there specific order in property, need another block of logic handling that.
         if (getTaskWindows && setTaskWindows) {
@@ -74,7 +88,18 @@ const useIndexedDBControl = (
       };
     };
     return true;
-  }, [getDB, getTaskWindows, setTask, setTaskWindows]);
+  }, [getDB, getTaskWindows, setSelectedTask, setTask, setTaskWindows]);
+
+  const postATaskToDB = (task: TaskType) => {
+    if (getDB === null) {
+      throw new Error("No db");
+    }
+  };
+
+  // Use this when the time allows.
+  // const executeIfLocalDBEnabled = (callback: () => any, args) => {
+  //   return isUseLocalDBOrNot() ? callback(args) : null;
+  // };
 
   return { putOrPostOrder, getAll };
 };

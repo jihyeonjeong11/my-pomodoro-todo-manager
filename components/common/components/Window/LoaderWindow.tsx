@@ -24,6 +24,7 @@ const LoaderWindow = ({ actionType }: { actionType: string }) => {
   const { getAll, putOrPostOrder } = useIndexedDBControl(
     getDB,
     setTask,
+    () => null,
     getTaskWindows,
     setTaskWindows
   );

@@ -9,6 +9,11 @@ import useTaskControl from "@/components/TaskList/components/hooks/useTaskContro
 import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
 import { isUseLocalDBOrNot } from "@/components/common/functions";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
+import useIndexedDBControl from "@/components/common/hooks/useIndexedDBControl";
+import {
+  filterTask,
+  toggleCompleteTask,
+} from "@/components/TaskList/components/functions";
 
 const TaskItem = ({ task }: { task: TaskType }) => {
   const {
@@ -25,14 +30,34 @@ const TaskItem = ({ task }: { task: TaskType }) => {
     db: { get: getDB },
   } = useIndexedDB(["db"]);
 
+  const { putOrPostOrder } = useIndexedDBControl(
+    getDB,
+    setTask,
+    getTaskWindows,
+    setTaskWindows
+  );
+
   const { deleteTask, completeTask, activateOrReactivateTask } =
     useTaskControl(getTasks);
 
-  const isCompleted = task.leftSecs === 0;
+  const { isCompleted } = task;
 
   const onClickActive = useCallback(() => {
-    activateOrReactivateTask(task.id, isCompleted, setSelectedTask);
-  }, [setSelectedTask, task.id, isCompleted, activateOrReactivateTask]);
+    if (isUseLocalDBOrNot()) {
+      if (getDB) {
+        const transaction = getDB.transaction(["session"], "readwrite");
+        const request = transaction.objectStore("session");
+        const get = request.get(0);
+
+        get.onsuccess = () => {
+          request.put({ ...get.result, activeId: task.id });
+          activateOrReactivateTask(task.id, isCompleted, setSelectedTask);
+        };
+      }
+    } else {
+      activateOrReactivateTask(task.id, isCompleted, setSelectedTask);
+    }
+  }, [getDB, task.id, activateOrReactivateTask, isCompleted, setSelectedTask]);
 
   const onClickDelete = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -62,15 +87,35 @@ const TaskItem = ({ task }: { task: TaskType }) => {
         deleteTask(task.id, setTask);
       }
     },
-    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id],
+    [deleteTask, getDB, getTaskWindows, setTask, setTaskWindows, task.id]
   );
 
   const onClickComplete = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      completeTask(task.id, setTask);
+
+      if (isUseLocalDBOrNot()) {
+        if (getDB) {
+          const transaction = getDB.transaction(
+            ["tasks", "session"],
+            "readwrite"
+          );
+          const request = transaction.objectStore("tasks");
+          const get = request.get(task.id);
+          get.onsuccess = () => {
+            request.put({ ...get.result, isCompleted: !get.result.isComplete });
+          };
+          putOrPostOrder([
+            ...filterTask(getTasks, task.id),
+            toggleCompleteTask(getTasks, task.id),
+          ]);
+          completeTask(task.id, setTask);
+        }
+      } else {
+        completeTask(task.id, setTask);
+      }
     },
-    [completeTask, setTask, task.id],
+    [completeTask, getDB, getTasks, putOrPostOrder, setTask, task.id]
   );
 
   return (
@@ -86,7 +131,7 @@ const TaskItem = ({ task }: { task: TaskType }) => {
       </button>
       {/* i can add put action later with more data in Tasks */}
       <StyledTaskTitle
-        $isactive={getSelectedTask.id === task.id}
+        $isactive={getSelectedTask.id === task.id && !isCompleted}
         $iscompleted={isCompleted}
       >
         {task.title} {task.pomodoroCount}

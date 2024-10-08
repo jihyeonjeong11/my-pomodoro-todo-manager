@@ -38,7 +38,7 @@ export const convertMsToTime = (ms: number) => {
 
 export const getFromSet = <T>(
   set: Set<T>,
-  callback: (item: T) => boolean,
+  callback: (item: T) => boolean
 ): T | null => {
   for (const item of set) {
     if (callback(item)) {
