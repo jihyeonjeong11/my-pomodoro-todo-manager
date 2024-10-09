@@ -7,15 +7,15 @@ import {
 } from "react";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
-import { setInitialTask } from "@/components/TaskList/components/functions";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
-import { isUseLocalDBOrNot } from "@/components/common/functions";
 import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
+import useIndexedDBControl from "@/components/common/hooks/useIndexedDBControl";
 
 const TaskForm = () => {
   const {
     tasks: { get: getTasks, set: setTask },
-  } = useTasklist(["tasks"]);
+    selectedTask: { set: setSelectedTask },
+  } = useTasklist(["tasks", "selectedTask"]);
 
   const {
     taskWindows: { get: getTaskWindows, set: setTaskWindows },
@@ -26,6 +26,13 @@ const TaskForm = () => {
   } = useIndexedDB(["db"]);
 
   const { postTask } = useTaskControl(getTasks);
+  const { postATaskToDB } = useIndexedDBControl(
+    getDB,
+    setTask,
+    setSelectedTask,
+    getTaskWindows,
+    setTaskWindows,
+  );
 
   const [text, setText] = useState<string>("");
 
@@ -34,41 +41,10 @@ const TaskForm = () => {
       e.preventDefault();
 
       postTask(text, setTask);
+      postATaskToDB(getTasks, text);
       setText("");
-
-      if (isUseLocalDBOrNot()) {
-        if (getDB) {
-          const transaction = getDB.transaction(
-            ["tasks", "session"],
-            "readwrite"
-          );
-          const request = transaction.objectStore("tasks");
-          const newRow = setInitialTask(getTasks, text);
-          const add = request.add(newRow);
-          add.onsuccess = () => {
-            setTaskWindows({
-              ...getTaskWindows,
-              loader: { actionType: "refresh" },
-            });
-
-            // zod
-            if (text.length > 0) {
-              setText("");
-            }
-          };
-          // eslint-disable-next-line unicorn/prefer-add-event-listener
-          add.onerror = () => {
-            throw new Error(add.error?.message);
-          };
-        } else {
-          throw new Error("No DB found");
-        }
-      } else {
-        postTask(text, setTask);
-        setText("");
-      }
     },
-    [postTask, setTask, text, getDB, getTaskWindows, getTasks, setTaskWindows]
+    [postTask, text, setTask, postATaskToDB, getTasks],
   );
 
   const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {

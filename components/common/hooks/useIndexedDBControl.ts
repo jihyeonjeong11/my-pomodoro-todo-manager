@@ -1,3 +1,4 @@
+import { setInitialTask } from "@/components/TaskList/components/functions";
 import { type TaskType } from "@/types/TaskList";
 import { useCallback } from "react";
 
@@ -18,7 +19,7 @@ const useIndexedDBControl = (
   setTask: (value: TaskType[]) => void,
   setSelectedTask?: any,
   getTaskWindows?: Record<string, any>,
-  setTaskWindows?: (value: Record<string, any>) => void
+  setTaskWindows?: (value: Record<string, any>) => void,
 ) => {
   const putOrPostOrder = useCallback(
     (getTasks: TaskType[]) => {
@@ -47,7 +48,7 @@ const useIndexedDBControl = (
         throw new Error("unexpected Error");
       };
     },
-    [getDB]
+    [getDB],
   );
 
   const getAll = useCallback(async () => {
@@ -73,7 +74,7 @@ const useIndexedDBControl = (
           sessionRequest.result.activeId > -1
         ) {
           setSelectedTask(
-            request.result.find((t) => t.id === sessionRequest.result.activeId)
+            request.result.find((t) => t.id === sessionRequest.result.activeId),
           );
         }
 
@@ -81,8 +82,10 @@ const useIndexedDBControl = (
         if (getTaskWindows && setTaskWindows) {
           setTaskWindows(
             Object.fromEntries(
-              Object.entries(getTaskWindows).filter(([key]) => key !== "loader")
-            )
+              Object.entries(getTaskWindows).filter(
+                ([key]) => key !== "loader",
+              ),
+            ),
           );
         }
       };
@@ -90,9 +93,67 @@ const useIndexedDBControl = (
     return true;
   }, [getDB, getTaskWindows, setSelectedTask, setTask, setTaskWindows]);
 
-  const postATaskToDB = (task: TaskType) => {
-    if (getDB === null) {
-      throw new Error("No db");
+  const postATaskToDB = (getTasks: TaskType[], text: string) => {
+    if (getDB !== null) {
+      const transaction = getDB.transaction(["tasks", "session"], "readwrite");
+      const request = transaction.objectStore("tasks");
+      const newRow = setInitialTask(getTasks, text);
+      const add = request.add(newRow);
+      add.onsuccess = () => {
+        if (getTaskWindows && setTaskWindows) {
+          setTaskWindows({
+            ...getTaskWindows,
+            loader: { actionType: "refresh" },
+          });
+        }
+      };
+      // eslint-disable-next-line unicorn/prefer-add-event-listener
+      add.onerror = () => {
+        throw new Error(add.error?.message);
+      };
+    }
+  };
+
+  const deleteATaskFromDB = (task: TaskType) => {
+    if (getDB !== null) {
+      const transaction = getDB.transaction(["tasks"], "readwrite");
+      const request = transaction.objectStore("tasks").delete(task.id);
+
+      request.onsuccess = () => {
+        if (getTaskWindows && setTaskWindows) {
+          setTaskWindows({
+            ...getTaskWindows,
+            loader: { actionType: "refresh" },
+          });
+        }
+      };
+      // eslint-disable-next-line unicorn/prefer-add-event-listener
+      request.onerror = () => {
+        throw new Error(request.error?.message);
+      };
+    }
+  };
+
+  const putATaskCompletedToDB = (task: TaskType) => {
+    if (getDB !== null) {
+      const transaction = getDB.transaction(["tasks", "session"], "readwrite");
+      const request = transaction.objectStore("tasks");
+      const get = request.get(task.id);
+      get.onsuccess = () => {
+        request.put({ ...get.result, isCompleted: !get.result.isCompleted });
+      };
+    }
+  };
+
+  const putATaskActiveToDB = (task: TaskType) => {
+    if (getDB !== null) {
+      const transaction = getDB.transaction(["session"], "readwrite");
+      const request = transaction.objectStore("session");
+      const get = request.get(0);
+
+      get.onsuccess = () => {
+        request.put({ ...get.result, activeId: task.id });
+      };
     }
   };
 
@@ -101,7 +162,14 @@ const useIndexedDBControl = (
   //   return isUseLocalDBOrNot() ? callback(args) : null;
   // };
 
-  return { putOrPostOrder, getAll };
+  return {
+    putOrPostOrder,
+    getAll,
+    postATaskToDB,
+    deleteATaskFromDB,
+    putATaskCompletedToDB,
+    putATaskActiveToDB,
+  };
 };
 
 export default useIndexedDBControl;

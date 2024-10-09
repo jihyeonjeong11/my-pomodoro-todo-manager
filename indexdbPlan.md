@@ -26,11 +26,15 @@ finding rooms for refactoring...
 
 2. seperate db logic from component to custom hook useIndexedDBControl
 
+done
+
 TaskForm
 TaskItem
 useTimerControl
 
 1. find out useFastContext principle comparing with SOLID.
+
+understood
 
 ```
 
@@ -101,7 +105,7 @@ DIP: The child (SelfDrivenDisplay) does not directly depend on the data source b
 OCP (Open/Closed Principle): Both components are open for extension but closed for modification. You can extend SelfDrivenDisplayContainer by adding more fields, or even extend SelfDrivenDisplay for more complex rendering, without modifying existing logic.
 ```
 
-3. Find some bad namings
+later with refactoring works. 3. Find some bad namings
 
 4. Find some bad implementations
 

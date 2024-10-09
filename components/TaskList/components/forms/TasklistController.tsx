@@ -1,21 +1,15 @@
-import type React from "react";
 import { useAnimate } from "framer-motion";
 import dynamic from "next/dynamic";
 import useTaskListButtonAnimation from "@/components/TaskList/components/hooks/useTaskButtonTransition";
+import useToggle from "@/components/common/hooks/useToggle";
 
 const TaskForm = dynamic(
-  () => import("@/components/TaskList/components/forms/TaskForm")
+  () => import("@/components/TaskList/components/forms/TaskForm"),
 );
 
-type Props = {
-  flipTaskButton: React.MouseEventHandler<HTMLButtonElement>;
-  showAddForm: boolean;
-};
+const TaskListController = () => {
+  const [showAddForm, flipTaskButton] = useToggle(false);
 
-const TaskListController: React.FC<Props> = ({
-  flipTaskButton,
-  showAddForm,
-}) => {
   const [scope, animate] = useAnimate();
   const [formScope] = useAnimate<HTMLDivElement>();
   useTaskListButtonAnimation(showAddForm, scope, formScope, animate);
