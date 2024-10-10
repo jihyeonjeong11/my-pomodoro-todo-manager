@@ -4,12 +4,11 @@ import { styled } from "styled-components";
 // on mobile Resolution, flex-direction: column; and on PC flex-direction: row
 const StyledApp = styled.div`
   position: fixed;
-  height: 100vh;
-  width: 100vw;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1rem;
   h1 {
     color: ${({ theme }) => `${theme.colors.timer.text}`};
   }
@@ -17,7 +16,8 @@ const StyledApp = styled.div`
   .wrapper {
     overflow-y: scroll;
     height: 100vh;
-    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
   }
 
   .wrapper::-webkit-scrollbar {

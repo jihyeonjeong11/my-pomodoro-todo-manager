@@ -25,7 +25,8 @@ const AppContainer: FC = ({ children }) => {
   const [initiated, toggleInitiated] = useToggle();
 
   useIndexedDBConnection(getStatus, setStatus, getDB, setDB);
-  const { getAll } = useIndexedDBControl(
+
+  const { hydrateData } = useIndexedDBControl(
     getDB,
     setTask,
     setSelectedTask,
@@ -35,7 +36,7 @@ const AppContainer: FC = ({ children }) => {
 
   useEffect(() => {
     if (getStatus === DB_STATUS_CONSTANTS.CONNECTED && getDB && !initiated) {
-      getAll();
+      hydrateData();
       toggleInitiated();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

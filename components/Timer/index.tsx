@@ -6,6 +6,7 @@ import { findTab } from "@/components/Timer/functions";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import Tabs from "@/components/Timer/Tabs";
 import Clock from "@/components/Timer/Clock";
+import NewClock from "./Clock/NewClock";
 
 const Timer: FC = () => {
   const {
@@ -35,7 +36,8 @@ const Timer: FC = () => {
           );
         })}
       </Tabs>
-      <Clock />
+      <NewClock />
+      {/* <Clock /> */}
     </>
   );
 };

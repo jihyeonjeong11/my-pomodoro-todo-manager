@@ -21,7 +21,7 @@ const LoaderWindow = ({ actionType }: { actionType: string }) => {
     db: { get: getDB },
   } = useIndexedDB(["status", "db"]);
 
-  const { getAll, putOrPostOrder } = useIndexedDBControl(
+  const { hydrateData, putOrPostOrder } = useIndexedDBControl(
     getDB,
     setTask,
     () => null,
@@ -32,9 +32,9 @@ const LoaderWindow = ({ actionType }: { actionType: string }) => {
   useEffect(() => {
     if (actionType === "refresh") {
       putOrPostOrder(getTasks);
-      getAll(); // reorder, active
+      hydrateData(); // reorder, active
     }
-  }, [actionType, getAll, getTasks, putOrPostOrder]);
+  }, [actionType, hydrateData, getTasks, putOrPostOrder]);
 
   return (
     <StyledLoaderWindow

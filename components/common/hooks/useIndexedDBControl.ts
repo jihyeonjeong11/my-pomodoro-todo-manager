@@ -19,7 +19,7 @@ const useIndexedDBControl = (
   setTask: (value: TaskType[]) => void,
   setSelectedTask?: any,
   getTaskWindows?: Record<string, any>,
-  setTaskWindows?: (value: Record<string, any>) => void,
+  setTaskWindows?: (value: Record<string, any>) => void
 ) => {
   const putOrPostOrder = useCallback(
     (getTasks: TaskType[]) => {
@@ -48,10 +48,10 @@ const useIndexedDBControl = (
         throw new Error("unexpected Error");
       };
     },
-    [getDB],
+    [getDB]
   );
 
-  const getAll = useCallback(async () => {
+  const hydrateData = useCallback(async () => {
     if (getDB === null) {
       throw new Error("No db");
     }
@@ -74,7 +74,7 @@ const useIndexedDBControl = (
           sessionRequest.result.activeId > -1
         ) {
           setSelectedTask(
-            request.result.find((t) => t.id === sessionRequest.result.activeId),
+            request.result.find((t) => t.id === sessionRequest.result.activeId)
           );
         }
 
@@ -82,10 +82,8 @@ const useIndexedDBControl = (
         if (getTaskWindows && setTaskWindows) {
           setTaskWindows(
             Object.fromEntries(
-              Object.entries(getTaskWindows).filter(
-                ([key]) => key !== "loader",
-              ),
-            ),
+              Object.entries(getTaskWindows).filter(([key]) => key !== "loader")
+            )
           );
         }
       };
@@ -164,7 +162,7 @@ const useIndexedDBControl = (
 
   return {
     putOrPostOrder,
-    getAll,
+    hydrateData,
     postATaskToDB,
     deleteATaskFromDB,
     putATaskCompletedToDB,

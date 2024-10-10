@@ -68,6 +68,33 @@ export const StyledTimer = styled.section`
     }
   }
 
+  .clock-button {
+    width: 50vw;
+
+    height: 50vw;
+    max-width: 24rem;
+    max-height: 24rem;
+    border-radius: 9999px;
+    background: tan;
+    box-shadow:
+      /* -5px -5px 25px 0 blue,
+      50px 50px 100px 0 red, */ inset
+      20px 20px 25px 0 yellow;
+    /* 0 0 #0000,
+      0 0 #0000,
+      0 0 #0000, */
+    //-50px -50px 100px 0 rgba(215, 224, 255, 0.1),
+    /* 50px 50px 100px 0 rgba(22, 25, 50, 0.5),
+      inset 20px 20px 25px 0 rgba(22, 25, 50, 0.5),
+      inset -20px -20px 25px 0 rgba(215, 224, 255, 0.1); */
+    // understand box-shadow
+    // https://codepen.io/sdthornton/pen/wBZdXq
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow
+    // https://pomodoroapp.aalekseev.me/
+    svg {
+    }
+  }
+
   section {
     display: flex;
     align-items: center;
@@ -106,6 +133,14 @@ export const StyledTimer = styled.section`
       align-items: center;
       justify-content: center;
       position: relative;
+      box-shadow: (
+        0 0 #0000,
+        0 0 #0000,
+        -50px -50px 100px 0 rgba(215, 224, 255, 0.1),
+        50px 50px 100px 0 rgba(22, 25, 50, 0.5),
+        inset 20px 20px 25px 0 rgba(22, 25, 50, 0.5),
+        inset -20px -20px 25px 0 rgba(215, 224, 255, 0.1)
+      );
 
       .circle-container {
         width: 92.88%;

@@ -109,13 +109,18 @@ later with refactoring works. 3. Find some bad namings
 
 4. Find some bad implementations
 
+   - Worth for refactoring Timer itself. Will do after 8. clock css improvement.
+
 5. consider using data handler components
    This will helps with fastcontext as reducers I believe.
 
-6. Fix lint errors
+   -
+
+6. Fix lint errors -done
 
 7. Find some magic string and numbers and make them reusable.
 
 8. CSS improvements.
+   -doing.
 
 9. seperate useLOcalDB and not(data not persists)
