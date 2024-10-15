@@ -1,12 +1,11 @@
 import { type SelectedTabType } from "@/types/Timer";
-import { motion } from "framer-motion";
 
 const TabItem: FC<{
   selectedTitle: SelectedTabType;
   onClick: (selectedTitle: SelectedTabType) => void;
   isSelected: boolean;
 }> = ({ selectedTitle, onClick, isSelected }) => (
-  <div className="tab-item">
+  <li className={`tab-item ${isSelected ? "tab-highlight" : ""}`}>
     <button
       type="button"
       aria-pressed={isSelected}
@@ -14,9 +13,6 @@ const TabItem: FC<{
     >
       <span>{selectedTitle}</span>
     </button>
-    {isSelected && (
-      <motion.div className="tab-highlight" layoutId="active-highlight" />
-    )}
-  </div>
+  </li>
 );
 export default TabItem;

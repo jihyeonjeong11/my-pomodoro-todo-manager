@@ -31,7 +31,7 @@ const AppContainer: FC = ({ children }) => {
     setTask,
     setSelectedTask,
     getTaskWindows,
-    setTaskWindows
+    setTaskWindows,
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const AppContainer: FC = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getStatus, getDB]);
 
-  return <div className="wrapper">{children}</div>;
+  return <div>{children}</div>;
 };
 
 export default AppContainer;

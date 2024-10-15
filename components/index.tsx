@@ -1,17 +1,15 @@
 // spa main
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { StyledList } from "@/components/TaskList/styled/StyledList";
-import { StyledTimer } from "@/components/Timer/styled/StyledTimer";
 import { IndexedDBProvider } from "@/components/contexts/IndexedDBContext";
 import { TaskWindowsProvider } from "@/components/contexts/TaskwindowContext";
 import { PomodoroProvider } from "@/components/contexts/PomodoroContext";
 import { TasklistProvider } from "@/components/contexts/TasklistContext";
 import TaskList from "@/components/TaskList";
 import Timer from "@/components/Timer";
-import StyledApp from "@/components/common/styled/StyledApp";
-import WindowLoader from "@/components/common/components/WindowLoader";
 import AppContainer from "@/components/common/components/AppContainer";
+import WindowLoader from "@/components/common/components/WindowLoader";
+import StyledApp from "@/components/common/styled/StyledApp";
 
 // list provider
 const MainPage = () => (
@@ -21,19 +19,13 @@ const MainPage = () => (
         <PomodoroProvider>
           <TasklistProvider>
             <StyledApp>
-              {/* need another wrapper handling loading and refresh the data.  reuse window */}
               <AppContainer>
-                <StyledTimer>
-                  <h1 className="spacing">Pomodoro timer</h1>
-                  <Timer />
-                </StyledTimer>
-                <StyledList>
-                  <TaskList />
-                </StyledList>
+                <h1>Pomodoro</h1>
+                <Timer />
+                <TaskList />
                 <WindowLoader />
               </AppContainer>
             </StyledApp>
-            {/* Maybe will be deleted. */}
           </TasklistProvider>
         </PomodoroProvider>
       </TaskWindowsProvider>

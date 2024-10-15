@@ -5,8 +5,8 @@ import { TABS } from "@/components/Timer/constants";
 import { findTab } from "@/components/Timer/functions";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import Tabs from "@/components/Timer/Tabs";
-import Clock from "@/components/Timer/Clock";
-import NewClock from "./Clock/NewClock";
+import Clock from "@/components/Timer/Clock/Clock";
+import { StyledTimer } from "@/components/Timer/styled/StyledTimer";
 
 const Timer: FC = () => {
   const {
@@ -17,11 +17,11 @@ const Timer: FC = () => {
     (selectedTitle: SelectedTabType) => {
       set(findTab(selectedTitle));
     },
-    [set]
+    [set],
   );
 
   return (
-    <>
+    <StyledTimer>
       <Tabs>
         {TABS.map((item, index) => {
           const isSelected = item.title === get.title;
@@ -36,9 +36,8 @@ const Timer: FC = () => {
           );
         })}
       </Tabs>
-      <NewClock />
-      {/* <Clock /> */}
-    </>
+      <Clock />
+    </StyledTimer>
   );
 };
 

@@ -16,6 +16,7 @@ import { useEffect, useRef } from "react";
  * ```
  */
 const useInterval = (callback: () => void, delay: number | null) => {
+  // Using web worker is the best way, as expected.
   const savedCallback = useRef(callback);
 
   // Remember the latest callback if it changes.

@@ -1,6 +1,9 @@
 import TasklistController from "@/components/TaskList/components/forms/TasklistController";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import { StyledInnerList } from "@/components/TaskList/styled/StyledList";
+import {
+  StyledInnerList,
+  StyledList,
+} from "@/components/TaskList/styled/StyledList";
 import { AnimatePresence, Reorder } from "framer-motion";
 import dynamic from "next/dynamic";
 import { type TaskType } from "@/types/TaskList";
@@ -76,33 +79,35 @@ const TaskList = () => {
   );
 
   return (
-    <StyledInnerList>
-      <div className="spacing">
-        {getTasks.length > 0 && "Time to get productive!"}
-      </div>
-      <Reorder.Group axis="y" values={getTasks} onReorder={onReorder}>
-        <AnimatePresence>
-          {getTasks.map((t) => (
-            <Reorder.Item
-              data-testid={`task-${t.id}`}
-              key={`task-${t.id}`}
-              value={t}
-            >
-              <TaskItem
-                task={t}
-                getSelectedTask={getSelectedTask}
-                onClickDelete={onClickDelete(t)}
-                onClickComplete={onClickComplete(t)}
-                onClickActive={onClickActive(t)}
-              />
-            </Reorder.Item>
-          ))}
-        </AnimatePresence>
-      </Reorder.Group>
-      <div className="spacing" />
-      <TasklistController />
-      <div className="spacing" />
-    </StyledInnerList>
+    <StyledList>
+      <StyledInnerList>
+        <div className="spacing">
+          {getTasks.length > 0 && "Time to get productive!"}
+        </div>
+        <Reorder.Group axis="y" values={getTasks} onReorder={onReorder}>
+          <AnimatePresence>
+            {getTasks.map((t) => (
+              <Reorder.Item
+                data-testid={`task-${t.id}`}
+                key={`task-${t.id}`}
+                value={t}
+              >
+                <TaskItem
+                  task={t}
+                  getSelectedTask={getSelectedTask}
+                  onClickDelete={onClickDelete(t)}
+                  onClickComplete={onClickComplete(t)}
+                  onClickActive={onClickActive(t)}
+                />
+              </Reorder.Item>
+            ))}
+          </AnimatePresence>
+        </Reorder.Group>
+        <div className="spacing" />
+        <TasklistController />
+        <div className="spacing" />
+      </StyledInnerList>
+    </StyledList>
   );
 };
 

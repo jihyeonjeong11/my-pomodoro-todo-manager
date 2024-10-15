@@ -3,6 +3,9 @@ import TaskTitle from "@/components/TaskList/components/item/TaskTitle";
 
 export const StyledList = styled.section`
   margin-top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 24rem;
   text-align: center;
   color: white;
   justify-content: center;
