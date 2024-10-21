@@ -60,3 +60,4 @@ docker run -dp 3000:3000 --rm --name pomodoro pomodoro
 any 타입 수정 // solved // animation 그대로
 리팩터: Clock, Tasklist //onhold
 active, complete 시 순서가 마음대로 바뀜 // 순서 변하지 않도록 변경
+코드 변경으로 테스트 케이스 에러 // onhold

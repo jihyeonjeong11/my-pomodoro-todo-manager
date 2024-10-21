@@ -6,11 +6,13 @@ export type TaskListType = {
 export type TaskType = {
   title: string;
   id: number; // Server mock later
-  createdAt: Date; // postgres mock
-  updatedAt: Date; // postgres mock
+  createdAt: Date; // Postgres mock
+  updatedAt: Date; // Postgres mock
   isActive: boolean;
-  approxPomodoro: number; // Advanced feature.
-  leftSecs: number; // Will determine its end or not.
   pomodoroCount: number;
   isCompleted: boolean;
+
+  approxPomodoro: number; // For later
+
+  leftSecs: number; // Will determine its end or not. // not used
 };
