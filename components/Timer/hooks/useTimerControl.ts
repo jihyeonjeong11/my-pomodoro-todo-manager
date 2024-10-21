@@ -6,6 +6,7 @@ import { type TaskType } from "@/types/TaskList";
 import { findTab } from "@/components/Timer/functions";
 import { isUseLocalDBOrNot } from "@/components/common/functions";
 import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
+import { Microwave } from "@/public/media/sounds";
 
 /**
  * Custom hook for controlling a timer.
@@ -40,7 +41,7 @@ const useTimerControl = (
   setTab: (value: TabWithMutableCountdown) => void,
   selectedTaskId: number,
   getTasks: TaskType[],
-  setTask: (value: TaskType[]) => void
+  setTask: (value: TaskType[]) => void,
 ) => {
   const {
     db: { get: getDB },
@@ -56,6 +57,8 @@ const useTimerControl = (
 
   useEffect(() => {
     if (countdown === 0) {
+      const audio = new Audio(Microwave);
+      audio.play();
       launchCompleteNotification(title);
       setIsStarted(TIMER_STATUS.stopped);
       if (title === "pomodoro" && selectedTaskId > -1) {
@@ -82,12 +85,11 @@ const useTimerControl = (
                   ...t,
                   pomodoroCount: t.pomodoroCount + 1,
                 }
-              : t
-          )
+              : t,
+          ),
         );
-
-        setTab(originalTab);
       }
+      setTab(originalTab);
     }
   }, [
     countdown,
@@ -109,7 +111,7 @@ const useTimerControl = (
     setIsStarted((prev) =>
       prev === TIMER_STATUS.stopped
         ? TIMER_STATUS.started
-        : TIMER_STATUS.stopped
+        : TIMER_STATUS.stopped,
     );
   }, [countdown, originalTab, setTab]);
   return { isStarted, toggle };

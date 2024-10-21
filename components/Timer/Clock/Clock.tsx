@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { useEffect, useState } from "react";
@@ -43,27 +44,44 @@ const Clock = () => {
     setCircleOffset(DEFAULT_CIRCLE_OFFSET);
   }, [getTab.title]);
 
+  useEffect(() => {
+    if (getTab.countdown === 0) {
+      setCircleOffset(DEFAULT_CIRCLE_OFFSET);
+    }
+  }, [getTab.countdown]);
+
   const time = convertMsToTime(getTab.countdown);
   // const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown; not needed?
   return (
-    <button onClick={toggle} className="clock-button" type="button">
-      <svg id="time-progress" viewBox="0 0 100 100">
-        <circle
-          cx="50"
-          cy="50"
-          r="44"
-          fill="none"
-          strokeDasharray="300"
-          strokeLinecap="round"
-          strokeWidth="3"
-          strokeDashoffset={circleOffset}
+    <>
+      <Head>
+        <title>{time}</title>
+        <meta
+          name="description"
+          content="Task Reminder using Pomodoro method"
         />
-      </svg>
-      <div className="remaining-time">
-        <h1>{time}</h1>
-        <h2>{isStarted === "stopped" ? "Start" : "Pause"}</h2>
-      </div>
-    </button>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <button onClick={toggle} className="clock-button" type="button">
+        <svg id="time-progress" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="44"
+            fill="none"
+            strokeDasharray="300"
+            strokeLinecap="round"
+            strokeWidth="3"
+            strokeDashoffset={circleOffset}
+          />
+        </svg>
+        <div className="remaining-time">
+          <h1>{time}</h1>
+          <h2>{isStarted === "stopped" ? "Start" : "Pause"}</h2>
+        </div>
+      </button>
+    </>
   );
 };
 

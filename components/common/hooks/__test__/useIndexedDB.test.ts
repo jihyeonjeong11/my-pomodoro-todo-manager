@@ -1,5 +1,3 @@
-import { act, renderHook } from "@testing-library/react";
-
 describe("use toggle()", () => {
   //   it("should use toggle be ok", () => {
   //     const { result } = renderHook(() => useToggle());

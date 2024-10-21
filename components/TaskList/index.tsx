@@ -51,7 +51,6 @@ const TaskList = () => {
   const onClickDelete = useCallback(
     (task: TaskType) => (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-
       deleteATaskFromDB(task);
       deleteTask(task.id, setTask);
     },

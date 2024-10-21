@@ -1,6 +1,5 @@
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
 import { AnimatePresence } from "framer-motion";
-import MainWindow from "@/components/common/components/Window/MainWindow";
 import LoaderWindow from "@/components/common/components/Window/LoaderWindow";
 
 const WindowLoader = () => {
@@ -17,7 +16,7 @@ const WindowLoader = () => {
           }
 
           default: {
-            return <MainWindow key={id} {...props} />;
+            return null;
           }
         }
       })}

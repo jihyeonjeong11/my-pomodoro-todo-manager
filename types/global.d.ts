@@ -3,7 +3,7 @@ import type React from "react";
 
 declare module "react" {
   type FC<TProps = Record<string, unknown>> = (
-    props: React.PropsWithChildren<TProps>
+    props: React.PropsWithChildren<TProps>,
   ) => React.JSX.Element | null;
 }
 
@@ -24,3 +24,6 @@ export interface FastContext<Value> {
     children: React.ReactNode;
   }) => React.ReactElement;
 }
+
+// Can be expanded
+export type TaskWindowType = Record<"main" | string, { actionType: string }>;

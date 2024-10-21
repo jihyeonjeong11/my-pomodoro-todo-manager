@@ -7,6 +7,7 @@
     "dev:localDB": "env-cmd -f .env.localDB next dev",
     "dev:notLocalDB": "env-cmd -f .env.notLocalDB next dev",
     "build": "next build",
+    "build:localDB": "env-cmd -f .env.localDB next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
@@ -19,6 +20,7 @@
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
     "env-cmd": "^10.1.0",
+    "file-loader": "^6.2.0",
     "framer-motion": "^11.2.10",
     "next": "14.2.3",
     "openai": "^4.52.7",

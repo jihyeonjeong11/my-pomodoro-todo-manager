@@ -5,7 +5,6 @@ import {
   setInitialTask,
   toggleCompleteTask,
 } from "@/components/TaskList/components/functions";
-import { TABS } from "@/components/Timer/constants";
 
 /**
  * Custom hook to manage task operations such as posting, deleting, completing,
@@ -44,7 +43,7 @@ const useTaskControl = (tasks: TaskType[]) => {
   const postTask = useCallback(
     (text: string, callback: (value: TaskType[]) => void) =>
       callback([setInitialTask(tasks, text), ...tasks]),
-    [tasks]
+    [tasks],
   );
 
   /**
@@ -57,7 +56,7 @@ const useTaskControl = (tasks: TaskType[]) => {
   const deleteTask = useCallback(
     (id: TaskType["id"], callback: (value: TaskType[]) => void) =>
       callback(filterTask(tasks, id)),
-    [tasks]
+    [tasks],
   );
 
   /**
@@ -68,10 +67,11 @@ const useTaskControl = (tasks: TaskType[]) => {
    * @param {function} callback - Callback function to update the task list.
    */
   const completeTask = useCallback(
-    (id: TaskType["id"], callback: (value: TaskType[]) => void) => {
-      callback([...filterTask(tasks, id), toggleCompleteTask(tasks, id)]);
-    },
-    [tasks]
+    (id: TaskType["id"], callback: (value: TaskType[]) => void) =>
+      callback(
+        tasks.map((t) => (t.id === id ? toggleCompleteTask(tasks, id) : t)),
+      ),
+    [tasks],
   );
 
   /**
@@ -85,7 +85,7 @@ const useTaskControl = (tasks: TaskType[]) => {
     (id: TaskType["id"], callback: (value: TaskType) => void) => {
       callback(tasks.find((t) => t.id === id) as TaskType);
     },
-    [tasks]
+    [tasks],
   );
 
   /**
@@ -98,10 +98,10 @@ const useTaskControl = (tasks: TaskType[]) => {
     (id: TaskType["id"], callback: (value: TaskType) => void) => {
       callback({
         ...tasks.find((t) => t.id === id),
-        leftSecs: TABS[0].countdown,
+        isCompleted: true,
       } as TaskType);
     },
-    [tasks]
+    [tasks],
   );
 
   /**
@@ -115,7 +115,7 @@ const useTaskControl = (tasks: TaskType[]) => {
     (
       id: TaskType["id"],
       isCompleted: boolean,
-      callback: (value: TaskType) => void
+      callback: (value: TaskType) => void,
     ) => {
       if (isCompleted) {
         reactivateTask(id, callback);
@@ -123,7 +123,7 @@ const useTaskControl = (tasks: TaskType[]) => {
         activateTask(id, callback);
       }
     },
-    [reactivateTask, activateTask]
+    [reactivateTask, activateTask],
   );
 
   return { postTask, deleteTask, completeTask, activateOrReactivateTask };

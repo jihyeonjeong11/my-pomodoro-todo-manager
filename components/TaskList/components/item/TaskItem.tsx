@@ -1,6 +1,6 @@
 import { SvgActive, SvgInactive, SvgX } from "@/public/media/icons";
 import { motion } from "framer-motion";
-import { memo } from "react";
+import { memo, type MouseEvent } from "react";
 import useTaskItemTransition from "@/components/TaskList/components/hooks/useTaskItemTransition";
 import { type TaskType } from "@/types/TaskList";
 import { StyledTaskTitle } from "@/components/TaskList/styled/StyledList";
@@ -14,9 +14,9 @@ const TaskItem = ({
 }: {
   task: TaskType;
   getSelectedTask: TaskType;
-  onClickDelete: any;
-  onClickComplete: any;
-  onClickActive: any;
+  onClickDelete: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClickComplete: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClickActive: (e: MouseEvent<HTMLDivElement>) => void;
 }) => {
   const motionProps = useTaskItemTransition();
 
