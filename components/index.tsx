@@ -1,32 +1,35 @@
 // spa main
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import Timer from "@/components/Timer";
-import StyledApp from "@/components/common/styled/StyledApp";
-import { StyledList } from "@/components/TaskList/styled/StyledList";
-import { StyledTimer } from "@/components/Timer/styled/StyledTimer";
+import { IndexedDBProvider } from "@/components/contexts/IndexedDBContext";
+import { TaskWindowsProvider } from "@/components/contexts/TaskwindowContext";
 import { PomodoroProvider } from "@/components/contexts/PomodoroContext";
-import TaskList from "@/components/TaskList";
 import { TasklistProvider } from "@/components/contexts/TasklistContext";
+import TaskList from "@/components/TaskList";
+import Timer from "@/components/Timer";
+import AppContainer from "@/components/common/components/AppContainer";
+import WindowLoader from "@/components/common/components/WindowLoader";
+import StyledApp from "@/components/common/styled/StyledApp";
 
 // list provider
 const MainPage = () => (
   <ErrorBoundary>
-    <PomodoroProvider>
-      <TasklistProvider>
-        <StyledApp>
-          <StyledTimer>
-            <h1 className="spacing">Pomodoro timer</h1>
-            <Timer />
-          </StyledTimer>
-          <StyledList>
-            <TaskList />
-          </StyledList>
-        </StyledApp>
-        {/* Maybe will be deleted. */}
-        {/* <WindowLoader /> */}
-      </TasklistProvider>
-    </PomodoroProvider>
+    <IndexedDBProvider>
+      <TaskWindowsProvider>
+        <PomodoroProvider>
+          <TasklistProvider>
+            <StyledApp>
+              <AppContainer>
+                <h1>Pomodoro</h1>
+                <Timer />
+                <TaskList />
+                <WindowLoader />
+              </AppContainer>
+            </StyledApp>
+          </TasklistProvider>
+        </PomodoroProvider>
+      </TaskWindowsProvider>
+    </IndexedDBProvider>
   </ErrorBoundary>
 );
 export default MainPage;

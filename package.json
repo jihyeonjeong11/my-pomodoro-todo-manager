@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:localDB": "env-cmd -f .env.localDB next dev",
+    "dev:notLocalDB": "env-cmd -f .env.notLocalDB next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -16,6 +18,7 @@
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
+    "env-cmd": "^10.1.0",
     "framer-motion": "^11.2.10",
     "next": "14.2.3",
     "openai": "^4.52.7",

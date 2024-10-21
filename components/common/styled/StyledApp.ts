@@ -1,11 +1,13 @@
 import { styled } from "styled-components";
 
-// use ResizeObserver to make timer and list.
-// on mobile Resolution, flex-direction: column; and on PC flex-direction: row
 const StyledApp = styled.div`
-  text-align: center;
   display: flex;
+  background: ${({ theme }) => `${theme.colors.timer.mainBackground}`};
   flex-direction: column;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  /* title */
   h1 {
     color: ${({ theme }) => `${theme.colors.timer.text}`};
   }

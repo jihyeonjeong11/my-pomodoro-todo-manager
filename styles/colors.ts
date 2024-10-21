@@ -2,6 +2,7 @@
 const colors = {
   // for dark-blue
   timer: {
+    pomodoroTitle: "#ffffff",
     navBackground: "#161932",
     text: "#d7e0ff",
     selectionHighlight: "#f87070",

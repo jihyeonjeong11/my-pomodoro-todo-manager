@@ -1,3 +1,7 @@
-const Tabs: FC = ({ children }) => <nav data-testid="tab">{children}</nav>;
+const Tabs: FC = ({ children }) => (
+  <nav data-testid="tab">
+    <ul>{children}</ul>
+  </nav>
+);
 
 export default Tabs;

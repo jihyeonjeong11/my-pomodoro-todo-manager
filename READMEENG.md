@@ -54,3 +54,10 @@ docker run -dp 3000:3000 --rm --name pomodoro pomodoro
 ```
 
 ##### Notes
+
+to-do:
+
+- Make useIndexedDBContorol more SOLID with test.
+- CSS uniformity
+- issue: CSS gradation background not along well with background
+- issue: Scroll position not working with initial hydration loads several tasks.(hydrateData)

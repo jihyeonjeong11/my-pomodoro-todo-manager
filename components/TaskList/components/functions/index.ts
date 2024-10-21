@@ -1,15 +1,31 @@
 import { TABS } from "@/components/Timer/constants";
 import { type TaskType } from "@/types/TaskList";
 
-// use Zod!
+// use Zod
 export const setInitialTask = (tasks: TaskType[], text: string) => ({
   title: text,
   approxPomodoro: 1,
   id: tasks.length,
-  createdAt: Date.now().toString(),
-  isActive: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
   leftSecs: TABS[0].countdown,
+  isActive: true,
+  pomodoroCount: 0,
+  isCompleted: false,
 });
+
+export const toggleCompleteTask = (tasks: TaskType[], id: number) => {
+  const found = tasks.find((t) => t.id === id);
+  if (found === undefined) {
+    throw new Error("task not found");
+  } else {
+    return {
+      ...found,
+      isActive: false,
+      isCompleted: !found.isCompleted,
+    };
+  }
+};
 
 export const setCompleteTask = (tasks: TaskType[], id: number) =>
   ({
@@ -36,7 +52,7 @@ export const makeFirstTaskActive = (tasks: TaskType[]) =>
   }));
 
 export const makeFirstTaskActiveIfCurrentActivatedChanged = (
-  tasks: TaskType[],
+  tasks: TaskType[]
 ) => {
   if (!getActivatedTask(tasks)) {
     return makeFirstTaskActive(tasks);

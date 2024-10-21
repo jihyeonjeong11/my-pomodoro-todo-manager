@@ -1,136 +1,92 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const horizontalCenter = css`
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const circleRadius = css`
+  border-radius: 9999px;
+`;
 
 export const StyledTimer = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  h1 {
-    color: ${({ theme }) => `${theme.colors.timer.text}`};
-  }
-
+  /* tabs */
   nav {
-    height: 4rem;
+    ul {
+      ${horizontalCenter}
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 24rem;
+      gap: 0.5rem;
+      background: ${({ theme }) => `${theme.colors.timer.navBackground}`};
+      border-radius: 1.5rem;
+      padding: 0.5rem;
+
+      li {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        color: ${({ theme }) => `${theme.colors.timer.pomodoroTitle}`};
+
+        .tab-item {
+          color: ${({ theme }) => `${theme.colors.timer.text}`};
+          padding: 0.5rem;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .tab-highlight {
+        background: ${({ theme }) =>
+          `${theme.colors.timer.selectionHighlight}`};
+        border-radius: 1rem;
+      }
+    }
+  }
+  /* clock */
+  .clock-button {
+    ${horizontalCenter}
+    ${circleRadius}
+    width: 24rem; // possible media query implementation
+    height: 24rem;
     background: ${({ theme }) => `${theme.colors.timer.navBackground}`};
-    box-sizing: content-box;
-    display: flex;
-    justify-content: space-around;
-    border-radius: 2rem;
-    text-align: center;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 0;
+    position: relative;
+    box-shadow:
+      50px 50px 100px 0 rgba(22, 25, 50, 0.5),
+      inset 20px 20px 25px 0 rgba(22, 25, 50, 0.5),
+      inset -20px -20px 25px 0 rgba(215, 224, 255, 0.1);
 
     @media (max-width: 768px) {
-      width: 90vw;
-    }
-
-    @media (min-width: 768px) {
-      width: 90%;
+      width: 18rem;
+      height: 18rem;
     }
 
     @media (min-width: 992px) {
-      width: 75%;
+      width: 24rem;
+      height: 24rem;
     }
 
-    @media (min-width: 1200px) {
-      width: 75%;
-    }
-
-    @media (min-width: 1400px) {
-      width: 75%;
-    }
-
-    .tab-item {
-      width: 29%;
-      height: 3rem;
-      border-radius: 4rem;
-      color: ${({ theme }) => `${theme.colors.timer.text}`};
-      padding: 0.5rem;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    span {
-      position: relative;
-      width: 100%;
-      z-index: 10;
-    }
-    .tab-highlight {
+    svg {
       position: absolute;
-      inset: 0px;
-      display: flex;
-      align-items: center;
-      border-radius: 30px;
-      background: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
-    }
-  }
+      top: 0;
 
-  section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: linear-gradient(-45deg, #2e325a, #0e112a);
-    filter: drop-shadow(-3.125rem -3.125rem 6.25rem #272c5a);
-    position: relative;
-    width: 70vw;
-    height: 70vw;
+      .fill-current {
+        color: ${({ theme }) => `${theme.colors.timer.navBackground}`};
+        fill: currentColor;
+      }
 
-    @media (min-width: 768px) {
-      width: 45vw;
-      height: 45vw;
-    }
-
-    @media (min-width: 992px) {
-      width: 45vw;
-      height: 45vw;
-    }
-
-    @media (min-width: 1200px) {
-      width: 35vw;
-      height: 35vw;
-    }
-
-    @media (min-width: 1400px) {
-      width: 27vw;
-      height: 27vw;
-    }
-    .inner {
-      width: 89%;
-      height: 89%;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-
-      .circle-container {
-        width: 92.88%;
-        height: 92.88%;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        transform: rotate(-90deg);
-
-        svg {
-          fill: transparent;
-          circle {
-            stroke-width: 3.75%;
-            stroke: ${({ theme }) =>
-              `${theme.colors.timer.selectionHighlight}`};
-            transition: 0.25s;
-          }
-        }
+      circle {
+        color: ${({ theme }) => `${theme.colors.timer.selectionHighlight}`};
+        stroke: currentColor;
+        transform-origin: center;
+        transform: rotateZ(-90deg);
+        transition: ease-in-out;
+        transition-duration: 150ms;
       }
     }
 
-    .numbers-inner {
-      position: absolute;
+    .remaining-time {
+      color: ${({ theme }) => `${theme.colors.timer.text}`};
     }
   }
 `;

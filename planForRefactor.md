@@ -51,3 +51,7 @@
 ## 10. Periodic Maintenance
 
 - **Establish a Regular Review Process**: Set a schedule for library reviews and updates.
+
+## 11 CSS
+
+- Refactor relative main - fixed mainpage css structure;

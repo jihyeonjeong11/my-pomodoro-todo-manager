@@ -1,11 +1,8 @@
-import {
-  StyledBackdrop,
-  StyledMainWindow,
-} from "@/components/common/styled/StyledWindows";
-import TaskList from "@/components/TaskList";
+import { StyledMainWindow } from "@/components/common/styled/StyledWindows";
 import { motion } from "framer-motion";
 import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
-import { toggleMainTaskWindow } from "@/components/TaskList/functions";
+import { SvgLoading } from "@/public/media/icons";
+// import { toggleMainTaskWindow } from "@/components/TaskList/functions";
 
 const fromBottom = {
   hidden: {
@@ -27,27 +24,20 @@ const fromBottom = {
 };
 
 // Static window for TaskList.
-const MainWindow = () => {
+const MainWindow = (props) => {
   const {
     taskWindows: { get: getTaskWindows, set: setTaskWindows },
   } = useTaskWindows(["taskWindows"]);
   return (
-    <>
-      <StyledBackdrop
-        onClick={() =>
-          toggleMainTaskWindow(true, getTaskWindows, setTaskWindows)
-        }
-      />
-      <StyledMainWindow
-        as={motion.aside}
-        variants={fromBottom}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-      >
-        <TaskList />
-      </StyledMainWindow>
-    </>
+    <StyledMainWindow
+      as={motion.aside}
+      variants={fromBottom}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <SvgLoading />
+    </StyledMainWindow>
   );
 };
 

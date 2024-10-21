@@ -1,56 +1,52 @@
-import { type MotionProps } from "framer-motion";
-import { useEffect, useState } from "react";
+import { type AnimationScope, useAnimate } from "framer-motion";
+import { useEffect } from "react";
+import {
+  DEFAULT_TASKFORM_HEIGHT,
+  TASKFORM_PADDING,
+} from "@/components/Timer/constants";
 
-const useTaskButtonTransition = (showAddProps: boolean): MotionProps => {
-  const [isInitiated, setIsInitiated] = useState(false);
+const useTaskListButtonAnimation = (
+  showAddForm: boolean,
+  scope: AnimationScope<any>,
+  formScope: AnimationScope<HTMLDivElement>,
+  animate: any
+) => {
+  const [animateScope, animateForm] = useAnimate();
 
   useEffect(() => {
-    if (showAddProps && !isInitiated) {
-      setIsInitiated(true);
-    }
-  }, [showAddProps, isInitiated]);
+    const runAnimation = async (show: boolean) => {
+      const formRef = formScope?.current;
 
-  const variants = {
-    initial: {
-      height: "2rem",
-    },
-    shrink: {
-      height: "2rem",
-    },
-    enlarge: {
-      height: "5rem",
-    },
+      if (show && formRef) {
+        const formHeight =
+          formRef.getBoundingClientRect().height || DEFAULT_TASKFORM_HEIGHT;
+        await animate(
+          scope.current,
+          {
+            height: 32 + formHeight + TASKFORM_PADDING, // 2rem + formHeight + padding
+            justifyContent: "flex-start",
+          },
+          { duration: 0.1 }
+        );
+        await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
+        await window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      } else {
+        await animate(
+          scope.current,
+          { height: "2rem", justifyContent: "center", marginBottom: 0 },
+          { duration: 0.3 }
+        );
+        await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
+      }
+    };
 
-    hide: {
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-        delay: 0.2,
-      },
-    },
-    show: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-        delay: 0.5,
-      },
-    },
-  };
+    runAnimation(showAddForm);
+  }, [showAddForm, animateScope, animateForm, scope, formScope, animate]);
 
-  return {
-    initial: "shrink",
-    animate: isInitiated
-      ? // eslint-disable-next-line unicorn/no-nested-ternary
-        showAddProps
-        ? ["enlarge", "hide", "show"]
-        : ["shrink"]
-      : [],
-    transition: {
-      duration: 0.7,
-      ease: "easeInOut",
-    },
-    variants,
-  };
+  return { animateScope, animateForm };
 };
 
-export default useTaskButtonTransition;
+export default useTaskListButtonAnimation;

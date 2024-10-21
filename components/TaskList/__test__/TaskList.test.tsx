@@ -8,7 +8,7 @@ import themes from "@/styles/themes";
 import { ThemeProvider } from "styled-components";
 import { TasklistProvider } from "@/components/contexts/TasklistContext";
 import TaskList from "@/components/TaskList";
-import TaskListButton from "@/components/TaskList/components/forms/TaskListButton";
+import TaskListButton from "@/components/TaskList/components/forms/TasklistController";
 import TaskForm from "@/components/TaskList/components/forms/TaskForm";
 
 MotionGlobalConfig.skipAnimations = true;
@@ -45,7 +45,7 @@ describe("Tasklist", () => {
         <TasklistProvider>
           <TaskList />
         </TasklistProvider>
-      </ThemeProvider>,
+      </ThemeProvider>
     );
 
     const taskButton = screen.getByRole("button");
@@ -55,10 +55,7 @@ describe("Tasklist", () => {
   it("Calls flipTaskButton when clicked", () => {
     const mockFlipTaskButton = jest.fn();
     render(
-      <TaskListButton
-        flipTaskButton={mockFlipTaskButton}
-        showAddForm={false}
-      />,
+      <TaskListButton flipTaskButton={mockFlipTaskButton} showAddForm={false} />
     );
     const button = screen.getByTestId("tasklist-button");
     fireEvent.click(button);
@@ -70,14 +67,14 @@ describe("Tasklist", () => {
     render(
       <TasklistProvider>
         <TaskListButton flipTaskButton={mockFlipTaskButton} showAddForm />
-      </TasklistProvider>,
+      </TasklistProvider>
     );
     await waitFor(
       () => {
         const taskInput = screen.getByRole("textbox");
         expect(taskInput).toBeInTheDocument();
       },
-      { timeout: 1000 },
+      { timeout: 1000 }
     );
   });
 
@@ -85,7 +82,7 @@ describe("Tasklist", () => {
     render(
       <TasklistProvider>
         <TaskForm />
-      </TasklistProvider>,
+      </TasklistProvider>
     );
 
     await waitFor(
@@ -95,7 +92,7 @@ describe("Tasklist", () => {
         await user.type(taskInput, "task1");
         expect(taskInput).toHaveValue("task1");
       },
-      { timeout: 1000 },
+      { timeout: 1000 }
     );
   });
 
@@ -104,7 +101,7 @@ describe("Tasklist", () => {
     render(
       <TasklistProvider>
         <TaskForm />
-      </TasklistProvider>,
+      </TasklistProvider>
     );
 
     await waitFor(
@@ -139,7 +136,7 @@ describe("Tasklist", () => {
         //   charCode: 13,
         // });
       },
-      { timeout: 1000 },
+      { timeout: 1000 }
     );
   });
 });

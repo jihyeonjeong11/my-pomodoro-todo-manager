@@ -6,25 +6,45 @@ import {
   useState,
 } from "react";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import { useTaskControl } from "@/components/TaskList/components/hooks/useTaskControl";
+import { useIndexedDB } from "@/components/contexts/IndexedDBContext";
+import { useTaskWindows } from "@/components/contexts/TaskwindowContext";
+import useTaskControl from "@/components/TaskList/components/hooks/useTaskControl";
+import useIndexedDBControl from "@/components/common/hooks/useIndexedDBControl";
 
 const TaskForm = () => {
   const {
     tasks: { get: getTasks, set: setTask },
-  } = useTasklist(["tasks"]);
-  const [text, setText] = useState<string>("");
+    selectedTask: { set: setSelectedTask },
+  } = useTasklist(["tasks", "selectedTask"]);
+
+  const {
+    taskWindows: { get: getTaskWindows, set: setTaskWindows },
+  } = useTaskWindows(["taskWindows"]);
+
+  const {
+    db: { get: getDB },
+  } = useIndexedDB(["db"]);
+
   const { postTask } = useTaskControl(getTasks);
+  const { postATaskToDB } = useIndexedDBControl(
+    getDB,
+    setTask,
+    setSelectedTask,
+    getTaskWindows,
+    setTaskWindows,
+  );
+
+  const [text, setText] = useState<string>("");
 
   const onSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // zod
-      if (text.length > 0) {
-        postTask(text, setTask);
-        setText("");
-      }
+
+      postTask(text, setTask);
+      postATaskToDB(getTasks, text);
+      setText("");
     },
-    [postTask, setTask, text],
+    [postTask, text, setTask, postATaskToDB, getTasks],
   );
 
   const onType = useCallback((e: ChangeEvent<HTMLInputElement>) => {
