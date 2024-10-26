@@ -15,7 +15,7 @@
 ### Tab-controlled timer
 
 - 포모도로 방식에 맞춘 3개의 선택 가능한 탭
-- 애니메이션된 svg 시계
+- 애니메이션 svg 시계
 - 포모도로 시간 추적을 위한 동적 앱 헤드
 - [웹 알림](https://developer.mozilla.org/en-US/docs/Web/API/Notification)
 
@@ -55,9 +55,15 @@ docker run -dp 3000:3000 --rm --name pomodoro pomodoro
 
 ##### Notes
 
+타이머 Service Worker. // onhold
 완료 후 타이머 svg가 안채워짐. // solved
-타이머 애니메이션 사라지는 부분이 약간 이상함. // onhold
+타이머 애니메이션 circleOffset 정확하지 않음., // onhold
 any 타입 수정 // solved // animation 그대로
 리팩터: Clock, Tasklist //onhold
 active, complete 시 순서가 마음대로 바뀜 // 순서 변하지 않도록 변경
-코드 변경으로 테스트 케이스 에러 // onhold
+코드 변경으로 테스트 케이스 에러 // onhold -> Consider using Playwright for easier testing
+
+https://medium.com/@shubhadeepchat/best-practices-for-writing-good-user-story-86ef59d68d70
+create user story for blogging
+
+Zod 사용 타입 맞추기 //onhold
