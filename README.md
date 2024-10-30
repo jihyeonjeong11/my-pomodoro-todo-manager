@@ -62,6 +62,8 @@ any 타입 수정 // solved // animation 그대로
 리팩터: Clock, Tasklist //onhold
 active, complete 시 순서가 마음대로 바뀜 // 순서 변하지 않도록 변경
 코드 변경으로 테스트 케이스 에러 // onhold -> Consider using Playwright for easier testing
+깃헙 액션 파이프라인 구축, 현재는 vercel로 수동으로 deploy 중. //onhold
+윈도우: 빌드 이후 pnpm i 재시작해야하는 문제 //onhold
 
 https://medium.com/@shubhadeepchat/best-practices-for-writing-good-user-story-86ef59d68d70
 create user story for blogging
