@@ -175,7 +175,7 @@ function subscribe(callback) {
 
 ```
 
-### 해당 컨텍스트의 의도
+### 해당 펑션의 의도
 
 #### [공식 업데이트 로그의 설명](https://github.com/reactjs/rfcs/blob/main/text/0214-use-sync-external-store.md)
 
@@ -186,9 +186,92 @@ This API is designed to be used primarily by library and framework authors, not 
 - 라이브러리나 프레임워크를 사용하는데 도움을 주기위해서임.
 - 하지만 이 경우는 context로 외부 라이브러리 사용을 줄이되 리렌더를 막기위해서 솔루션을 찾았고 정상작동하는 것을 확인했음.
 
-### 어떻게 사용하는지?
+### 어떻게 동작하는지?
 
--
+- 해당 펑션은 get, set, subscribe 세 가지 프로퍼티를 가진 오브젝트를 생성함
+
+```
+  type UseFastContextDataReturnType = ReturnType<typeof useFastContextData>;
+  const Context = createContext<UseFastContextDataReturnType | null>(null);
+```
+
+- 그리고 FastContextProvider와 useFastContextFields 두 가지를 리턴하는데 프로바이더는 앱 상위에서 데이터를 제공하는 역할을, use 훅은 데이터를 하위에서 사용하는 역할임.
+
+- 프로바이더의 경우, get,set, subscribe를 실제로 정의해서 데이터로 넘겨줌. fastContextData라는 재정의되는 오브젝트가 아니라 useFastContextData()라는 펑션 리턴값을 줌으로써 리렌더를 막는것을 확인.
+
+```
+  function FastContextProvider({
+    children,
+  }: Readonly<{ children: React.ReactNode }>) {
+    return (
+      <Context.Provider value={useFastContextData()}>
+        {children}
+      </Context.Provider>
+    );
+  }
+```
+
+- useFastContextData는 실제 subscribe와 get set이 작동하는 부분을 구현함.
+  - 데이터는 실제로 useRef에서 저장됨.
+  - get의 경우 store.current를 리턴함.
+  - subscribers의 경우 앱 하위 실제로 useContext를 통해 사용하는 콜백 펑션이 담긴다.
+
+```
+  const {
+    tab: { set, get },
+  } = usePomodoro(["tab"]); // 해당 펑션이 subscribe의 콜백이 된다. 어레이 안은 셀렉터이다.
+```
+
+```
+  function useFastContextData(): {
+    get: () => T;
+    set: (value: Partial<T>) => void;
+    subscribe: (callback: () => void) => () => void;
+  } {
+    const store = useRef<T>(initialState);
+
+    const get = useCallback(() => store.current, []);
+
+    const subscribers = useRef(new Set<() => void>());
+
+    const set = useCallback((value: Partial<T>) => {
+      store.current = { ...store.current, ...value };
+      subscribers.current.forEach((callback) => callback());
+    }, []);
+
+    const subscribe = useCallback((callback: () => void) => {
+      subscribers.current.add(callback);
+      return () => subscribers.current.delete(callback);
+    }, []);
+
+    return {
+      get,
+      set,
+      subscribe,
+    };
+  }
+```
+
+- 앱 하부에서 실제로 사용하는 것의 경우는 이렇다. 사용할 fieldNames를 정의함으로써 위의 useFastContext 의 setter와 getter가 정의됨.
+- subscribe.add 와 delete는 위 externalStore 사용법 참고.,
+
+```
+  function useFastContextFields(fieldNames: (keyof T)[]): UseContextType<T> {
+    const gettersAndSetters: UseContextType<T> = {} as UseContextType<T>;
+
+    for (const fieldName of fieldNames) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [getter, setter] = useFastContext((fc) => fc[fieldName]);
+
+      gettersAndSetters[fieldName] = {
+        get: getter,
+        set: (value) => setter({ [fieldName]: value } as unknown as Partial<T>),
+      };
+    }
+
+    return gettersAndSetters;
+  }
+```
 
 ### 반성
 
