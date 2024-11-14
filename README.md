@@ -55,7 +55,7 @@ docker run -dp 3000:3000 --rm --name pomodoro pomodoro
 
 ##### Notes
 
-타이머 Service Worker. // onhold
+타이머 Service Worker. // 타이머가 간헐적으로 멈추는 문제로 작성
 완료 후 타이머 svg가 안채워짐. // solved
 타이머 애니메이션 circleOffset 정확하지 않음., // onhold
 any 타입 수정 // solved // animation 그대로

@@ -11,10 +11,57 @@ been building from May 29, 2024
 
 # Project Summary
 
+생산성을 높이기 위해서 만들었다.
+
 It's a lightweight single-page web application for Pomodoro method training.
 Users can add, remove, sort tasks with attaching Pomodoro timer to track their doing it.
 
 This Web app uses browser storage(indexedDB) for persisting User's task information, which is currently built on.
+
+## 1. 프로젝트 구조
+
+1. 왜 NextJS인가?
+
+   - 아직 현업에서 쓴 경험이 없다고 하더라도, 현재 시장 지배적이므로 사용해야 한다고 생각했음.
+
+2. 왜 page router인가?
+
+   - 회사에서 기존 NextJS를 유지하면서 app router로 바꾼 경우가 많이 없다고 들었다. 물론 해당 프로젝트는 SPA를 구현한 것으로 MPA와는 사용법이 다르겠지만, 굳이 app router를 사용할 필요는 없다고 생각했음. 하지만, SPA이고 해당 페이지가 CSR이며 백엔드도 indexedDB로 브라우저 단에서 사용한 결과물을 볼 때 app router라도 괜찮았다고 생각이 듬. 다음에는 MPA를 page router로 MPA를 구현하는 것이 맞지 않나 함.
+
+3.
+
+## 2. 핵심 구조
+
+1. createFastContext
+
+   - 다른 md 파일 참조
+
+2. 왜 styled-in-js를 사용했는지?
+
+   - tailwinds와 비교할것
+
+3. indexedDB를 사용한 이유
+4. 오브젝트로 로딩 모달을 구현한 이유?
+
+## 3. 앱 ux
+
+1. 실제로 사용한 뒤 어땠는지?
+
+   - 25분단위 작업 5분 휴식 이외에도 25분 단위로 할 수 있도록 계속 task를 쪼개게 되기 때문에 좋음.
+
+2. 아쉬운 것은?
+
+   - 일부러 타이머 애니메이션을 가져와서 제작했지만, 실제로 사용하지 않았음. 제거해도 무방.
+
+3. 왜 컴플리트를 수동으로 처리했는지?
+
+   - 25분 작업이 끝났을때 끝나지 않는 경우도 있었기 때문.
+
+4.
+
+## 4. 자신의 코딩 스타일
+
+-
 
 ## 1. Why NextJS?
 
