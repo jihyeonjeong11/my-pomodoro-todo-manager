@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 const useWorker = <T>(
   workerInit?: (info?: string) => Worker,
@@ -7,14 +7,15 @@ const useWorker = <T>(
 ): React.MutableRefObject<Worker | undefined> => {
   const worker = useRef<Worker>();
 
-  useEffect(() => {
-    console.log(worker, "why init called twice");
-    if (workerInit && !worker.current) {
-      console.log("on startup");
-      worker.current = workerInit(workerInfo);
+  const memoizedWorkerInit = useCallback(workerInit, []);
+  const memoizedOnMessage = useCallback(onMessage, []);
 
-      if (onMessage) {
-        worker.current.addEventListener("message", onMessage, {
+  useEffect(() => {
+    if (memoizedWorkerInit && !worker.current) {
+      worker.current = memoizedWorkerInit(workerInfo);
+
+      if (memoizedOnMessage) {
+        worker.current.addEventListener("message", memoizedOnMessage, {
           passive: true,
         });
       }
@@ -23,11 +24,10 @@ const useWorker = <T>(
     }
 
     return () => {
-      console.log("???");
       worker.current?.terminate();
       worker.current = undefined;
     };
-  }, [onMessage, workerInfo, workerInit]);
+  }, [memoizedWorkerInit, memoizedOnMessage, workerInfo]);
 
   return worker;
 };

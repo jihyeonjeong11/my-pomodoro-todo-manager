@@ -10,6 +10,7 @@ import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import { convertMsToTime } from "@/components/Timer/functions";
 import useInterval from "@/components/Timer/hooks/useInterval";
 import useWorker from "@/components/common/hooks/useWorker";
+import useCircleOffset from "../hooks/useCircleOffset";
 
 type WorkerMessage = { data: { message: string; type: string } };
 
@@ -28,11 +29,30 @@ const Clock = () => {
 
   const [leftSecs, setLeftSecs] = useState(getTab.countdown);
 
-  const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
+  const { isStarted, toggle } = useTimerControl(
+    getTab.title,
+    getTab.countdown,
+    setTab,
+    getSelectedTask.id,
+    getTasks,
+    setTask
+  );
+
   const worker = useWorker(TIME_WORKER, (data) => {
-    console.log(data.data, "from mainthread");
+    if (data.data === "done") {
+      // active pomo + 1
+      toggle();
+      return;
+    }
     setLeftSecs(data.data);
   });
+
+  const { circleOffset } = useCircleOffset(
+    getTab.title,
+    getTab.countdown,
+    getTab.decrementor,
+    leftSecs
+  );
 
   const tick = () => {
     setTab({
@@ -42,34 +62,28 @@ const Clock = () => {
     const totalChange = getTab.decrementor;
     setCircleOffset((prev) => prev + totalChange);
   };
-  const { isStarted, toggle } = useTimerControl(
-    getTab.title,
-    getTab.countdown,
-    setTab,
-    getSelectedTask.id,
-    getTasks,
-    setTask
-  );
-  // useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
 
   useEffect(() => {
-    setCircleOffset(DEFAULT_CIRCLE_OFFSET);
-  }, [getTab.title]);
-
-  useEffect(() => {
-    if (getTab.countdown === 0) {
-      setCircleOffset(DEFAULT_CIRCLE_OFFSET);
+    if (worker.current) {
+      console.log("title changed");
+      worker.current?.postMessage({
+        action: "switch",
+        countdown: getTab.countdown,
+      });
     }
-  }, [getTab.countdown]);
+  }, [getTab.countdown, getTab.title, worker]);
 
   useEffect(() => {
     if (worker.current && isStarted === "started") {
-      worker.current?.postMessage("timer-started");
+      worker.current?.postMessage("started");
     }
-  }, [worker, isStarted]);
 
+    if (worker.current && isStarted === "stopped") {
+      worker.current?.postMessage("stopped");
+    }
+  }, [isStarted, worker]);
   const time = convertMsToTime(leftSecs);
-  // const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown; not needed?
+
   return (
     <>
       <Head>
@@ -81,11 +95,7 @@ const Clock = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <button
-        onClick={() => worker.current?.postMessage("started")}
-        className="clock-button"
-        type="button"
-      >
+      <button onClick={toggle} className="clock-button" type="button">
         <svg id="time-progress" viewBox="0 0 100 100">
           <circle
             cx="50"
