@@ -16,7 +16,7 @@ const useIndexedDBControl = (
   setTask: (value: TaskType[]) => void,
   setSelectedTask?: (value: TaskType) => void,
   getTaskWindows?: TaskWindowType,
-  setTaskWindows?: (value: TaskWindowType) => void,
+  setTaskWindows?: (value: TaskWindowType) => void
 ) => {
   const putOrPostOrder = useCallback(
     (getTasks: TaskType[]) => {
@@ -45,7 +45,7 @@ const useIndexedDBControl = (
         throw new Error("unexpected Error");
       };
     },
-    [getDB],
+    [getDB]
   );
 
   const hydrateData = useCallback(async () => {
@@ -55,7 +55,6 @@ const useIndexedDBControl = (
 
     const transaction = getDB.transaction(["tasks", "session"], "readonly");
     const request = transaction.objectStore("tasks").getAll();
-
     request.onsuccess = () => {
       const sessionRequest = transaction.objectStore("session").get(0);
 
@@ -66,13 +65,9 @@ const useIndexedDBControl = (
         ) {
           setTask(sortByOrder(request.result, sessionRequest.result.order));
         }
-        if (
-          sessionRequest.result?.activeId &&
-          sessionRequest.result.activeId > -1 &&
-          setSelectedTask
-        ) {
+        if (sessionRequest.result?.activeId > -1 && setSelectedTask) {
           setSelectedTask(
-            request.result.find((t) => t.id === sessionRequest.result.activeId),
+            request.result.find((t) => t.id === sessionRequest.result.activeId)
           );
         }
 
@@ -80,14 +75,13 @@ const useIndexedDBControl = (
         if (getTaskWindows && setTaskWindows) {
           setTaskWindows(
             Object.fromEntries(
-              Object.entries(getTaskWindows).filter(
-                ([key]) => key !== "loader",
-              ),
-            ),
+              Object.entries(getTaskWindows).filter(([key]) => key !== "loader")
+            )
           );
         }
       };
     };
+
     return true;
   }, [getDB, getTaskWindows, setSelectedTask, setTask, setTaskWindows]);
 
@@ -96,7 +90,7 @@ const useIndexedDBControl = (
       if (getDB !== null) {
         const transaction = getDB.transaction(
           ["tasks", "session"],
-          "readwrite",
+          "readwrite"
         );
         const request = transaction.objectStore("tasks");
         const newRow = setInitialTask(getTasks, text);
@@ -115,7 +109,7 @@ const useIndexedDBControl = (
         };
       }
     },
-    [getDB, getTaskWindows, setTaskWindows],
+    [getDB, getTaskWindows, setTaskWindows]
   );
 
   const deleteATaskFromDB = useCallback(
@@ -138,7 +132,7 @@ const useIndexedDBControl = (
         };
       }
     },
-    [getDB, getTaskWindows, setTaskWindows],
+    [getDB, getTaskWindows, setTaskWindows]
   );
 
   const putATaskCompletedToDB = useCallback(
@@ -146,7 +140,7 @@ const useIndexedDBControl = (
       if (getDB !== null) {
         const transaction = getDB.transaction(
           ["tasks", "session"],
-          "readwrite",
+          "readwrite"
         );
         const request = transaction.objectStore("tasks");
         const get = request.get(task.id);
@@ -155,7 +149,7 @@ const useIndexedDBControl = (
         };
       }
     },
-    [getDB],
+    [getDB]
   );
 
   const putATaskActiveToDB = useCallback(
@@ -170,7 +164,7 @@ const useIndexedDBControl = (
         };
       }
     },
-    [getDB],
+    [getDB]
   );
 
   // Use this when the time allows.

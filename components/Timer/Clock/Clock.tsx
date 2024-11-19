@@ -2,17 +2,10 @@ import Head from "next/head";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { useTasklist } from "@/components/contexts/TasklistContext";
 import { useEffect, useState } from "react";
-import {
-  DEFAULT_CIRCLE_OFFSET,
-  DEFAULT_TICK_VALUE,
-} from "@/components/Timer/constants";
 import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import { convertMsToTime } from "@/components/Timer/functions";
-import useInterval from "@/components/Timer/hooks/useInterval";
 import useWorker from "@/components/common/hooks/useWorker";
-import useCircleOffset from "../hooks/useCircleOffset";
-
-type WorkerMessage = { data: { message: string; type: string } };
+import useCircleOffset from "@/components/Timer/hooks/useCircleOffset";
 
 const TIME_WORKER = (): Worker =>
   new Worker(new URL("components/common/workers/timeWorker", import.meta.url));
@@ -29,7 +22,7 @@ const Clock = () => {
 
   const [leftSecs, setLeftSecs] = useState(getTab.countdown);
 
-  const { isStarted, toggle } = useTimerControl(
+  const { isStarted, toggle, completeTimer } = useTimerControl(
     getTab.title,
     getTab.countdown,
     setTab,
@@ -38,34 +31,28 @@ const Clock = () => {
     setTask
   );
 
-  const worker = useWorker(TIME_WORKER, (data) => {
-    if (data.data === "done") {
-      // active pomo + 1
-      toggle();
-      return;
-    }
-    setLeftSecs(data.data);
-  });
-
-  const { circleOffset } = useCircleOffset(
+  const { circleOffset, completeOffset } = useCircleOffset(
     getTab.title,
     getTab.countdown,
     getTab.decrementor,
     leftSecs
   );
 
-  const tick = () => {
-    setTab({
-      ...getTab,
-      countdown: getTab.countdown - DEFAULT_TICK_VALUE,
-    });
-    const totalChange = getTab.decrementor;
-    setCircleOffset((prev) => prev + totalChange);
-  };
+  const worker = useWorker(TIME_WORKER, (data) => {
+    if (data.data === "done") {
+      completeOffset();
+      completeTimer();
+      worker.current?.postMessage({
+        action: "switch",
+        countdown: getTab.countdown,
+      });
+      return;
+    }
+    if (typeof data.data === "number") setLeftSecs(data.data);
+  });
 
   useEffect(() => {
     if (worker.current) {
-      console.log("title changed");
       worker.current?.postMessage({
         action: "switch",
         countdown: getTab.countdown,
@@ -82,6 +69,7 @@ const Clock = () => {
       worker.current?.postMessage("stopped");
     }
   }, [isStarted, worker]);
+
   const time = convertMsToTime(leftSecs);
 
   return (
