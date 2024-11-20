@@ -1,29 +1,42 @@
 let originalTime = 1_500_000;
 // eslint-disable-next-line no-undef
 let timer: NodeJS.Timeout | undefined;
+let initialized = false;
 
-globalThis.addEventListener("message", (e) => {
-  if (e.data.action === "switch") {
-    if (timer) {
-      clearInterval(timer);
-    }
-    originalTime = e.data.countdown;
-    postMessage(originalTime);
+const sendTick = () => {
+  if (originalTime === 0) {
+    globalThis.clearInterval(timer);
+    globalThis.postMessage("done");
+  } else {
+    originalTime -= 1000;
+    globalThis.postMessage(originalTime);
   }
+};
 
-  if (e.data === "started") {
-    timer = setInterval(() => {
-      if (originalTime === 0) {
-        clearInterval(timer);
-        postMessage("done");
-      } else {
-        originalTime -= 1000;
-        postMessage(originalTime);
+globalThis.addEventListener(
+  "message",
+  (e) => {
+    if (!initialized) {
+      if (e.data === "init") {
+        initialized = true;
       }
-    }, 1000);
-  }
+      return;
+    }
 
-  if (e.data === "stopped" && timer) {
-    clearInterval(timer);
-  }
-});
+    if (e.data.action === "switch") {
+      if (timer) {
+        clearInterval(timer);
+      }
+      originalTime = e.data.countdown;
+      postMessage(originalTime);
+    }
+
+    if (e.data === "stopped" && timer) {
+      globalThis.clearInterval(timer);
+    }
+    if (e.data === "started") {
+      timer = globalThis.setInterval(sendTick, 1000);
+    }
+  },
+  { passive: true },
+);

@@ -12,9 +12,9 @@ const useTimerControl = (
   title: TabWithMutableCountdown["title"],
   countdown: number,
   setTab: (value: TabWithMutableCountdown) => void,
-  selectedTaskId: number,
+  selectedTask: TaskType,
   getTasks: TaskType[],
-  setTask: (value: TaskType[]) => void
+  setTask: (value: TaskType[]) => void,
 ) => {
   const {
     db: { get: getDB },
@@ -24,10 +24,6 @@ const useTimerControl = (
   const [isStarted, setIsStarted] = useState<TimerType>(TIMER_STATUS.stopped);
   const { launchCompleteNotification } = useNotification();
 
-  useEffect(() => {
-    setIsStarted(TIMER_STATUS.stopped);
-  }, [title]);
-
   const toggle = useCallback(() => {
     if (countdown === 0) {
       setTab(originalTab);
@@ -36,21 +32,20 @@ const useTimerControl = (
     setIsStarted((prev) =>
       prev === TIMER_STATUS.stopped
         ? TIMER_STATUS.started
-        : TIMER_STATUS.stopped
+        : TIMER_STATUS.stopped,
     );
   }, [countdown, originalTab, setTab]);
 
   const completeTimer = useCallback(() => {
-    toggle();
     const audio = new Audio(Microwave);
     audio.play();
     launchCompleteNotification(title);
-    if (title === "pomodoro" && selectedTaskId > -1) {
+    if (title === "pomodoro" && selectedTask?.id > -1) {
       if (isUseLocalDBOrNot()) {
         if (getDB) {
           const transaction = getDB.transaction(["tasks"], "readwrite");
           const request = transaction.objectStore("tasks");
-          const get = request.get(selectedTaskId);
+          const get = request.get(selectedTask.id);
           get.onsuccess = () => {
             request.put({
               ...get.result,
@@ -64,14 +59,15 @@ const useTimerControl = (
 
       setTask(
         getTasks.map((t) =>
-          t.id === selectedTaskId
+          t.id === selectedTask.id
             ? {
                 ...t,
                 pomodoroCount: t.pomodoroCount + 1,
               }
-            : t
-        )
+            : t,
+        ),
       );
+      toggle();
     }
     setTab(originalTab);
   }, [
@@ -79,14 +75,25 @@ const useTimerControl = (
     getTasks,
     launchCompleteNotification,
     originalTab,
-    selectedTaskId,
+    selectedTask.id,
     setTab,
     setTask,
     title,
     toggle,
   ]);
 
-  return { isStarted, toggle, completeTimer };
+  useEffect(() => {
+    setIsStarted(TIMER_STATUS.stopped);
+  }, [title]);
+
+  useEffect(() => {
+    // this actually works with latest context.
+    if (isStarted === TIMER_STATUS.done) {
+      completeTimer();
+    }
+  }, [completeTimer, isStarted]);
+
+  return { isStarted, setIsStarted, toggle, completeTimer };
 };
 
 export default useTimerControl;

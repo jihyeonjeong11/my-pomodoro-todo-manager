@@ -1,16 +1,21 @@
 import Head from "next/head";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import { convertMsToTime } from "@/components/Timer/functions";
 import useWorker from "@/components/common/hooks/useWorker";
 import useCircleOffset from "@/components/Timer/hooks/useCircleOffset";
 
-const TIME_WORKER = (): Worker =>
-  new Worker(new URL("components/common/workers/timeWorker", import.meta.url));
-
 const Clock = () => {
+  const timeWorkerInit = useCallback(
+    () =>
+      new Worker(
+        new URL("components/common/workers/timeWorker", import.meta.url),
+      ),
+    [],
+  );
+
   const {
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
@@ -22,34 +27,41 @@ const Clock = () => {
 
   const [leftSecs, setLeftSecs] = useState(getTab.countdown);
 
-  const { isStarted, toggle, completeTimer } = useTimerControl(
+  const { isStarted, toggle, setIsStarted } = useTimerControl(
     getTab.title,
     getTab.countdown,
     setTab,
-    getSelectedTask.id,
+    getSelectedTask,
     getTasks,
-    setTask
+    setTask,
   );
 
   const { circleOffset, completeOffset } = useCircleOffset(
     getTab.title,
     getTab.countdown,
     getTab.decrementor,
-    leftSecs
+    leftSecs,
   );
 
-  const worker = useWorker(TIME_WORKER, (data) => {
+  const onMessage = useCallback((data: any) => {
+    if (typeof data.data === "number") {
+      setLeftSecs(data.data);
+    }
     if (data.data === "done") {
       completeOffset();
-      completeTimer();
-      worker.current?.postMessage({
+      setIsStarted("done");
+      // 11/19 need useEffect to handle selectedTask pomodoro counter
+      data.target.postMessage({
         action: "switch",
         countdown: getTab.countdown,
       });
-      return;
+    } else {
+      setLeftSecs(data.data);
     }
-    if (typeof data.data === "number") setLeftSecs(data.data);
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const worker = useWorker(timeWorkerInit, onMessage);
 
   useEffect(() => {
     if (worker.current) {
@@ -99,6 +111,7 @@ const Clock = () => {
         <div className="remaining-time">
           <h1>{time}</h1>
           <h2>{isStarted === "stopped" ? "Start" : "Pause"}</h2>
+          {getSelectedTask.id}
         </div>
       </button>
     </>

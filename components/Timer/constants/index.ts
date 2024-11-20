@@ -19,6 +19,7 @@ export const TABS = [
 export const TIMER_STATUS = {
   stopped: "stopped",
   started: "started",
+  done: "done",
 } as const;
 
 export const DEFAULT_TICK_VALUE = 1000;
