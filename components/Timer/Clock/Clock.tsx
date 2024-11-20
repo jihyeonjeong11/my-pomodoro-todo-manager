@@ -6,6 +6,7 @@ import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import { convertMsToTime } from "@/components/Timer/functions";
 import useWorker from "@/components/common/hooks/useWorker";
 import useCircleOffset from "@/components/Timer/hooks/useCircleOffset";
+import { TIMER_STATUS } from "@/components/Timer/constants";
 
 const Clock = () => {
   const timeWorkerInit = useCallback(
@@ -47,16 +48,14 @@ const Clock = () => {
     if (typeof data.data === "number") {
       setLeftSecs(data.data);
     }
-    if (data.data === "done") {
+    if (data.data === TIMER_STATUS.done) {
       completeOffset();
-      setIsStarted("done");
+      setIsStarted(TIMER_STATUS.done);
       // 11/19 need useEffect to handle selectedTask pomodoro counter
       data.target.postMessage({
         action: "switch",
         countdown: getTab.countdown,
       });
-    } else {
-      setLeftSecs(data.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -73,12 +72,12 @@ const Clock = () => {
   }, [getTab.countdown, getTab.title, worker]);
 
   useEffect(() => {
-    if (worker.current && isStarted === "started") {
-      worker.current?.postMessage("started");
+    if (worker.current && isStarted === TIMER_STATUS.started) {
+      worker.current?.postMessage(TIMER_STATUS.started);
     }
 
-    if (worker.current && isStarted === "stopped") {
-      worker.current?.postMessage("stopped");
+    if (worker.current && isStarted === TIMER_STATUS.stopped) {
+      worker.current?.postMessage(TIMER_STATUS.stopped);
     }
   }, [isStarted, worker]);
 
@@ -110,8 +109,7 @@ const Clock = () => {
         </svg>
         <div className="remaining-time">
           <h1>{time}</h1>
-          <h2>{isStarted === "stopped" ? "Start" : "Pause"}</h2>
-          {getSelectedTask.id}
+          <h2>{isStarted === TIMER_STATUS.started ? "Pause" : "Start"}</h2>
         </div>
       </button>
     </>
