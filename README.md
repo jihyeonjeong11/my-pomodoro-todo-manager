@@ -55,7 +55,11 @@ docker run -dp 3000:3000 --rm --name pomodoro pomodoro
 
 ##### Notes
 
-타이머 Service Worker. // onhold
+타이머 Web worker //done
+타이머 worker 리팩토링 // onhold 11.19 // start와 stop 메시지가 hook에서 안먹히는 이슈 있음. // 11.26 테스팅 이후 풀
+
+타이머 기능 수정 // 에러 해결 11.19 cleaning 이후 testing 11.20 진행예정 // 11.26 테스트중
+
 완료 후 타이머 svg가 안채워짐. // solved
 타이머 애니메이션 circleOffset 정확하지 않음., // onhold
 any 타입 수정 // solved // animation 그대로

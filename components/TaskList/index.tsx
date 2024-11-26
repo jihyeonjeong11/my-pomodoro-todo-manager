@@ -17,7 +17,7 @@ import {
 } from "@/components/TaskList/components/functions";
 
 const TaskItem = dynamic(
-  () => import("@/components/TaskList/components/item/TaskItem"),
+  () => import("@/components/TaskList/components/item/TaskItem")
 );
 
 const TaskList = () => {
@@ -45,7 +45,7 @@ const TaskList = () => {
       setTask(newOrderedTasks);
       putOrPostOrder(newOrderedTasks);
     },
-    [putOrPostOrder, setTask],
+    [putOrPostOrder, setTask]
   );
 
   const onClickDelete = useCallback(
@@ -54,7 +54,7 @@ const TaskList = () => {
       deleteATaskFromDB(task);
       deleteTask(task.id, setTask);
     },
-    [deleteATaskFromDB, deleteTask, setTask],
+    [deleteATaskFromDB, deleteTask, setTask]
   );
   const onClickComplete = useCallback(
     (task: TaskType) => (e: MouseEvent<HTMLButtonElement>) => {
@@ -66,7 +66,7 @@ const TaskList = () => {
       ]);
       completeTask(task.id, setTask);
     },
-    [completeTask, getTasks, putATaskCompletedToDB, putOrPostOrder, setTask],
+    [completeTask, getTasks, putATaskCompletedToDB, putOrPostOrder, setTask]
   );
 
   const onClickActive = useCallback(
@@ -74,7 +74,7 @@ const TaskList = () => {
       putATaskActiveToDB(task);
       activateOrReactivateTask(task.id, task.isCompleted, setSelectedTask);
     },
-    [putATaskActiveToDB, activateOrReactivateTask, setSelectedTask],
+    [putATaskActiveToDB, activateOrReactivateTask, setSelectedTask]
   );
 
   return (

@@ -31,7 +31,7 @@ const AppContainer: FC = ({ children }) => {
     setTask,
     setSelectedTask,
     getTaskWindows,
-    setTaskWindows,
+    setTaskWindows
   );
 
   useEffect(() => {
