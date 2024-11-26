@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 const StyledApp = styled.div`
-  display: flex;
+  min-height: 100vh;
   background: ${({ theme }) => `${theme.colors.timer.mainBackground}`};
   flex-direction: column;
   padding-top: 2rem;

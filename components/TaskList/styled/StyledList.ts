@@ -7,40 +7,26 @@ export const StyledList = styled.section`
   margin-right: auto;
   max-width: 24rem;
   text-align: center;
-  color: white;
   justify-content: center;
   align-items: center;
-
-  form {
-    flex-direction: column;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    label {
-      font-size: 1.5rem;
-      color: ${({ theme }) => `${theme.colors.timer.text}`};
-    }
-
-    input {
-      text-align: center;
-    }
-  }
 `;
 
 export const StyledTaskTitle = styled(TaskTitle)`
   color: ${(props) =>
     props.$isactive
       ? `${props.theme.colors.timer.selectionHighlight}`
-      : "white"};
+      : `${props.theme.colors.tasklist.text}`};
   text-decoration: ${({ iscompleted }) =>
     iscompleted ? "line-through" : "none"};
 `;
 
 export const StyledInnerList = styled.div`
+  color: ${({ theme }) => `${theme.colors.tasklist.text}`};
   display: flex;
   flex-direction: column;
   width: inherit;
+
+  // tasklistController
 
   .motion-button {
     border: 1px dashed;
@@ -55,17 +41,30 @@ export const StyledInnerList = styled.div`
     }
   }
 
-  input {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    padding: 1rem 0;
+  // taskInput
+
+  form {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      font-size: 1.5rem;
+      color: ${({ theme }) => `${theme.colors.timer.text}`};
+    }
+
+    input {
+      color: ${({ theme }) => `${theme.colors.tasklist.text}`};
+      background-color: transparent;
+      border: none;
+      font-size: 1.5rem;
+      padding: 1rem 0;
+      text-align: center;
+    }
   }
-  label {
-    font-size: 2rem;
-    color: ${({ theme }) => `${theme.colors.timer.text}`};
-  }
+
+  // taskItems
   ul {
     list-style-type: none;
     width: inherit;
@@ -75,7 +74,6 @@ export const StyledInnerList = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: ${({ theme }) => `${theme.colors.timer.mainBackground}`};
         border-bottom: ${({ theme }) => `solid 1px ${theme.colors.timer.text}`};
         span {
           font-size: 1.5em;

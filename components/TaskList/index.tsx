@@ -81,7 +81,7 @@ const TaskList = () => {
     <StyledList>
       <StyledInnerList>
         <div className="spacing">
-          {getTasks.length > 0 && "Time to get productive!"}
+          <span>{getTasks.length > 0 && "Time to get productive!"}</span>
         </div>
         <Reorder.Group axis="y" values={getTasks} onReorder={onReorder}>
           <AnimatePresence>
