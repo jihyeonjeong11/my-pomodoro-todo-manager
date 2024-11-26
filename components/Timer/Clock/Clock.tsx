@@ -8,6 +8,8 @@ import useWorker from "@/components/common/hooks/useWorker";
 import useCircleOffset from "@/components/Timer/hooks/useCircleOffset";
 import { TIMER_STATUS } from "@/components/Timer/constants";
 
+type TimeWorkerResponse = keyof typeof TIMER_STATUS | number | "source";
+
 const Clock = () => {
   const timeWorkerInit = useCallback(
     () =>
@@ -44,23 +46,26 @@ const Clock = () => {
     leftSecs,
   );
 
-  const onMessage = useCallback((data: any) => {
-    if (typeof data.data === "number") {
-      setLeftSecs(data.data);
-    }
-    if (data.data === TIMER_STATUS.done) {
-      completeOffset();
-      setIsStarted(TIMER_STATUS.done);
-      // 11/19 need useEffect to handle selectedTask pomodoro counter
-      data.target.postMessage({
-        action: "switch",
-        countdown: getTab.countdown,
-      });
-    }
+  const onMessage = useCallback(
+    ({ data, target: timeWorker }: MessageEvent<TimeWorkerResponse>) => {
+      if (typeof data === "number") {
+        setLeftSecs(data);
+      }
+      if (data === TIMER_STATUS.done) {
+        completeOffset();
+        setIsStarted(TIMER_STATUS.done);
+        (timeWorker as Worker).postMessage({
+          action: "switch",
+          countdown: getTab.countdown,
+        });
+      }
+      // 11/19 Intentinal stale closure to keep setInterval inside worker.
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    [],
+  );
 
-  const worker = useWorker(timeWorkerInit, onMessage);
+  const worker = useWorker<TimeWorkerResponse>(timeWorkerInit, onMessage);
 
   useEffect(() => {
     if (worker.current) {
@@ -73,11 +78,11 @@ const Clock = () => {
 
   useEffect(() => {
     if (worker.current && isStarted === TIMER_STATUS.started) {
-      worker.current?.postMessage(TIMER_STATUS.started);
+      worker.current?.postMessage({ action: TIMER_STATUS.started });
     }
 
     if (worker.current && isStarted === TIMER_STATUS.stopped) {
-      worker.current?.postMessage(TIMER_STATUS.stopped);
+      worker.current?.postMessage({ action: TIMER_STATUS.stopped });
     }
   }, [isStarted, worker]);
 

@@ -19,22 +19,24 @@ globalThis.addEventListener(
     if (!initialized) {
       if (e.data === "init") {
         initialized = true;
+        // Health check
+        globalThis.postMessage("source");
       }
       return;
     }
 
     if (e.data.action === "switch") {
       if (timer) {
-        clearInterval(timer);
+        globalThis.clearInterval(timer);
       }
       originalTime = e.data.countdown;
-      postMessage(originalTime);
+      globalThis.postMessage(originalTime);
     }
 
-    if (e.data === "stopped" && timer) {
+    if (e.data.action === "stopped" && timer) {
       globalThis.clearInterval(timer);
     }
-    if (e.data === "started") {
+    if (e.data.action === "started") {
       timer = globalThis.setInterval(sendTick, 1000);
     }
   },
