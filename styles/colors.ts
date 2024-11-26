@@ -1,5 +1,5 @@
 // for styled-components
-const colors = {
+export const colors = {
   // for dark-blue
   timer: {
     pomodoroTitle: "#ffffff",
@@ -13,4 +13,10 @@ const colors = {
   },
 };
 
-export default colors;
+export const lightColors = {
+  ...colors,
+  timer: {
+    ...colors.timer,
+    mainBackground: "red",
+  },
+};

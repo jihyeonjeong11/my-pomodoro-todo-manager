@@ -1,15 +1,14 @@
-import { TABS } from "@/components/Timer/constants";
 import { type TaskType } from "@/types/TaskList";
 
 // use Zod
 export const setInitialTask = (tasks: TaskType[], text: string) => ({
+  // approxPomodoro: 1,
+  // isActive: true,
+  // leftSecs: TABS[0].countdown,
   title: text,
-  approxPomodoro: 1,
   id: tasks.length,
   createdAt: new Date(),
   updatedAt: new Date(),
-  leftSecs: TABS[0].countdown,
-  isActive: true,
   pomodoroCount: 0,
   isCompleted: false,
 });
@@ -42,20 +41,3 @@ export const setOthersInactive = (tasks: TaskType[]) =>
 
 export const filterTask = (tasks: TaskType[], id: number) =>
   tasks.filter((t) => t.id !== id);
-
-const getActivatedTask = (tasks: TaskType[]) => tasks.find((t) => t.isActive);
-
-export const makeFirstTaskActive = (tasks: TaskType[]) =>
-  tasks.map((task, index) => ({
-    ...task,
-    isActive: index === 0,
-  }));
-
-export const makeFirstTaskActiveIfCurrentActivatedChanged = (
-  tasks: TaskType[]
-) => {
-  if (!getActivatedTask(tasks)) {
-    return makeFirstTaskActive(tasks);
-  }
-  return tasks;
-};
