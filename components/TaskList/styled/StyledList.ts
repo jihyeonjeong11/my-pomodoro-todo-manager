@@ -7,10 +7,27 @@ export const StyledList = styled.section`
   margin-right: auto;
   max-width: 24rem;
   text-align: center;
-  color: white;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => `${theme.colors.tasklist.text}`};
+  display: flex;
+  flex-direction: column;
 
+  // tasklistController
+  .motion-button {
+    align-self: stretch;
+    border: 1px dashed;
+    padding: 2rem;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    button {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  // taskInput
   form {
     flex-direction: column;
     display: flex;
@@ -23,59 +40,24 @@ export const StyledList = styled.section`
     }
 
     input {
+      color: ${({ theme }) => `${theme.colors.tasklist.text}`};
+      background-color: transparent;
+      border: none;
+      font-size: 1.5rem;
+      padding: 1rem 0;
       text-align: center;
     }
   }
-`;
 
-export const StyledTaskTitle = styled(TaskTitle)`
-  color: ${(props) =>
-    props.$isactive
-      ? `${props.theme.colors.timer.selectionHighlight}`
-      : "white"};
-  text-decoration: ${({ iscompleted }) =>
-    iscompleted ? "line-through" : "none"};
-`;
-
-export const StyledInnerList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: inherit;
-
-  .motion-button {
-    border: 1px dashed;
-    padding: 2rem;
-    min-width: 2rem;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    button {
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  input {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    padding: 1rem 0;
-  }
-  label {
-    font-size: 2rem;
-    color: ${({ theme }) => `${theme.colors.timer.text}`};
-  }
+  // taskItems
   ul {
     list-style-type: none;
-    width: inherit;
 
     li {
       div {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: ${({ theme }) => `${theme.colors.timer.mainBackground}`};
         border-bottom: ${({ theme }) => `solid 1px ${theme.colors.timer.text}`};
         span {
           font-size: 1.5em;
@@ -87,4 +69,13 @@ export const StyledInnerList = styled.div`
       }
     }
   }
+`;
+
+export const StyledTaskTitle = styled(TaskTitle)`
+  color: ${(props) =>
+    props.$isactive
+      ? `${props.theme.colors.timer.selectionHighlight}`
+      : `${props.theme.colors.tasklist.text}`};
+  text-decoration: ${({ iscompleted }) =>
+    iscompleted ? "line-through" : "none"};
 `;

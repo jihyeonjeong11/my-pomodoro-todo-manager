@@ -1,19 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
-
-import { DEFAULT_CIRCLE_OFFSET } from "@/components/Timer/constants";
 import { type TabWithMutableCountdown } from "@/types/Timer";
+import { useTheme } from "styled-components";
+import { type Sizes } from "@/types/global";
 
 const useCircleOffset = (
   title: TabWithMutableCountdown["title"],
   countdown: number,
   decrementor: number,
-  leftSecs: number
+  leftSecs: number,
 ) => {
-  const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
+  const { sizes } = useTheme() as { sizes: Sizes };
+
+  const [circleOffset, setCircleOffset] = useState(
+    sizes.timer.defaultCircleOffset,
+  );
 
   const completeOffset = useCallback(
-    () => setCircleOffset(DEFAULT_CIRCLE_OFFSET),
-    []
+    () => setCircleOffset(sizes.timer.defaultCircleOffset),
+    [sizes.timer.defaultCircleOffset],
   );
 
   useEffect(() => {
@@ -22,14 +26,14 @@ const useCircleOffset = (
   }, [leftSecs, decrementor]);
 
   useEffect(() => {
-    setCircleOffset(DEFAULT_CIRCLE_OFFSET);
-  }, [title]);
+    setCircleOffset(sizes.timer.defaultCircleOffset);
+  }, [sizes.timer.defaultCircleOffset, title]);
 
   useEffect(() => {
     if (countdown === 0) {
-      setCircleOffset(DEFAULT_CIRCLE_OFFSET);
+      setCircleOffset(sizes.timer.defaultCircleOffset);
     }
-  }, [countdown]);
+  }, [countdown, sizes.timer.defaultCircleOffset]);
 
   return { circleOffset, completeOffset };
 };

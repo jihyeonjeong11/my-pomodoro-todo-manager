@@ -1,5 +1,5 @@
 import { type DefaultTheme } from "styled-components";
-import colors from "@/styles/colors";
+import { colors, lightColors } from "@/styles/colors";
 import sizes from "@/styles/sizes";
 
 const defaultTheme: DefaultTheme = {
@@ -7,7 +7,12 @@ const defaultTheme: DefaultTheme = {
   sizes,
 } as const;
 
-const themes = { defaultTheme };
+const lightTheme: DefaultTheme = {
+  colors: lightColors,
+  sizes,
+} as const;
+
+const themes = { defaultTheme, lightTheme };
 
 export type ThemeName = keyof typeof themes;
 

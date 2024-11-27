@@ -27,3 +27,17 @@ export interface FastContext<Value> {
 
 // Can be expanded
 export type TaskWindowType = Record<"main" | string, { actionType: string }>;
+
+export type Sizes = {
+  timer: {
+    defaultCircleOffset: number;
+  };
+  pcWindow: {
+    width: number;
+    height: number;
+  };
+  taskForm: {
+    taskFormHeight: number;
+    taskFormPadding: number;
+  };
+};

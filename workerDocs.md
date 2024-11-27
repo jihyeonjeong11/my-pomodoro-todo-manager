@@ -1,13 +1,22 @@
-web worker부터 다시 확인하기.
+# Summary
 
-### motive
+- 메인 쓰레드가 방해받을 시 타이머가 멈추는 현상을 방지하기 위해 web worker로 멀티쓰레딩을 구현
+- useWorker 훅을 활용하였다.
+- 이외 context 관련 이슈사항은 아래 참고.
+
+## motive
 
 - 아래처럼 메인 스레드에서 돌아가는 타이머가 어떤 작업과 함께 돌아갈 시 타이머 자체가 멈추는 현상이 나타나므로 적용 필요함.
 
-### actual assumption
+## actual assumption
 
 - Dedicated나 백그라운드 사용을 해야 하므로 Service Worker를 사용하면 될듯.
 - 절전시에도 돌아가는지? 확인필요
+
+## result
+
+- dedicated 워커로 사용
+- 절전시에는 안돌아가는것이 맞음.
 
 ## mdn description: Web Workers API
 
@@ -116,7 +125,7 @@ export type CryptoWorkConfigT = {
 
 [DaedalOS](https://dustinbrett.com/)
 
-다만 실제로는 offscreenCanvas로 state를 받아서 리렌더하는 부분까지 쓰레드를 분리했지만 여기서는 그렇게 하지는 않았음.(더 기능이 추가되어 메인 쓰레드가 blocking된다면 감안할 만함.)
+> 다만 실제로는 offscreenCanvas로 state를 받아서 리렌더하는 부분까지 쓰레드를 분리했지만 여기서는 그렇게 하지는 않았음.(더 기능이 추가되어 메인 쓰레드가 blocking된다면 감안할 만함.)
 
 ### 2-1. useWorker.ts
 
