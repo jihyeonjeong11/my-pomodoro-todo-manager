@@ -9,29 +9,15 @@ export const StyledList = styled.section`
   text-align: center;
   justify-content: center;
   align-items: center;
-`;
-
-export const StyledTaskTitle = styled(TaskTitle)`
-  color: ${(props) =>
-    props.$isactive
-      ? `${props.theme.colors.timer.selectionHighlight}`
-      : `${props.theme.colors.tasklist.text}`};
-  text-decoration: ${({ iscompleted }) =>
-    iscompleted ? "line-through" : "none"};
-`;
-
-export const StyledInnerList = styled.div`
   color: ${({ theme }) => `${theme.colors.tasklist.text}`};
   display: flex;
   flex-direction: column;
-  width: inherit;
 
   // tasklistController
-
   .motion-button {
+    align-self: stretch;
     border: 1px dashed;
     padding: 2rem;
-    min-width: 2rem;
     justify-content: center;
     display: flex;
     flex-direction: column;
@@ -42,7 +28,6 @@ export const StyledInnerList = styled.div`
   }
 
   // taskInput
-
   form {
     flex-direction: column;
     display: flex;
@@ -67,7 +52,6 @@ export const StyledInnerList = styled.div`
   // taskItems
   ul {
     list-style-type: none;
-    width: inherit;
 
     li {
       div {
@@ -85,4 +69,13 @@ export const StyledInnerList = styled.div`
       }
     }
   }
+`;
+
+export const StyledTaskTitle = styled(TaskTitle)`
+  color: ${(props) =>
+    props.$isactive
+      ? `${props.theme.colors.timer.selectionHighlight}`
+      : `${props.theme.colors.tasklist.text}`};
+  text-decoration: ${({ iscompleted }) =>
+    iscompleted ? "line-through" : "none"};
 `;

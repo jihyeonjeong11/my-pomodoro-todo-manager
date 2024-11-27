@@ -34,7 +34,7 @@ b. display: flex
 
 .child {
   background: lightgreen;
-  /* Children will naturally take the width of the parent in column layout */
+  align-selt: stretch;
 }
 ```
 

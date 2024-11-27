@@ -1,9 +1,6 @@
 import TasklistController from "@/components/TaskList/components/forms/TasklistController";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import {
-  StyledInnerList,
-  StyledList,
-} from "@/components/TaskList/styled/StyledList";
+import { StyledList } from "@/components/TaskList/styled/StyledList";
 import { AnimatePresence, Reorder } from "framer-motion";
 import dynamic from "next/dynamic";
 import { type TaskType } from "@/types/TaskList";
@@ -17,7 +14,7 @@ import {
 } from "@/components/TaskList/components/functions";
 
 const TaskItem = dynamic(
-  () => import("@/components/TaskList/components/item/TaskItem")
+  () => import("@/components/TaskList/components/item/TaskItem"),
 );
 
 const TaskList = () => {
@@ -45,7 +42,7 @@ const TaskList = () => {
       setTask(newOrderedTasks);
       putOrPostOrder(newOrderedTasks);
     },
-    [putOrPostOrder, setTask]
+    [putOrPostOrder, setTask],
   );
 
   const onClickDelete = useCallback(
@@ -54,7 +51,7 @@ const TaskList = () => {
       deleteATaskFromDB(task);
       deleteTask(task.id, setTask);
     },
-    [deleteATaskFromDB, deleteTask, setTask]
+    [deleteATaskFromDB, deleteTask, setTask],
   );
   const onClickComplete = useCallback(
     (task: TaskType) => (e: MouseEvent<HTMLButtonElement>) => {
@@ -66,7 +63,7 @@ const TaskList = () => {
       ]);
       completeTask(task.id, setTask);
     },
-    [completeTask, getTasks, putATaskCompletedToDB, putOrPostOrder, setTask]
+    [completeTask, getTasks, putATaskCompletedToDB, putOrPostOrder, setTask],
   );
 
   const onClickActive = useCallback(
@@ -74,38 +71,36 @@ const TaskList = () => {
       putATaskActiveToDB(task);
       activateOrReactivateTask(task.id, task.isCompleted, setSelectedTask);
     },
-    [putATaskActiveToDB, activateOrReactivateTask, setSelectedTask]
+    [putATaskActiveToDB, activateOrReactivateTask, setSelectedTask],
   );
 
   return (
     <StyledList>
-      <StyledInnerList>
-        <div className="spacing">
-          <span>{getTasks.length > 0 && "Time to get productive!"}</span>
-        </div>
-        <Reorder.Group axis="y" values={getTasks} onReorder={onReorder}>
-          <AnimatePresence>
-            {getTasks.map((t) => (
-              <Reorder.Item
-                data-testid={`task-${t.id}`}
-                key={`task-${t.id}`}
-                value={t}
-              >
-                <TaskItem
-                  task={t}
-                  getSelectedTask={getSelectedTask}
-                  onClickDelete={onClickDelete(t)}
-                  onClickComplete={onClickComplete(t)}
-                  onClickActive={onClickActive(t)}
-                />
-              </Reorder.Item>
-            ))}
-          </AnimatePresence>
-        </Reorder.Group>
-        <div className="spacing" />
-        <TasklistController />
-        <div className="spacing" />
-      </StyledInnerList>
+      <div className="spacing">
+        <span>{getTasks.length > 0 && "Time to get productive!"}</span>
+      </div>
+      <Reorder.Group axis="y" values={getTasks} onReorder={onReorder}>
+        <AnimatePresence>
+          {getTasks.map((t) => (
+            <Reorder.Item
+              data-testid={`task-${t.id}`}
+              key={`task-${t.id}`}
+              value={t}
+            >
+              <TaskItem
+                task={t}
+                getSelectedTask={getSelectedTask}
+                onClickDelete={onClickDelete(t)}
+                onClickComplete={onClickComplete(t)}
+                onClickActive={onClickActive(t)}
+              />
+            </Reorder.Item>
+          ))}
+        </AnimatePresence>
+      </Reorder.Group>
+      <div className="spacing" />
+      <TasklistController />
+      <div className="spacing" />
     </StyledList>
   );
 };
