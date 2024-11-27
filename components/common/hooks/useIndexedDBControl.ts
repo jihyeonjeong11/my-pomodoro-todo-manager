@@ -55,7 +55,6 @@ const useIndexedDBControl = (
 
     const transaction = getDB.transaction(["tasks", "session"], "readonly");
     const request = transaction.objectStore("tasks").getAll();
-
     request.onsuccess = () => {
       const sessionRequest = transaction.objectStore("session").get(0);
 
@@ -66,11 +65,7 @@ const useIndexedDBControl = (
         ) {
           setTask(sortByOrder(request.result, sessionRequest.result.order));
         }
-        if (
-          sessionRequest.result?.activeId &&
-          sessionRequest.result.activeId > -1 &&
-          setSelectedTask
-        ) {
+        if (sessionRequest.result?.activeId > -1 && setSelectedTask) {
           setSelectedTask(
             request.result.find((t) => t.id === sessionRequest.result.activeId),
           );
@@ -88,6 +83,7 @@ const useIndexedDBControl = (
         }
       };
     };
+
     return true;
   }, [getDB, getTaskWindows, setSelectedTask, setTask, setTaskWindows]);
 

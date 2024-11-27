@@ -1,16 +1,24 @@
 import Head from "next/head";
 import { usePomodoro } from "@/components/contexts/PomodoroContext";
 import { useTasklist } from "@/components/contexts/TasklistContext";
-import { useEffect, useState } from "react";
-import {
-  DEFAULT_CIRCLE_OFFSET,
-  DEFAULT_TICK_VALUE,
-} from "@/components/Timer/constants";
+import { useCallback, useEffect, useState } from "react";
 import useTimerControl from "@/components/Timer/hooks/useTimerControl";
 import { convertMsToTime } from "@/components/Timer/functions";
-import useInterval from "@/components/Timer/hooks/useInterval";
+import useWorker from "@/components/common/hooks/useWorker";
+import useCircleOffset from "@/components/Timer/hooks/useCircleOffset";
+import { TIMER_STATUS } from "@/components/Timer/constants";
+
+type TimeWorkerResponse = keyof typeof TIMER_STATUS | number | "source";
 
 const Clock = () => {
+  const timeWorkerInit = useCallback(
+    () =>
+      new Worker(
+        new URL("components/common/workers/timeWorker", import.meta.url),
+      ),
+    [],
+  );
+
   const {
     tab: { get: getTab, set: setTab },
   } = usePomodoro(["isStarted", "tab"]);
@@ -20,44 +28,72 @@ const Clock = () => {
     selectedTask: { get: getSelectedTask },
   } = useTasklist(["tasks", "selectedTask"]);
 
-  const [circleOffset, setCircleOffset] = useState(DEFAULT_CIRCLE_OFFSET);
+  const [leftSecs, setLeftSecs] = useState(getTab.countdown);
 
-  const tick = () => {
-    setTab({
-      ...getTab,
-      countdown: getTab.countdown - DEFAULT_TICK_VALUE,
-    });
-    const totalChange = getTab.decrementor;
-    setCircleOffset((prev) => prev + totalChange);
-  };
-  const { isStarted, toggle } = useTimerControl(
+  const { isStarted, toggle, setIsStarted } = useTimerControl(
     getTab.title,
     getTab.countdown,
     setTab,
-    getSelectedTask.id,
+    getSelectedTask,
     getTasks,
     setTask,
   );
-  useInterval(tick, isStarted === "started" ? DEFAULT_TICK_VALUE : null);
+
+  const { circleOffset, completeOffset } = useCircleOffset(
+    getTab.title,
+    getTab.countdown,
+    getTab.decrementor,
+    leftSecs,
+  );
+
+  const onMessage = useCallback(
+    ({ data, target: timeWorker }: MessageEvent<TimeWorkerResponse>) => {
+      if (typeof data === "number") {
+        setLeftSecs(data);
+      }
+      if (data === TIMER_STATUS.done) {
+        completeOffset();
+        setIsStarted(TIMER_STATUS.done);
+        (timeWorker as Worker).postMessage({
+          action: "switch",
+          countdown: getTab.countdown,
+        });
+      }
+      // 11/19 Intentinal stale closure to keep setInterval inside worker.
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  const worker = useWorker<TimeWorkerResponse>(timeWorkerInit, onMessage);
 
   useEffect(() => {
-    setCircleOffset(DEFAULT_CIRCLE_OFFSET);
-  }, [getTab.title]);
-
-  useEffect(() => {
-    if (getTab.countdown === 0) {
-      setCircleOffset(DEFAULT_CIRCLE_OFFSET);
+    if (worker.current) {
+      worker.current?.postMessage({
+        action: "switch",
+        countdown: getTab.countdown,
+      });
     }
-  }, [getTab.countdown]);
+  }, [getTab.countdown, getTab.title, worker]);
 
-  const time = convertMsToTime(getTab.countdown);
-  // const isOriginalTime = findTab(getTab.title).countdown === getTab.countdown; not needed?
+  useEffect(() => {
+    if (worker.current && isStarted === TIMER_STATUS.started) {
+      worker.current?.postMessage({ action: TIMER_STATUS.started });
+    }
+
+    if (worker.current && isStarted === TIMER_STATUS.stopped) {
+      worker.current?.postMessage({ action: TIMER_STATUS.stopped });
+    }
+  }, [isStarted, worker]);
+
+  const time = convertMsToTime(leftSecs);
+
   return (
     <>
       <Head>
         <title>{time}</title>
         <meta
-          name="description"
+          name="My pomodoro timer"
           content="Task Reminder using Pomodoro method"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -78,7 +114,7 @@ const Clock = () => {
         </svg>
         <div className="remaining-time">
           <h1>{time}</h1>
-          <h2>{isStarted === "stopped" ? "Start" : "Pause"}</h2>
+          <h2>{isStarted === TIMER_STATUS.started ? "Pause" : "Start"}</h2>
         </div>
       </button>
     </>
