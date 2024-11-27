@@ -4,21 +4,21 @@
 - useWorker 훅을 활용하였다.
 - 이외 context 관련 이슈사항은 아래 참고.
 
-## motive
+## Motive
 
 - 아래처럼 메인 스레드에서 돌아가는 타이머가 어떤 작업과 함께 돌아갈 시 타이머 자체가 멈추는 현상이 나타나므로 적용 필요함.
 
-## actual assumption
+## Actual assumption
 
 - Dedicated나 백그라운드 사용을 해야 하므로 Service Worker를 사용하면 될듯.
 - 절전시에도 돌아가는지? 확인필요
 
-## result
+## Result
 
 - dedicated 워커로 사용
 - 절전시에는 안돌아가는것이 맞음.
 
-## mdn description: Web Workers API
+## MDN description: Web Workers API
 
 - js의 메인 실행 스레드 이외에서 돌아가는 스크립트. 많은 연산이 필요한 작업의 경우 다른 쓰레드에서 돌아가도록 함으로써 UI가 blocked/slowed down 되는 것을 막는 역할을 한다.
 
@@ -40,36 +40,9 @@ b. window 오브젝트를 참조하는 행위
 - Service Workers는 웹 앱, 브라우저, 네트워크와 연결되는 프록시 서버로써 기능함. 오프라인 상태에서의 UX나 네트워크 요청 중간에 어떤 역할을 수행하거나, 서버와의 통신으로 어떤 작업을 수행할 수 있다.
   또한 푸시 노티피케이션이나 백그라운드 싱크도 담당함.
 
-# NextJS with Web Workers
+## Usage
 
-## 1. Build phase
-
-- static 파일로 shipping되어야 하기 때문에 /public에 넣음.
-- cautions! avoid sensitive data such as user data or API keys.
-
-## 2. Setup tsconfig.json
-
-```
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./public/workers", // since we want to use .ts file for worker...
-    "module": "ES6",
-    "noEmit": false
-  },
-  "include": [
-    "workers/**/*.ts"
-  ]
-}
-```
-
-## 3. Update Package.json
-
-will this necessary?
-
-## usage
-
-### methods
+### Methods
 
 - postMessage(): 워커로 데이터를 담은 메시지 보냄
 
@@ -87,7 +60,7 @@ worker.terminate()
 
 - removeEventListener()
 
-### properties
+### Properties
 
 - onMessage: 앱에서 받은 메시지를 받는 역할
 
@@ -119,7 +92,7 @@ export type CryptoWorkConfigT = {
 }
 ```
 
-## 2. Usage in ReactJS
+# My use-case
 
 다양한 방법이 있겠지만 여기서는 DaedalOS에서의 사용법을 참고했다.
 
@@ -127,7 +100,7 @@ export type CryptoWorkConfigT = {
 
 > 다만 실제로는 offscreenCanvas로 state를 받아서 리렌더하는 부분까지 쓰레드를 분리했지만 여기서는 그렇게 하지는 않았음.(더 기능이 추가되어 메인 쓰레드가 blocking된다면 감안할 만함.)
 
-### 2-1. useWorker.ts
+### 1. useWorker.ts
 
 ```
 import { useEffect, useRef } from "react";
@@ -201,7 +174,7 @@ export default useWorker;
 
 ```
 
-### 2-2. timeWorker.ts
+### 2. timeWorker.ts
 
 ```
 let originalTime = 1_500_000;
@@ -252,9 +225,9 @@ globalThis.addEventListener(
 
 ```
 
-## 3. Notable issues
+# 2. Notable issues
 
-### 3-1. stale closure
+## 2-1. Stale closure
 
 문제는 onMessage에서의 stale closure이다.
 
@@ -280,7 +253,7 @@ globalThis.addEventListener(
   }, []);
 ```
 
-### 3-2. Race condition completetimer
+## 2-2. Race condition completeTimer
 
 워커의 문제는 아니지만, 여기 표시함.
 
