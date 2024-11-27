@@ -93,7 +93,7 @@ const Clock = () => {
       <Head>
         <title>{time}</title>
         <meta
-          name="description"
+          name="My pomodoro timer"
           content="Task Reminder using Pomodoro method"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
