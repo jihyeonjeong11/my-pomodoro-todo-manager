@@ -1,13 +1,19 @@
-### motive
+# Summary
+
+- 메인 쓰레드가 방해받을 시 타이머가 멈추는 현상을 방지하기 위해 web worker로 멀티쓰레딩을 구현
+- useWorker 훅을 활용하였다.
+- 이외 context 관련 이슈사항은 아래 참고.
+
+## motive
 
 - 아래처럼 메인 스레드에서 돌아가는 타이머가 어떤 작업과 함께 돌아갈 시 타이머 자체가 멈추는 현상이 나타나므로 적용 필요함.
 
-### actual assumption
+## actual assumption
 
 - Dedicated나 백그라운드 사용을 해야 하므로 Service Worker를 사용하면 될듯.
 - 절전시에도 돌아가는지? 확인필요
 
-### result
+## result
 
 - dedicated 워커로 사용
 - 절전시에는 안돌아가는것이 맞음.
