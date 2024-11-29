@@ -1,6 +1,6 @@
 import { useAnimate } from "framer-motion";
 import dynamic from "next/dynamic";
-import useTaskListButtonAnimation from "@/components/TaskList/components/hooks/useTaskButtonTransition";
+import useTaskListButtonTransition from "@/components/TaskList/components/hooks/useTaskButtonTransition";
 import useToggle from "@/components/common/hooks/useToggle";
 
 const TaskForm = dynamic(
@@ -10,9 +10,15 @@ const TaskForm = dynamic(
 const TaskListController = () => {
   const [showAddForm, flipTaskButton] = useToggle(false);
 
-  const [scope, animate] = useAnimate();
-  const [formScope] = useAnimate<HTMLDivElement>();
-  useTaskListButtonAnimation(showAddForm, scope, formScope, animate);
+  const [scope, animate] = useAnimate<HTMLDivElement>();
+  const [formScope, formAnimate] = useAnimate<HTMLDivElement>();
+  useTaskListButtonTransition(
+    showAddForm,
+    scope,
+    formScope,
+    animate,
+    formAnimate,
+  );
 
   return (
     <div ref={scope} className="motion-button">

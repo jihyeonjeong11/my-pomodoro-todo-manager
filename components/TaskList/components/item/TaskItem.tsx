@@ -34,8 +34,9 @@ const TaskItem = ({
         $isactive={getSelectedTask.id === id && !isCompleted}
         $iscompleted={isCompleted}
       >
-        {title} {pomodoroCount}
+        {title}
       </StyledTaskTitle>
+      <span>{pomodoroCount}</span>
       <button
         data-testid={`task-${id}-remove`}
         type="button"

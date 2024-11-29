@@ -52,16 +52,19 @@ export const StyledList = styled.section`
   // taskItems
   ul {
     list-style-type: none;
+    align-self: stretch;
 
     li {
+      align-self: stretch;
       div {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 0.15fr 0.6fr 0.1fr 0.15fr;
         align-items: center;
         border-bottom: ${({ theme }) => `solid 1px ${theme.colors.timer.text}`};
         span {
           font-size: 1.5em;
           line-height: 23px;
+          max-height: 100px;
         }
       }
       button {
@@ -78,4 +81,7 @@ export const StyledTaskTitle = styled(TaskTitle)`
       : `${props.theme.colors.tasklist.text}`};
   text-decoration: ${({ iscompleted }) =>
     iscompleted ? "line-through" : "none"};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;

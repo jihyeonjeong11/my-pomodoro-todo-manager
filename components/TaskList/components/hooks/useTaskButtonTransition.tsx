@@ -1,19 +1,20 @@
 import { type Sizes } from "@/types/global";
-import { type AnimationScope, useAnimate } from "framer-motion";
+import { type AnimationScope } from "framer-motion";
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
 
-const useTaskListButtonAnimation = (
+const useTaskListButtonTransition = (
   showAddForm: boolean,
-  scope: AnimationScope<any>,
+  scope: AnimationScope<HTMLDivElement>,
   formScope: AnimationScope<HTMLDivElement>,
   animate: any,
+  formAnimate: any,
 ) => {
   const { sizes } = useTheme() as { sizes: Sizes };
-  const [animateScope, animateForm] = useAnimate();
 
   useEffect(() => {
     const runAnimation = async (show: boolean) => {
+      const buttonRef = scope?.current;
       const formRef = formScope?.current;
 
       if (show && formRef) {
@@ -21,14 +22,14 @@ const useTaskListButtonAnimation = (
           formRef.getBoundingClientRect().height ||
           sizes.taskForm.taskFormHeight;
         await animate(
-          scope.current,
+          buttonRef,
           {
             height: 32 + formHeight + sizes.taskForm.taskFormPadding, // 2rem + formHeight + padding
             justifyContent: "flex-start",
           },
           { duration: 0.1 },
         );
-        await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
+        await formAnimate(formRef, { opacity: 1 }, { duration: 0.2 });
         await window.scrollTo({
           top: document.body.scrollHeight,
           behavior: "smooth",
@@ -39,23 +40,20 @@ const useTaskListButtonAnimation = (
           { height: "2rem", justifyContent: "center", marginBottom: 0 },
           { duration: 0.3 },
         );
-        await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
+        await formAnimate(formScope.current, { opacity: 0 }, { duration: 0.2 });
       }
     };
 
     runAnimation(showAddForm);
   }, [
     showAddForm,
-    animateScope,
-    animateForm,
+    formAnimate,
     scope,
     formScope,
     animate,
     sizes.taskForm.taskFormHeight,
     sizes.taskForm.taskFormPadding,
   ]);
-
-  return { animateScope, animateForm };
 };
 
-export default useTaskListButtonAnimation;
+export default useTaskListButtonTransition;
