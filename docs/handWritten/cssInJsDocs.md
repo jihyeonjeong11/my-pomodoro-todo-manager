@@ -23,7 +23,7 @@
 - Utility framework
 - e.g.) TailwindCSS
 
-## CSSInJS 사용한 이유
+## Actual Result CSSInJS 사용한 이유
 
 - 사실 큰 이유는 없었음. 지금와서 생각해보면 css modules로 로컬 스코프만을 가져도 충분했을 수 있음
 - 하지만 실제 theme을 구성할 때 Styled components가 많은 도움이 되었음.

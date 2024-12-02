@@ -1,3 +1,5 @@
+해당 부분 모두 onhold 12/02
+
 ## **AI generated Refactoring procedures**
 
 # Cleaning Libraries Procedure
