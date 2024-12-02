@@ -55,7 +55,6 @@ export const StyledList = styled.section`
     align-self: stretch;
 
     li {
-      align-self: stretch;
       div {
         display: grid;
         grid-template-columns: 0.15fr 0.6fr 0.1fr 0.15fr;
@@ -69,6 +68,10 @@ export const StyledList = styled.section`
       }
       button {
         padding: 1rem;
+      }
+      button:last-of-type {
+        display: flex;
+        justify-content: flex-end;
       }
     }
   }

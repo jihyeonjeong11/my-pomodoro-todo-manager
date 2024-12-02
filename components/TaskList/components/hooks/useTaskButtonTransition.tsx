@@ -8,7 +8,7 @@ const useTaskListButtonTransition = (
   scope: AnimationScope<HTMLDivElement>,
   formScope: AnimationScope<HTMLDivElement>,
   animate: any,
-  formAnimate: any,
+  formAnimate: any
 ) => {
   const { sizes } = useTheme() as { sizes: Sizes };
 
@@ -17,7 +17,7 @@ const useTaskListButtonTransition = (
       const buttonRef = scope?.current;
       const formRef = formScope?.current;
 
-      if (show && formRef) {
+      if (show) {
         const formHeight =
           formRef.getBoundingClientRect().height ||
           sizes.taskForm.taskFormHeight;
@@ -27,7 +27,7 @@ const useTaskListButtonTransition = (
             height: 32 + formHeight + sizes.taskForm.taskFormPadding, // 2rem + formHeight + padding
             justifyContent: "flex-start",
           },
-          { duration: 0.1 },
+          { duration: 0.1 }
         );
         await formAnimate(formRef, { opacity: 1 }, { duration: 0.2 });
         await window.scrollTo({
@@ -38,7 +38,7 @@ const useTaskListButtonTransition = (
         await animate(
           scope.current,
           { height: "2rem", justifyContent: "center", marginBottom: 0 },
-          { duration: 0.3 },
+          { duration: 0.3 }
         );
         await formAnimate(formScope.current, { opacity: 0 }, { duration: 0.2 });
       }

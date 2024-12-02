@@ -1,6 +1,7 @@
 # 1. Summary
 
 - 라이브러리 자체가 방대하므로 여기서는 유즈 케이스에 맞게 사용한 부분만 기록함.
+- 더 많은 기능들이 있으므로 계속해서 사용하면서 기록해나갈 예정
 
 # 2. Motive
 
@@ -110,7 +111,8 @@ export default useTaskItemTransition;
 
 ## 3-2. useAnimate
 
-- animate 펑션을 scoped된 엘리먼트에 직접 트리거하기 위해 사용.
+- animate 펑션을 scoped된 엘리먼트 하나 혹은 다수에 직접 트리거하기 위해 사용.
+- 아래를 보면 상위 div와 form에 걸린 scope를 하나의 펑션에서 불러와서 사용하는 중.
 - 기존 initial & exit에 더해 실행조건을 유저가 직접 트리거하기 위해 사용함. automatic cleanup이 되어있어 cleanup은 신경쓸 필요가 없다고 한다.
 
 ```
@@ -150,30 +152,31 @@ const TaskListController = () => {
 
 const useTaskListButtonTransition = (
   showAddForm: boolean,
-  scope: AnimationScope<any>,
+  scope: AnimationScope<HTMLDivElement>,
   formScope: AnimationScope<HTMLDivElement>,
-  animate: any
+  animate: any,
+  formAnimate: any,
 ) => {
   const { sizes } = useTheme() as { sizes: Sizes };
-  const [animateScope, animateForm] = useAnimate();
 
   useEffect(() => {
     const runAnimation = async (show: boolean) => {
+      const buttonRef = scope?.current;
       const formRef = formScope?.current;
 
-      if (show && formRef) {
+      if (show) {
         const formHeight =
           formRef.getBoundingClientRect().height ||
           sizes.taskForm.taskFormHeight;
         await animate(
-          scope.current,
+          buttonRef,
           {
             height: 32 + formHeight + sizes.taskForm.taskFormPadding, // 2rem + formHeight + padding
             justifyContent: "flex-start",
           },
-          { duration: 0.1 }
+          { duration: 0.1 },
         );
-        await animateForm(formScope.current, { opacity: 1 }, { duration: 0.2 });
+        await formAnimate(formRef, { opacity: 1 }, { duration: 0.2 });
         await window.scrollTo({
           top: document.body.scrollHeight,
           behavior: "smooth",
@@ -182,33 +185,26 @@ const useTaskListButtonTransition = (
         await animate(
           scope.current,
           { height: "2rem", justifyContent: "center", marginBottom: 0 },
-          { duration: 0.3 }
+          { duration: 0.3 },
         );
-        await animateForm(formScope.current, { opacity: 0 }, { duration: 0.2 });
+        await formAnimate(formScope.current, { opacity: 0 }, { duration: 0.2 });
       }
     };
 
     runAnimation(showAddForm);
-  }, [
-    showAddForm,
-    animateScope,
-    animateForm,
-    scope,
-    formScope,
-    animate,
-    sizes.taskForm.taskFormHeight,
-    sizes.taskForm.taskFormPadding,
-  ]);
-
-  return { animateScope, animateForm };
+  })
+  ....
 };
 
-export default useTaskListButtonTransition;
-
 ```
+
+- form이 열리고 닫히는 boolean 값이 따라 애니메이션 실행
+- 열릴 시 -> 계산된 px만큼 버튼의 크기를 늘림, form 표현, 스크롤이벤트
+- 닫힐 시 -> 폼 숨김, 고정된 taskButton의 크기로 줄어듬.
 
 # 4. References
 
 [framer-motion quickstart](https://motion.dev/docs/react-quick-start)
 [framer-motion animatepresence](https://motion.dev/docs/react-animate-presence)
 [framer-motion Reorder](https://motion.dev/docs/react-reorder)
+[framer-motion useAnimate](https://motion.dev/docs/react-use-animate)
