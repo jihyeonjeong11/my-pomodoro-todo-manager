@@ -26,6 +26,7 @@
 - 이 경우 useContext를 받는 모든 컴포넌트가 리렌더 시 불필요하게 리렌되기 때문에, useRef를 사용해서 store를 context에 저장, 필요한 곳에만 리렌더하는 방식.
 - 하지만 useRef의 경우 rerender 시 조회하는 부분에서 리랜더를 일으키지 않기 떄문에, useSyncExternalStore로 따로 싱크해주는 작업이 필요함.
 - useSyncExternalStore는 pub sub 모델을 적용해서 sub = 데이터를 사용하는 컴포넌트들, pub = externalStore 자체로 구현되게 됨.
+- 내부 구조에 대해서 이 이상의 기록은 하지 않음. 필요하다면 youtube를 한번 더 보는 것이 도움이 될 것.
 
 ```
 
